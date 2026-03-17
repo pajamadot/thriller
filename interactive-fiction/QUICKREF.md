@@ -1,20 +1,8 @@
 # Interactive Fiction Quick Reference Card
 
 ## Commands
-
-### Mode A: Static Branching
 ```
-/init → /branches → /choices → /character-paths → /state → /node N → /ending N → /consistency → /export
-```
-
-### Mode B: Dynamic Narrative
-```
-/init → /schema → /drama-manager → /npc {name} (per NPC) → runtime generation
-```
-
-### Mode C: Hybrid (Recommended)
-```
-/init → /schema + /branches → /drama-manager → /npc → /node (key scenes only) → /consistency → /export
+/init → /branches → /choices → /character-paths → /state → /node N → /ending N → /consistency → /export {format}
 ```
 
 ## Topology Selection

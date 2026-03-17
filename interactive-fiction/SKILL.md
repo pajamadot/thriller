@@ -1,29 +1,18 @@
 # 互动悬疑小说创作系统 — Interactive Thriller Fiction
 
-> 将悬疑小说转化为互动叙事体验——支持静态分支和 LLM 动态运行时生成两种模式
-> 融合 Choice Architecture、Narrative Design、Dynamic Narrative Generation（Dramamancer/Drama Llama/StoryVerse）
+> 将悬疑小说转化为带分支选择的互动叙事体验
+> 融合 Choice Architecture（选择架构）、Narrative Design（叙事设计）、Game Writing（游戏写作）方法论
 
 ---
 
 ## 系统定位
 
-本技能支持**两种互动模式**：
+本技能将线性悬疑小说转化为**多分支互动小说**，读者在关键时刻做出选择，影响调查方向、角色命运和最终结局。适用于：
 
-### Mode A: 静态分支（Static Branching）
-预先编写所有节点和选择。适用于：
-- 互动小说平台（Twine / ink / ChoiceScript / 橙光）
-- 互动影视脚本（Netflix 交互式）
+- 互动小说平台（Twine / ink / ChoiceScript / 橙光 / 快点阅读）
+- 互动影视脚本（Netflix 交互式 / 短剧互动版）
+- 文字冒险游戏
 - EPUB 互动增强版
-
-### Mode B: 动态叙事（Dynamic Narrative）
-作者定义 Story Schema + Drama Manager 约束，LLM 在运行时根据玩家自由输入实时生成。适用于：
-- AI 驱动的文字冒险游戏
-- TTRPG AI Game Master
-- 对话式互动小说
-- 实时互动直播/体验
-
-### Mode C: 混合模式（Hybrid，推荐）
-关键剧情节点 = 静态（精确控制），节点之间 = 动态（自由探索）。
 
 ---
 
@@ -341,107 +330,6 @@
 3. 状态变量文档
 4. 节点统计报告
 5. 阅读路径推荐指南
-
----
-
-## 动态叙事命令（Mode B / Mode C）
-
-### `/schema` — Story Schema 设计
-
-**触发条件**：`/init` 完成后，选择 Mode B 或 Mode C
-**加载参考**：`references/dynamic-narrative.md`
-
-**输出结构**（生成 `story-schema.json`）：
-
-```json
-{
-  "style": "叙事风格指令（文风、人称、调性）",
-  "characters": [
-    { "name": "角色名", "role": "player|npc", "desc": "描述",
-      "knowledge": ["角色知道的事实列表"],
-      "secrets": ["角色隐藏的事实列表"] }
-  ],
-  "scenes": [
-    {
-      "id": "scene_01",
-      "setting": "场景设定描述",
-      "characters": ["角色名列表"],
-      "opening": "开场文本",
-      "events": [
-        {
-          "id": "E01",
-          "condition": "自然语言条件",
-          "outcome": "自然语言结果",
-          "clue_released": "C01（可选：触发时释放的线索）",
-          "priority": "high|medium|low"
-        }
-      ]
-    }
-  ],
-  "constraints": {
-    "level_0_hard": ["真凶身份不变", "关键线索必须在揭示前释放"],
-    "level_1_soft": ["嫌疑方向按设计曲线变化", "张力整体上升"],
-    "level_2_suggest": ["NPC对话风格一致", "维持调性"],
-    "level_3_free": ["具体措辞", "环境细节", "过渡方式"]
-  }
-}
-```
-
----
-
-### `/drama-manager` — Drama Manager 配置
-
-**功能**：配置运行时的 Drama Manager 规则
-
-**输出结构**（生成 `drama-manager.md`）：
-
-```
-一、NL Triggers（自然语言触发器）
-  | ID | 条件（自然语言） | 结果（舞台指令） | 优先级 |
-  | T01 | "当玩家已经检查了现场但还没发现凶器" | "让一个NPC无意中提到一个被忽略的角落" | medium |
-  | T02 | "当张力连续3轮没有上升" | "注入一个新的威胁或意外事件" | high |
-
-二、线索释放控制
-  | 线索 | 最早释放 | 最晚释放 | 释放方式 |
-  | C01 | scene_01 | scene_03 结束前 | 如果玩家未发现则通过NPC暗示 |
-
-三、NPC 知识边界
-  | NPC | 知道的 | 不知道的 | 会说谎的 |
-  | 陈医生 | 受害者病历 | 凶手身份 | 关于自己与受害者的关系 |
-
-四、张力曲线目标
-  scene_01: 4/10 → scene_02: 6/10 → scene_03: 8/10 → reveal: 10/10
-  如果实际张力低于目标 2+ 分，触发"升压"事件
-```
-
----
-
-### `/npc {角色名}` — NPC 角色 Agent 配置
-
-**功能**：为动态模式中的每个 NPC 配置 Ego/Superego 双Agent行为
-
-**输出结构**：
-
-```
-角色：{角色名}
-
-Ego Agent（表面行为）：
-  - 公开人设：{角色的公开身份和性格}
-  - 对话风格：{语言特征、口头禅、语速}
-  - 默认态度：{对玩家的初始态度}
-
-Superego Agent（内在监控）：
-  - 守护的秘密：{这个角色在隐藏什么}
-  - 防御触发词：{哪些话题会让ta警觉}
-  - 压力阈值：{多大压力下ta会露出破绽}
-  - 破绽形式：{露馅时的具体表现}
-
-信任动态：
-  初始信任度：{0-100}
-  信任增加：{什么行为会让ta更信任玩家}
-  信任降低：{什么行为会让ta防备}
-  信任阈值：{信任度达到多少时ta会主动分享秘密}
-```
 
 ---
 
