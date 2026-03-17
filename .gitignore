@@ -1,0 +1,25 @@
+# Project state files
+.drama-state.json
+.thriller-state.json
+.interactive-state.json
+
+# Output directories
+output/
+export/
+episodes/
+branches/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Node (if any tooling added later)
+node_modules/
