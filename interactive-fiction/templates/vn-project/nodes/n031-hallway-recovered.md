@@ -45,6 +45,11 @@ choices:
         - clue.host_rehearsed_greeting
       risks:
         - Elias restores his mask before Mara can force a second mistake.
+      immediateOutcome: Mara keeps the admission alive but not the upper hand.
+      delayedRisk: Elias regains social polish before she can reopen the same wound.
+      visibleWithinNodes:
+        - n035-portrait-gallery
+        - n036-nameplate-audit
 ---
 
 # Hallway Recovery

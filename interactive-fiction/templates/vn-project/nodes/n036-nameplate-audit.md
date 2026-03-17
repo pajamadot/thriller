@@ -59,12 +59,15 @@ body:
     text: You are very good at turning household shame into chronology.
 choices:
   - id: bank-theory
-    text: Keep the pattern to yourself and leave with the sequence intact.
-    to: e120-silent-ending
+    text: Bank the sequence quietly and carry it past Elias instead of forcing the room right now.
+    to: n038-held-breath
     effects:
       - op: increment
         target: trust.host
         value: 5
+      - op: set
+        target: flag.banked_theory
+        value: true
     thriller:
       intent: conceal
       costs: [certainty, time]
@@ -73,6 +76,11 @@ choices:
         - clue.projector_inventory_gap
       risks:
         - Mara leaves with a theory, not a confession.
+      immediateOutcome: Elias relaxes too early and gives Mara one more minute with the pattern.
+      delayedRisk: Banking the theory preserves access but forfeits pressure on the room.
+      visibleWithinNodes:
+        - n038-held-breath
+        - e120-silent-ending
   - id: summon-staff
     text: Ring for the staff member who cleared the tray and watch who Elias protects first.
     to: n037-service-landing
@@ -87,6 +95,12 @@ choices:
         - clue.projector_inventory_gap
       risks:
         - Bringing a second witness into the scene multiplies theories and burns social cover.
+      immediateOutcome: Elias loses the benefit of speaking for the whole house.
+      delayedRisk: A wider suspect field makes certainty harder to keep.
+      visibleWithinNodes:
+        - n037-service-landing
+        - e140-housekeeper-ending
+        - e150-vanished-guest-ending
   - id: force-admission
     text: "Read the sequence aloud: missing name, removed card, missing projection case."
     to: e130-staged-guest-ending
@@ -102,6 +116,10 @@ choices:
         - clue.projector_inventory_gap
       risks:
         - If the theory is weak, Elias can still reframe the evening as paranoia.
+      immediateOutcome: Elias is forced to correct Mara's theory instead of smoothing over it.
+      delayedRisk: A direct accusation collapses the room into a single contested theory.
+      visibleWithinNodes:
+        - e130-staged-guest-ending
 ---
 
 # Nameplate Audit

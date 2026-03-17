@@ -14,3 +14,15 @@ variables:
   - id: know.host_is_afraid
     type: boolean
     default: false
+
+  - id: flag.banked_theory
+    type: boolean
+    default: false
+
+  - id: flag.sabine_cornered
+    type: boolean
+    default: false
+
+  - id: flag.followed_guest_note
+    type: boolean
+    default: false

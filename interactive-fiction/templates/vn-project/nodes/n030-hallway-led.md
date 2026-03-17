@@ -47,6 +47,11 @@ choices:
         - clue.burned_film_smell_returns
       risks:
         - Elias keeps the initiative while Mara studies the environment.
+      immediateOutcome: Mara keeps access to the hall at the cost of letting Elias narrate it first.
+      delayedRisk: Every clue gained here comes under Elias's pacing instead of hers.
+      visibleWithinNodes:
+        - n035-portrait-gallery
+        - n036-nameplate-audit
 ---
 
 # Hallway Lead

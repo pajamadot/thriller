@@ -177,6 +177,31 @@ function serializeClues(clues) {
   return [...new Set(clues)].sort().join('|');
 }
 
+function reachableDistances(story) {
+  const nodeMap = new Map((story.nodes || []).map((node) => [node.id, node]));
+  const distances = new Map();
+  const queue = [{ id: story.meta.entry, distance: 0 }];
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (distances.has(current.id)) {
+      continue;
+    }
+    distances.set(current.id, current.distance);
+    const node = nodeMap.get(current.id);
+    if (!node) {
+      continue;
+    }
+    for (const targetId of collectTargets(node)) {
+      if (!distances.has(targetId)) {
+        queue.push({ id: targetId, distance: current.distance + 1 });
+      }
+    }
+  }
+
+  return distances;
+}
+
 function buildReachableClueStates(story) {
   const nodeMap = new Map((story.nodes || []).map((node) => [node.id, node]));
   const byNode = new Map();
@@ -233,6 +258,7 @@ function inspectInteractiveThriller(story) {
   const reachableClueStates = buildReachableClueStates(story);
   const clueReferences = collectClueReferences(story);
   const nodeIds = new Set((story.nodes || []).map((node) => node.id));
+  const distances = reachableDistances(story);
   const majorSuspects = (story.entities?.characters || []).filter((character) => {
     const profile = isObject(character.thrillerProfile) ? character.thrillerProfile : {};
     return profile.suspectWeight === 'major';
@@ -342,6 +368,7 @@ function inspectInteractiveThriller(story) {
     const requiredClues = asStringArray(nodeThriller.requiresClues);
 
     if (node.kind === 'scene' && Array.isArray(node.choices)) {
+      const choiceOutcomeTargets = new Set();
       for (const choice of node.choices) {
         const choiceThriller = isObject(choice.thriller) ? choice.thriller : {};
         if (typeof choiceThriller.intent !== 'string' || choiceThriller.intent.length === 0) {
@@ -350,6 +377,31 @@ function inspectInteractiveThriller(story) {
         if (!Array.isArray(choiceThriller.costs) || choiceThriller.costs.length === 0) {
           warnings.push(`Choice ${choice.id || '<missing>'} in node ${node.id} is missing thriller.costs.`);
         }
+        if (typeof choiceThriller.immediateOutcome !== 'string' || choiceThriller.immediateOutcome.length === 0) {
+          warnings.push(`Choice ${choice.id || '<missing>'} in node ${node.id} is missing thriller.immediateOutcome.`);
+        }
+        if (typeof choiceThriller.delayedRisk !== 'string' || choiceThriller.delayedRisk.length === 0) {
+          warnings.push(`Choice ${choice.id || '<missing>'} in node ${node.id} is missing thriller.delayedRisk.`);
+        }
+        const visibleWithin = asStringArray(choiceThriller.visibleWithinNodes);
+        if (visibleWithin.length === 0) {
+          warnings.push(`Choice ${choice.id || '<missing>'} in node ${node.id} is missing thriller.visibleWithinNodes.`);
+        }
+        const sourceDistance = distances.get(node.id);
+        for (const targetId of visibleWithin) {
+          if (!nodeIds.has(targetId)) {
+            errors.push(`Choice ${choice.id || '<missing>'} in node ${node.id} references missing visible consequence node ${targetId}.`);
+            continue;
+          }
+          const targetDistance = distances.get(targetId);
+          if (sourceDistance != null && targetDistance != null && targetDistance - sourceDistance > 3) {
+            warnings.push(`Choice ${choice.id || '<missing>'} in node ${node.id} pushes visible consequence ${targetId} beyond three reachable nodes.`);
+          }
+          choiceOutcomeTargets.add(targetId);
+        }
+      }
+      if (node.choices.length > 1 && choiceOutcomeTargets.size < node.choices.length) {
+        warnings.push(`Choice set in node ${node.id} does not expose distinct visible consequence targets for each option.`);
       }
     }
 

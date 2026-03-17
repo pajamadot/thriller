@@ -48,6 +48,11 @@ choices:
         - clue.side_door_fresh_scratches
       risks:
         - Elias sees that Mara is already looking for a hidden room.
+      immediateOutcome: Elias starts treating Mara like an investigator instead of a guest.
+      delayedRisk: Direct curiosity shrinks social cover for later scenes.
+      visibleWithinNodes:
+        - n020-door-check
+        - n031-hallway-recovered
   - id: follow-host
     text: Let Elias choose the route and study what he avoids mentioning.
     to: n030-hallway-led
@@ -65,6 +70,11 @@ choices:
         - clue.host_controls_route
       risks:
         - The player gives up immediate access to the side door.
+      immediateOutcome: Elias relaxes into controlling the route.
+      delayedRisk: Mara may gain social cover but lose early access to the hidden room.
+      visibleWithinNodes:
+        - n030-hallway-led
+        - n035-portrait-gallery
 ---
 
 # Foyer Arrival

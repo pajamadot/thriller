@@ -66,7 +66,11 @@ body:
 choices:
   - id: corner-sabine
     text: Corner Sabine on access, timing, and the missing plate before Elias can answer for her.
-    to: e140-housekeeper-ending
+    to: n039-cross-accusation
+    effects:
+      - op: set
+        target: flag.sabine_cornered
+        value: true
     thriller:
       intent: accuse
       costs: [trust, safety]
@@ -75,9 +79,18 @@ choices:
         - clue.housekeeper_protects_family
       risks:
         - Sabine may become the cleanest available culprit whether or not she is the architect.
+      immediateOutcome: Sabine stops acting like staff and starts defending territory.
+      delayedRisk: The room may settle too quickly on the most available culprit.
+      visibleWithinNodes:
+        - n039-cross-accusation
+        - e140-housekeeper-ending
   - id: follow-note
     text: Treat the warning note as a deliberate move by the missing guest, not a piece of housekeeping.
-    to: e150-vanished-guest-ending
+    to: n039-cross-accusation
+    effects:
+      - op: set
+        target: flag.followed_guest_note
+        value: true
     thriller:
       intent: investigate
       costs: [certainty, control]
@@ -86,6 +99,11 @@ choices:
         - clue.absent_guest_knew_schedule
       risks:
         - The theory turns on an absent actor who cannot be pressured in the room.
+      immediateOutcome: Elias loses the benefit of Sabine as a convenient answer.
+      delayedRisk: Chasing the absent author keeps the present room unresolved.
+      visibleWithinNodes:
+        - n039-cross-accusation
+        - e150-vanished-guest-ending
 ---
 
 # Service Landing

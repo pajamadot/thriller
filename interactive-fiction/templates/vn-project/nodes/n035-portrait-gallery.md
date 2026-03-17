@@ -53,6 +53,10 @@ choices:
         - clue.host_knows_about_hidden_room
       risks:
         - Pushing before the gallery yields method or timeline evidence may force Elias into pure performance.
+      immediateOutcome: Elias is forced into a polished defense before the evidence sequence is complete.
+      delayedRisk: The route contracts into a strong accusation built on a thin causal spine.
+      visibleWithinNodes:
+        - e110-curious-ending
   - id: inspect-nameplate
     text: Let Elias mistake your silence for hesitation and read the empty mount instead of his face.
     to: n036-nameplate-audit
@@ -67,6 +71,11 @@ choices:
         - clue.missing_nameplate
       risks:
         - Elias gets one more chance to perform innocence while Mara studies the evidence.
+      immediateOutcome: Mara trades pressure for a cleaner read of the gallery record.
+      delayedRisk: Silence keeps more theories alive but postpones confrontation.
+      visibleWithinNodes:
+        - n036-nameplate-audit
+        - n038-held-breath
 ---
 
 # Portrait Gallery

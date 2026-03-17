@@ -52,6 +52,10 @@ choices:
         - clue.side_door_fresh_scratches
       risks:
         - Elias now knows Mara will cross a boundary to get an answer.
+      immediateOutcome: The hidden room opens before Elias can reframe it.
+      delayedRisk: Mara burns trust for immediate access and loses the wider social read.
+      visibleWithinNodes:
+        - n040-secret-room
   - id: confront-host
     text: Leave the lock alone and watch whether Elias flinches when you name the hidden room.
     to: n031-hallway-recovered
@@ -70,6 +74,11 @@ choices:
         - clue.host_flinched
       risks:
         - Elias regains control of the route before Mara gains access.
+      immediateOutcome: Elias slips, then starts repairing the room around that slip.
+      delayedRisk: Mara gains behavioral evidence but loses direct access to the hidden room.
+      visibleWithinNodes:
+        - n031-hallway-recovered
+        - n035-portrait-gallery
   - id: back-away
     text: Step back before Elias can catch you crossing the line.
     to: e100-locked-out
@@ -80,6 +89,10 @@ choices:
         - clue.elias_watched_door
       risks:
         - The hidden room closes again before Mara gains leverage.
+      immediateOutcome: Elias recovers the door and the conversation at the same time.
+      delayedRisk: Caution protects Mara briefly but leaves the strongest lead sealed.
+      visibleWithinNodes:
+        - e100-locked-out
 ---
 
 # Door Check

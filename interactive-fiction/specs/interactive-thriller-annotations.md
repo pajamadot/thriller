@@ -83,6 +83,9 @@ choices:
       costs: [time, trust]
       reveals: [clue.scratched_lock]
       risks: ["Elias notices the player's fixation on the door."]
+      immediateOutcome: "Elias stops treating Mara as a passive guest."
+      delayedRisk: "The host starts routing around her instead of through her."
+      visibleWithinNodes: [n020-door-check, n031-hallway-recovered]
 ```
 
 Recommended fields:
@@ -91,6 +94,9 @@ Recommended fields:
 - `costs`
 - `reveals`
 - `risks`
+- `immediateOutcome`
+- `delayedRisk`
+- `visibleWithinNodes`
 
 Suggested `intent` values:
 

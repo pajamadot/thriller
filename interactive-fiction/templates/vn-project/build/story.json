@@ -94,6 +94,21 @@
         "id": "know.host_is_afraid",
         "type": "boolean",
         "default": false
+      },
+      {
+        "id": "flag.banked_theory",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "id": "flag.sabine_cornered",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "id": "flag.followed_guest_note",
+        "type": "boolean",
+        "default": false
       }
     ],
     "clues": [
@@ -591,6 +606,12 @@
             ],
             "risks": [
               "Elias sees that Mara is already looking for a hidden room."
+            ],
+            "immediateOutcome": "Elias starts treating Mara like an investigator instead of a guest.",
+            "delayedRisk": "Direct curiosity shrinks social cover for later scenes.",
+            "visibleWithinNodes": [
+              "n020-door-check",
+              "n031-hallway-recovered"
             ]
           }
         },
@@ -621,6 +642,12 @@
             ],
             "risks": [
               "The player gives up immediate access to the side door."
+            ],
+            "immediateOutcome": "Elias relaxes into controlling the route.",
+            "delayedRisk": "Mara may gain social cover but lose early access to the hidden room.",
+            "visibleWithinNodes": [
+              "n030-hallway-led",
+              "n035-portrait-gallery"
             ]
           }
         }
@@ -709,6 +736,11 @@
             ],
             "risks": [
               "Elias now knows Mara will cross a boundary to get an answer."
+            ],
+            "immediateOutcome": "The hidden room opens before Elias can reframe it.",
+            "delayedRisk": "Mara burns trust for immediate access and loses the wider social read.",
+            "visibleWithinNodes": [
+              "n040-secret-room"
             ]
           }
         },
@@ -740,6 +772,12 @@
             ],
             "risks": [
               "Elias regains control of the route before Mara gains access."
+            ],
+            "immediateOutcome": "Elias slips, then starts repairing the room around that slip.",
+            "delayedRisk": "Mara gains behavioral evidence but loses direct access to the hidden room.",
+            "visibleWithinNodes": [
+              "n031-hallway-recovered",
+              "n035-portrait-gallery"
             ]
           }
         },
@@ -758,6 +796,11 @@
             ],
             "risks": [
               "The hidden room closes again before Mara gains leverage."
+            ],
+            "immediateOutcome": "Elias recovers the door and the conversation at the same time.",
+            "delayedRisk": "Caution protects Mara briefly but leaves the strongest lead sealed.",
+            "visibleWithinNodes": [
+              "e100-locked-out"
             ]
           }
         }
@@ -839,6 +882,12 @@
             ],
             "risks": [
               "Elias keeps the initiative while Mara studies the environment."
+            ],
+            "immediateOutcome": "Mara keeps access to the hall at the cost of letting Elias narrate it first.",
+            "delayedRisk": "Every clue gained here comes under Elias's pacing instead of hers.",
+            "visibleWithinNodes": [
+              "n035-portrait-gallery",
+              "n036-nameplate-audit"
             ]
           }
         }
@@ -916,6 +965,12 @@
             ],
             "risks": [
               "Elias restores his mask before Mara can force a second mistake."
+            ],
+            "immediateOutcome": "Mara keeps the admission alive but not the upper hand.",
+            "delayedRisk": "Elias regains social polish before she can reopen the same wound.",
+            "visibleWithinNodes": [
+              "n035-portrait-gallery",
+              "n036-nameplate-audit"
             ]
           }
         }
@@ -1005,6 +1060,11 @@
             ],
             "risks": [
               "Pushing before the gallery yields method or timeline evidence may force Elias into pure performance."
+            ],
+            "immediateOutcome": "Elias is forced into a polished defense before the evidence sequence is complete.",
+            "delayedRisk": "The route contracts into a strong accusation built on a thin causal spine.",
+            "visibleWithinNodes": [
+              "e110-curious-ending"
             ]
           }
         },
@@ -1030,6 +1090,12 @@
             ],
             "risks": [
               "Elias gets one more chance to perform innocence while Mara studies the evidence."
+            ],
+            "immediateOutcome": "Mara trades pressure for a cleaner read of the gallery record.",
+            "delayedRisk": "Silence keeps more theories alive but postpones confrontation.",
+            "visibleWithinNodes": [
+              "n036-nameplate-audit",
+              "n038-held-breath"
             ]
           }
         }
@@ -1130,13 +1196,18 @@
       "choices": [
         {
           "id": "bank-theory",
-          "text": "Keep the pattern to yourself and leave with the sequence intact.",
-          "to": "e120-silent-ending",
+          "text": "Bank the sequence quietly and carry it past Elias instead of forcing the room right now.",
+          "to": "n038-held-breath",
           "effects": [
             {
               "op": "increment",
               "target": "trust.host",
               "value": 5
+            },
+            {
+              "op": "set",
+              "target": "flag.banked_theory",
+              "value": true
             }
           ],
           "thriller": {
@@ -1151,6 +1222,12 @@
             ],
             "risks": [
               "Mara leaves with a theory, not a confession."
+            ],
+            "immediateOutcome": "Elias relaxes too early and gives Mara one more minute with the pattern.",
+            "delayedRisk": "Banking the theory preserves access but forfeits pressure on the room.",
+            "visibleWithinNodes": [
+              "n038-held-breath",
+              "e120-silent-ending"
             ]
           }
         },
@@ -1176,6 +1253,13 @@
             ],
             "risks": [
               "Bringing a second witness into the scene multiplies theories and burns social cover."
+            ],
+            "immediateOutcome": "Elias loses the benefit of speaking for the whole house.",
+            "delayedRisk": "A wider suspect field makes certainty harder to keep.",
+            "visibleWithinNodes": [
+              "n037-service-landing",
+              "e140-housekeeper-ending",
+              "e150-vanished-guest-ending"
             ]
           }
         },
@@ -1202,6 +1286,11 @@
             ],
             "risks": [
               "If the theory is weak, Elias can still reframe the evening as paranoia."
+            ],
+            "immediateOutcome": "Elias is forced to correct Mara's theory instead of smoothing over it.",
+            "delayedRisk": "A direct accusation collapses the room into a single contested theory.",
+            "visibleWithinNodes": [
+              "e130-staged-guest-ending"
             ]
           }
         }
@@ -1310,7 +1399,14 @@
         {
           "id": "corner-sabine",
           "text": "Corner Sabine on access, timing, and the missing plate before Elias can answer for her.",
-          "to": "e140-housekeeper-ending",
+          "to": "n039-cross-accusation",
+          "effects": [
+            {
+              "op": "set",
+              "target": "flag.sabine_cornered",
+              "value": true
+            }
+          ],
           "thriller": {
             "intent": "accuse",
             "costs": [
@@ -1323,13 +1419,26 @@
             ],
             "risks": [
               "Sabine may become the cleanest available culprit whether or not she is the architect."
+            ],
+            "immediateOutcome": "Sabine stops acting like staff and starts defending territory.",
+            "delayedRisk": "The room may settle too quickly on the most available culprit.",
+            "visibleWithinNodes": [
+              "n039-cross-accusation",
+              "e140-housekeeper-ending"
             ]
           }
         },
         {
           "id": "follow-note",
           "text": "Treat the warning note as a deliberate move by the missing guest, not a piece of housekeeping.",
-          "to": "e150-vanished-guest-ending",
+          "to": "n039-cross-accusation",
+          "effects": [
+            {
+              "op": "set",
+              "target": "flag.followed_guest_note",
+              "value": true
+            }
+          ],
           "thriller": {
             "intent": "investigate",
             "costs": [
@@ -1342,6 +1451,12 @@
             ],
             "risks": [
               "The theory turns on an absent actor who cannot be pressured in the room."
+            ],
+            "immediateOutcome": "Elias loses the benefit of Sabine as a convenient answer.",
+            "delayedRisk": "Chasing the absent author keeps the present room unresolved.",
+            "visibleWithinNodes": [
+              "n039-cross-accusation",
+              "e150-vanished-guest-ending"
             ]
           }
         }
@@ -1351,6 +1466,208 @@
         "format": "markdown-frontmatter"
       },
       "notes": "# Service Landing\n\nSocial pressure node that widens the suspect field past Elias alone."
+    },
+    {
+      "id": "n038-held-breath",
+      "kind": "scene",
+      "title": "Held Breath",
+      "location": "loc.hallway",
+      "thriller": {
+        "promise": "Restraint buys Mara a little more room, but only by forcing her to live with what she now knows.",
+        "mysteryQuestion": "Can Mara carry the theory out intact, or will the house make silence costlier than accusation?",
+        "pressure": "medium",
+        "requiresClues": [
+          "clue.projector_inventory_gap",
+          "clue.guest_card_removed"
+        ],
+        "suspicionTargets": [
+          "char.host",
+          "char.housekeeper",
+          "char.absent_guest"
+        ],
+        "routeMemory": [
+          "flag.banked_theory"
+        ],
+        "payoffs": [
+          "e120-silent-ending"
+        ]
+      },
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "cast": [
+        {
+          "character": "char.protagonist",
+          "expression": "controlled",
+          "pose": "standing",
+          "position": "left",
+          "visible": true
+        },
+        {
+          "character": "char.host",
+          "expression": "calm",
+          "pose": "standing",
+          "position": "right",
+          "visible": true
+        }
+      ],
+      "body": [
+        {
+          "kind": "narration",
+          "text": "Mara lets the sequence stay unspoken. The effect is immediate. Elias slows half a pace, mistaking silence for uncertainty instead of containment."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "calm",
+          "text": "If you are finished reading the walls, Mara, I can at least show you the room that was actually prepared."
+        }
+      ],
+      "choices": [
+        {
+          "id": "keep-mask",
+          "text": "Keep the theory hidden and leave before the house can close the gap again.",
+          "to": "e120-silent-ending",
+          "thriller": {
+            "intent": "conceal",
+            "costs": [
+              "certainty",
+              "access"
+            ],
+            "reveals": [],
+            "risks": [
+              "Leaving now preserves the sequence but gives up one last chance to pressure the room."
+            ],
+            "immediateOutcome": "Elias relaxes into the mistaken belief that he regained control.",
+            "delayedRisk": "Mara leaves with theory instead of confession or custody.",
+            "visibleWithinNodes": [
+              "e120-silent-ending"
+            ]
+          }
+        }
+      ],
+      "source": {
+        "file": "nodes/n038-held-breath.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Held Breath\n\nImmediate aftermath node for banking the theory instead of escalating."
+    },
+    {
+      "id": "n039-cross-accusation",
+      "kind": "scene",
+      "title": "Cross Accusation",
+      "location": "loc.service-landing",
+      "thriller": {
+        "promise": "The social cost of the player's theory becomes visible before the route resolves.",
+        "mysteryQuestion": "Does pressure make the room tell the truth, or only force everyone to choose the safest lie?",
+        "pressure": "high",
+        "suspicionTargets": [
+          "char.host",
+          "char.housekeeper",
+          "char.absent_guest"
+        ],
+        "routeMemory": [
+          "flag.sabine_cornered",
+          "flag.followed_guest_note"
+        ],
+        "payoffs": [
+          "e140-housekeeper-ending",
+          "e150-vanished-guest-ending"
+        ]
+      },
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "cast": [
+        {
+          "character": "char.protagonist",
+          "expression": "focused",
+          "pose": "standing",
+          "position": "left",
+          "visible": true
+        },
+        {
+          "character": "char.host",
+          "expression": "tense",
+          "pose": "standing",
+          "position": "center",
+          "visible": true
+        },
+        {
+          "character": "char.housekeeper",
+          "expression": "stern",
+          "pose": "standing",
+          "position": "right",
+          "visible": true
+        }
+      ],
+      "body": [
+        {
+          "kind": "narration",
+          "text": "The landing tightens instead of clarifying. Sabine steps closer to the tray; Elias steps closer to Sabine. For the first time all night, Mara can see exactly which theory the room most wants her to accept."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.housekeeper",
+          "expression": "stern",
+          "text": "If you want a culprit, choose the one who profits from panic. The house survives panic. People do not."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "tense",
+          "text": "And if you want a witness, choose the note over the nearest servant. That is the more flattering story."
+        }
+      ],
+      "choices": [
+        {
+          "id": "hold-on-sabine",
+          "text": "Keep the pressure on Sabine and accept the risk of settling on the nearest suspect.",
+          "to": "e140-housekeeper-ending",
+          "thriller": {
+            "intent": "accuse",
+            "costs": [
+              "certainty",
+              "fairness"
+            ],
+            "reveals": [],
+            "risks": [
+              "The room gains a convenient culprit before the full system is exposed."
+            ],
+            "immediateOutcome": "Sabine is forced to answer for what she touched.",
+            "delayedRisk": "Mara may leave with a strong theory that is still too local.",
+            "visibleWithinNodes": [
+              "e140-housekeeper-ending"
+            ]
+          }
+        },
+        {
+          "id": "hold-on-clara",
+          "text": "Follow the absent guest theory and accept that the person in front of you may never fully answer it.",
+          "to": "e150-vanished-guest-ending",
+          "thriller": {
+            "intent": "investigate",
+            "costs": [
+              "control",
+              "closure"
+            ],
+            "reveals": [],
+            "risks": [
+              "The room cannot fully pressure an absent suspect into a confession."
+            ],
+            "immediateOutcome": "Elias loses Sabine as an easy shield.",
+            "delayedRisk": "The most dangerous theory may remain the least provable.",
+            "visibleWithinNodes": [
+              "e150-vanished-guest-ending"
+            ]
+          }
+        }
+      ],
+      "source": {
+        "file": "nodes/n039-cross-accusation.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Cross Accusation\n\nImmediate social consequence node for the widened suspect field."
     },
     {
       "id": "n040-secret-room",
