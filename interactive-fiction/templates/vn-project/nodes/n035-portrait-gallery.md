@@ -4,17 +4,20 @@ kind: scene
 title: Portrait Gallery
 location: loc.hallway
 thriller:
-  promise: The house itself starts corroborating the suspicion that Elias has staged the evening.
-  mysteryQuestion: Are the damaged portraits hiding family shame, or evidence that tonight's visit was prepared in advance?
+  promise: The gallery stops behaving like mood and starts behaving like a ledger.
+  mysteryQuestion: Did Elias erase one witness from the gallery so Mara would mistake a substitution for an invitation?
   pressure: medium
   introducesClues:
     - clue.portrait_eyes_scratched
-    - clue.projector_inventory_gap
+    - clue.missing_nameplate
   suspicionTargets:
     - char.host
   routeMemory:
     - flag.followed_host
     - know.host_is_afraid
+  payoffs:
+    - e110-curious-ending
+    - n036-nameplate-audit
 presentation:
   background: bg.hallway
 cast:
@@ -30,14 +33,14 @@ cast:
     visible: true
 body:
   - kind: narration
-    text: By the time they reach the portrait gallery, Elias has the lead again, but the house has stopped helping him. Every canvas has the eyes scored away, and one brass nameplate is missing altogether.
+    text: By the time they reach the portrait gallery, Elias has the lead again, but the house has stopped helping him. Every canvas has the eyes scored away, and one brass mount gleams bare where a nameplate was removed so recently the dust has not settled back in.
   - kind: dialogue
     speaker: char.host
     expression: calm
-    text: Families remove faces when they cannot bear what those faces witnessed.
+    text: Families remove faces when they cannot bear what those faces witnessed. Names are harder to survive than faces.
 choices:
   - id: press-host
-    text: Press Elias now, while the gallery is still speaking louder than he is.
+    text: Accuse Elias now, before he can recover the missing name into another polite lie.
     to: e110-curious-ending
     effects:
       - op: decrement
@@ -45,14 +48,14 @@ choices:
         value: 15
     thriller:
       intent: accuse
-      costs: [trust, safety]
+      costs: [trust, certainty]
       reveals:
         - clue.host_knows_about_hidden_room
       risks:
-        - Pushing too early may cost future access.
-  - id: stay-silent
-    text: Stay silent and keep the advantage of being underestimated.
-    to: e120-silent-ending
+        - Pushing before the gallery yields method or timeline evidence may force Elias into pure performance.
+  - id: inspect-nameplate
+    text: Let Elias mistake your silence for hesitation and read the empty mount instead of his face.
+    to: n036-nameplate-audit
     effects:
       - op: increment
         target: trust.host
@@ -61,9 +64,9 @@ choices:
       intent: conceal
       costs: [information, time]
       reveals:
-        - clue.portrait_eyes_scratched
+        - clue.missing_nameplate
       risks:
-        - The player preserves access but postpones confrontation.
+        - Elias gets one more chance to perform innocence while Mara studies the evidence.
 ---
 
 # Portrait Gallery

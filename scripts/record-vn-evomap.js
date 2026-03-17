@@ -94,6 +94,34 @@ const REQUIRED_GENES = [
       'node thriller/scripts/compile-vn-project.js thriller/interactive-fiction/templates/vn-project',
     ],
   },
+  {
+    type: 'Gene',
+    schema_version: '1.5.0',
+    id: 'gene_if_thriller_clue_fairness',
+    summary: 'Treat investigation clues as a modular file-level ledger and audit route fairness before reveal or ending import',
+    category: 'optimize',
+    signals_match: [
+      'quality_signal:clue_fairness',
+      'quality_signal:route_truth',
+      'capability_gap:thriller_doctor',
+    ],
+    preconditions: [
+      'the package supports node-level thriller metadata',
+    ],
+    strategy: [
+      'Keep clue definitions in a dedicated systems file',
+      'Track which clues support each reveal or ending',
+      'Audit required clues against all reachable route states',
+      'Record fairness rules as reusable local references',
+    ],
+    constraints: {
+      max_files: 8,
+      forbidden_paths: ['.git', 'node_modules'],
+    },
+    validation: [
+      'node thriller/scripts/doctor-interactive-thriller.js thriller/interactive-fiction/templates/vn-project',
+    ],
+  },
 ];
 
 function readJson(filePath, fallbackValue) {
@@ -126,6 +154,7 @@ function summarizeStats(story, report) {
     characters: (story.entities.characters || []).length,
     locations: (story.entities.locations || []).length,
     variables: (story.entities.variables || []).length,
+    clues: (story.entities.clues || []).length,
     assets: (story.entities.assets || []).length,
   };
 
@@ -161,10 +190,11 @@ function main() {
       'capability_gap:engine_neutral_package',
       'capability_gap:authoring_compile_loop',
       'scale_signal:chapter_route_layout',
+      'quality_signal:clue_fairness',
     ],
     gene: 'gene_if_vn_package_generalize',
-    summary: 'Added a general visual novel package contract with local compile doctor validate workflow and scalable node-file authoring layout',
-    content: `The system now defines a stable VN package, compiles markdown-plus-yaml projects into story.json, records node source files, and runs a deterministic doctor pass. Template stats: ${stats.nodeCount} nodes, ${stats.entityCounts.characters} characters, ${stats.entityCounts.locations} locations, ${stats.entityCounts.variables} variables.`,
+    summary: 'Added a general visual novel package contract with modular clue ledgers, local compile doctor validate workflow, and scalable node-file authoring layout',
+    content: `The system now defines a stable VN package, compiles markdown-plus-yaml projects into story.json, records node source files, and runs deterministic graph plus thriller doctor passes. Template stats: ${stats.nodeCount} nodes, ${stats.entityCounts.characters} characters, ${stats.entityCounts.locations} locations, ${stats.entityCounts.variables} variables, ${stats.entityCounts.clues} clues.`,
     confidence: report.errors.length === 0 ? 0.9 : 0.6,
     blast_radius: {
       files: 9,
@@ -193,6 +223,7 @@ function main() {
       'gene_if_vn_package_generalize',
       'gene_if_compile_doctor_loop',
       'gene_if_scale_authoring_layout',
+      'gene_if_thriller_clue_fairness',
     ],
     capsule_id: capsule.id,
     outcome: capsule.outcome,
@@ -200,7 +231,7 @@ function main() {
     total_cycles: 1,
     blast_radius: capsule.blast_radius,
     timestamp,
-    note: 'General VN package with compiler doctor and scalable node layout recorded as local EvoMap assets.',
+    note: 'General VN package with compiler doctor, thriller fairness audits, and scalable node layout recorded as local EvoMap assets.',
   };
 
   writeJson(genesPath, genes);

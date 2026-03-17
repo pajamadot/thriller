@@ -60,6 +60,174 @@
         "default": false
       }
     ],
+    "clues": [
+      {
+        "id": "clue.rain_cut_road",
+        "label": "Storm cut the road",
+        "kind": "timeline",
+        "question": "Why does Elias stress that Mara cannot leave?",
+        "summary": "Elias frames the visit as unavoidable as soon as Mara arrives.",
+        "supports": [
+          "n010-foyer-arrival"
+        ]
+      },
+      {
+        "id": "clue.side_door_fresh_scratches",
+        "label": "Fresh scratches on the side door",
+        "kind": "physical",
+        "question": "Who used the sealed side door recently?",
+        "summary": "The lock was disturbed after the estate was supposed to be closed.",
+        "supports": [
+          "n020-door-check",
+          "n040-secret-room"
+        ],
+        "critical": true
+      },
+      {
+        "id": "clue.scratched_lock",
+        "label": "Scratched brass around the lock",
+        "kind": "physical",
+        "question": "Was the hidden room accessed in haste?",
+        "summary": "The metal around the latch is newly scored.",
+        "supports": [
+          "n020-door-check"
+        ]
+      },
+      {
+        "id": "clue.hidden_key",
+        "label": "Hidden key under the brass bowl",
+        "kind": "physical",
+        "question": "Why keep the key close if the room is forbidden?",
+        "summary": "The key is concealed in reach, not archived.",
+        "supports": [
+          "n040-secret-room"
+        ],
+        "critical": true
+      },
+      {
+        "id": "clue.brass_bowl_recently_moved",
+        "label": "Warm brass bowl",
+        "kind": "physical",
+        "question": "Who touched the foyer console moments ago?",
+        "summary": "The bowl is still rocking when Mara reaches it.",
+        "supports": [
+          "n020-door-check"
+        ]
+      },
+      {
+        "id": "clue.elias_watched_door",
+        "label": "Elias watches the side door",
+        "kind": "behavioral",
+        "question": "Why does Elias monitor that threshold so closely?",
+        "summary": "His attention returns to the forbidden door before Mara names it.",
+        "supports": [
+          "n020-door-check",
+          "n031-hallway-recovered"
+        ]
+      },
+      {
+        "id": "clue.host_flinched",
+        "label": "Elias flinched at the hidden room",
+        "kind": "behavioral",
+        "question": "What does the room represent to him?",
+        "summary": "Mara can provoke a real reaction by naming what should be off limits.",
+        "supports": [
+          "n031-hallway-recovered"
+        ]
+      },
+      {
+        "id": "clue.host_controls_route",
+        "label": "Elias controls the route through the house",
+        "kind": "behavioral",
+        "question": "What is he trying to keep outside Mara's line of sight?",
+        "summary": "He guides Mara without touching her, always one room ahead.",
+        "supports": [
+          "n030-hallway-led"
+        ]
+      },
+      {
+        "id": "clue.burned_film_smell_returns",
+        "label": "Burned film smell returns in the hall",
+        "kind": "sensory",
+        "question": "What piece of old media was heated or destroyed tonight?",
+        "summary": "The chemical smell from the foyer grows stronger near the portraits.",
+        "supports": [
+          "n030-hallway-led",
+          "n036-nameplate-audit"
+        ]
+      },
+      {
+        "id": "clue.host_rehearsed_greeting",
+        "label": "Elias rehearsed the welcome",
+        "kind": "behavioral",
+        "question": "Was tonight staged for a different kind of guest?",
+        "summary": "His hospitality sounds practiced rather than spontaneous.",
+        "supports": [
+          "n031-hallway-recovered"
+        ]
+      },
+      {
+        "id": "clue.portrait_eyes_scratched",
+        "label": "Portrait eyes are scratched away",
+        "kind": "physical",
+        "question": "Which witness was erased from the family record?",
+        "summary": "The damage is deliberate and selective.",
+        "supports": [
+          "n035-portrait-gallery",
+          "e120-silent-ending"
+        ]
+      },
+      {
+        "id": "clue.missing_nameplate",
+        "label": "One portrait nameplate is missing",
+        "kind": "physical",
+        "question": "Which absent name mattered enough to remove?",
+        "summary": "A brass mount remains, but the identifying plate is gone.",
+        "supports": [
+          "n035-portrait-gallery",
+          "n036-nameplate-audit",
+          "e120-silent-ending",
+          "e130-staged-guest-ending"
+        ],
+        "critical": true
+      },
+      {
+        "id": "clue.projector_inventory_gap",
+        "label": "Projector inventory gap",
+        "kind": "physical",
+        "question": "Which projection component was removed from the house?",
+        "summary": "Soot, dust, and a clean rectangular gap imply a missing case or reel.",
+        "supports": [
+          "n036-nameplate-audit",
+          "e120-silent-ending",
+          "e130-staged-guest-ending"
+        ],
+        "critical": true
+      },
+      {
+        "id": "clue.guest_card_removed",
+        "label": "Guest card removed from the gallery ledger",
+        "kind": "timeline",
+        "question": "Who was expected before Mara arrived?",
+        "summary": "The empty slot in the visitor ledger turns the evening into a substitution.",
+        "supports": [
+          "n036-nameplate-audit",
+          "e120-silent-ending",
+          "e130-staged-guest-ending"
+        ],
+        "critical": true
+      },
+      {
+        "id": "clue.host_knows_about_hidden_room",
+        "label": "Elias knows the hidden room matters",
+        "kind": "behavioral",
+        "question": "Why does he answer accusation with craft instead of surprise?",
+        "summary": "Elias treats the room as a script problem, not a storage problem.",
+        "supports": [
+          "e110-curious-ending"
+        ]
+      }
+    ],
     "assets": [
       {
         "id": "bg.foyer",
@@ -136,7 +304,12 @@
       "title": "Silent Ending",
       "location": "loc.hallway",
       "thriller": {
-        "endingContract": "Restraint preserves the relationship surface, but the house keeps control of the truth."
+        "requiresClues": [
+          "clue.missing_nameplate",
+          "clue.projector_inventory_gap",
+          "clue.guest_card_removed"
+        ],
+        "endingContract": "Restraint preserves the relationship surface long enough for Mara to leave with a causal theory instead of a confession."
       },
       "presentation": {
         "background": "bg.hallway"
@@ -144,7 +317,11 @@
       "body": [
         {
           "kind": "narration",
-          "text": "Mara says nothing. Elias mistakes her silence for patience, and the house gives her one more minute to learn why a missing nameplate matters."
+          "text": "Mara says nothing. Elias mistakes her silence for patience, and that mistake buys her the sequence he was trying to protect: a missing nameplate, an empty guest-card slot, and a projection case removed before she arrived."
+        },
+        {
+          "kind": "narration",
+          "text": "She leaves without a confession, but not without a theory. Someone else was meant to stand where she stands now, and Elias rebuilt the evening fast enough to swap the witness but not the evidence."
         }
       ],
       "source": {
@@ -152,6 +329,40 @@
         "format": "markdown-frontmatter"
       },
       "notes": "# Silent Ending"
+    },
+    {
+      "id": "e130-staged-guest-ending",
+      "kind": "ending",
+      "title": "Staged Guest Ending",
+      "location": "loc.hallway",
+      "thriller": {
+        "requiresClues": [
+          "clue.missing_nameplate",
+          "clue.projector_inventory_gap",
+          "clue.guest_card_removed"
+        ],
+        "endingContract": "Naming the sequence forces Elias to admit the invitation was staged for someone else before Mara took the slot."
+      },
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "body": [
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "tense",
+          "text": "You were not supposed to see the wall before the reel. That was the order of it."
+        },
+        {
+          "kind": "narration",
+          "text": "The answer is not a confession so much as a correction. Elias had prepared a projection, a room, and a role for a guest who never arrived. Mara is only dangerous because she noticed the substitution before the performance began."
+        }
+      ],
+      "source": {
+        "file": "nodes/e130-staged-guest-ending.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Staged Guest Ending"
     },
     {
       "id": "n000-start",
@@ -577,12 +788,12 @@
       "title": "Portrait Gallery",
       "location": "loc.hallway",
       "thriller": {
-        "promise": "The house itself starts corroborating the suspicion that Elias has staged the evening.",
-        "mysteryQuestion": "Are the damaged portraits hiding family shame, or evidence that tonight's visit was prepared in advance?",
+        "promise": "The gallery stops behaving like mood and starts behaving like a ledger.",
+        "mysteryQuestion": "Did Elias erase one witness from the gallery so Mara would mistake a substitution for an invitation?",
         "pressure": "medium",
         "introducesClues": [
           "clue.portrait_eyes_scratched",
-          "clue.projector_inventory_gap"
+          "clue.missing_nameplate"
         ],
         "suspicionTargets": [
           "char.host"
@@ -590,6 +801,10 @@
         "routeMemory": [
           "flag.followed_host",
           "know.host_is_afraid"
+        ],
+        "payoffs": [
+          "e110-curious-ending",
+          "n036-nameplate-audit"
         ]
       },
       "presentation": {
@@ -614,19 +829,19 @@
       "body": [
         {
           "kind": "narration",
-          "text": "By the time they reach the portrait gallery, Elias has the lead again, but the house has stopped helping him. Every canvas has the eyes scored away, and one brass nameplate is missing altogether."
+          "text": "By the time they reach the portrait gallery, Elias has the lead again, but the house has stopped helping him. Every canvas has the eyes scored away, and one brass mount gleams bare where a nameplate was removed so recently the dust has not settled back in."
         },
         {
           "kind": "dialogue",
           "speaker": "char.host",
           "expression": "calm",
-          "text": "Families remove faces when they cannot bear what those faces witnessed."
+          "text": "Families remove faces when they cannot bear what those faces witnessed. Names are harder to survive than faces."
         }
       ],
       "choices": [
         {
           "id": "press-host",
-          "text": "Press Elias now, while the gallery is still speaking louder than he is.",
+          "text": "Accuse Elias now, before he can recover the missing name into another polite lie.",
           "to": "e110-curious-ending",
           "effects": [
             {
@@ -639,20 +854,20 @@
             "intent": "accuse",
             "costs": [
               "trust",
-              "safety"
+              "certainty"
             ],
             "reveals": [
               "clue.host_knows_about_hidden_room"
             ],
             "risks": [
-              "Pushing too early may cost future access."
+              "Pushing before the gallery yields method or timeline evidence may force Elias into pure performance."
             ]
           }
         },
         {
-          "id": "stay-silent",
-          "text": "Stay silent and keep the advantage of being underestimated.",
-          "to": "e120-silent-ending",
+          "id": "inspect-nameplate",
+          "text": "Let Elias mistake your silence for hesitation and read the empty mount instead of his face.",
+          "to": "n036-nameplate-audit",
           "effects": [
             {
               "op": "increment",
@@ -667,10 +882,10 @@
               "time"
             ],
             "reveals": [
-              "clue.portrait_eyes_scratched"
+              "clue.missing_nameplate"
             ],
             "risks": [
-              "The player preserves access but postpones confrontation."
+              "Elias gets one more chance to perform innocence while Mara studies the evidence."
             ]
           }
         }
@@ -680,6 +895,129 @@
         "format": "markdown-frontmatter"
       },
       "notes": "# Portrait Gallery\n\nShared pressure scene after the route-specific hallway lead-in."
+    },
+    {
+      "id": "n036-nameplate-audit",
+      "kind": "scene",
+      "title": "Nameplate Audit",
+      "location": "loc.hallway",
+      "thriller": {
+        "promise": "The missing plate, visitor ledger, and projector residue turn atmosphere into method.",
+        "mysteryQuestion": "Was Mara invited for herself, or slotted into a role prepared for someone who never arrived?",
+        "pressure": "medium",
+        "introducesClues": [
+          "clue.projector_inventory_gap",
+          "clue.guest_card_removed"
+        ],
+        "requiresClues": [
+          "clue.missing_nameplate"
+        ],
+        "suspicionTargets": [
+          "char.host"
+        ],
+        "routeMemory": [
+          "flag.followed_host",
+          "know.host_is_afraid"
+        ],
+        "payoffs": [
+          "e120-silent-ending",
+          "e130-staged-guest-ending"
+        ]
+      },
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "cast": [
+        {
+          "character": "char.protagonist",
+          "expression": "focused",
+          "pose": "crouching",
+          "position": "left",
+          "visible": true
+        },
+        {
+          "character": "char.host",
+          "expression": "calm",
+          "pose": "standing",
+          "position": "right",
+          "visible": true
+        }
+      ],
+      "body": [
+        {
+          "kind": "narration",
+          "text": "Mara steps closer to the empty brass mount and sees a clean soot ring beneath it, the shape of something heated and removed in the last hour. On the side table below, a visitor card tray holds one fresh indentation with no card left inside."
+        },
+        {
+          "kind": "narration",
+          "text": "The same burned-film smell threading the hall clings to the tray, as if a projector case was set there while someone stripped a name from the wall."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "calm",
+          "text": "You are very good at turning household shame into chronology."
+        }
+      ],
+      "choices": [
+        {
+          "id": "bank-theory",
+          "text": "Keep the pattern to yourself and leave with the sequence intact.",
+          "to": "e120-silent-ending",
+          "effects": [
+            {
+              "op": "increment",
+              "target": "trust.host",
+              "value": 5
+            }
+          ],
+          "thriller": {
+            "intent": "conceal",
+            "costs": [
+              "certainty",
+              "time"
+            ],
+            "reveals": [
+              "clue.guest_card_removed",
+              "clue.projector_inventory_gap"
+            ],
+            "risks": [
+              "Mara leaves with a theory, not a confession."
+            ]
+          }
+        },
+        {
+          "id": "force-admission",
+          "text": "Read the sequence aloud: missing name, removed card, missing projection case.",
+          "to": "e130-staged-guest-ending",
+          "effects": [
+            {
+              "op": "decrement",
+              "target": "trust.host",
+              "value": 15
+            }
+          ],
+          "thriller": {
+            "intent": "accuse",
+            "costs": [
+              "trust",
+              "safety"
+            ],
+            "reveals": [
+              "clue.guest_card_removed",
+              "clue.projector_inventory_gap"
+            ],
+            "risks": [
+              "If the theory is weak, Elias can still reframe the evening as paranoia."
+            ]
+          }
+        }
+      ],
+      "source": {
+        "file": "nodes/n036-nameplate-audit.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Nameplate Audit\n\nShared investigation beat that converts atmosphere clues into a causal theory."
     },
     {
       "id": "n040-secret-room",

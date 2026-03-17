@@ -9,6 +9,10 @@ function isObject(value) {
   return value && typeof value === 'object' && !Array.isArray(value);
 }
 
+function asStringArray(value) {
+  return Array.isArray(value) ? value.filter((item) => typeof item === 'string' && item.length > 0) : [];
+}
+
 function collectTargets(node) {
   if (!node || node.kind === 'annotation') {
     return [];
@@ -103,6 +107,120 @@ function collectInboundCounts(story) {
   return counts;
 }
 
+function collectClueDefinitions(story) {
+  return new Map((story.entities?.clues || []).map((clue) => [clue.id, clue]));
+}
+
+function collectClueReferences(story) {
+  const references = [];
+
+  for (const node of story.nodes || []) {
+    const thriller = isObject(node.thriller) ? node.thriller : {};
+    for (const clueId of asStringArray(thriller.introducesClues)) {
+      references.push({ clueId, nodeId: node.id, source: 'node.introducesClues' });
+    }
+    for (const clueId of asStringArray(thriller.requiresClues)) {
+      references.push({ clueId, nodeId: node.id, source: 'node.requiresClues' });
+    }
+    for (const payoffId of asStringArray(thriller.payoffs)) {
+      references.push({ payoffId, nodeId: node.id, source: 'node.payoffs' });
+    }
+    for (const choice of node.choices || []) {
+      const choiceThriller = isObject(choice.thriller) ? choice.thriller : {};
+      for (const clueId of asStringArray(choiceThriller.reveals)) {
+        references.push({
+          clueId,
+          nodeId: node.id,
+          choiceId: choice.id,
+          source: 'choice.reveals',
+        });
+      }
+    }
+  }
+
+  return references;
+}
+
+function collectTransitions(node) {
+  if (!node || node.kind === 'annotation') {
+    return [];
+  }
+
+  if (Array.isArray(node.choices)) {
+    return node.choices
+      .filter((choice) => choice && choice.to)
+      .map((choice) => ({
+        to: choice.to,
+        addedClues: asStringArray(isObject(choice.thriller) ? choice.thriller.reveals : []),
+        choiceId: choice.id || null,
+      }));
+  }
+
+  if (node.kind === 'start' || node.kind === 'instruction' || node.kind === 'hub') {
+    return node.to ? [{ to: node.to, addedClues: [], choiceId: null }] : [];
+  }
+
+  if (node.kind === 'jump') {
+    return node.target ? [{ to: node.target, addedClues: [], choiceId: null }] : [];
+  }
+
+  if (node.kind === 'condition') {
+    return [node.onTrue, node.onFalse]
+      .filter(Boolean)
+      .map((targetId) => ({ to: targetId, addedClues: [], choiceId: null }));
+  }
+
+  return [];
+}
+
+function serializeClues(clues) {
+  return [...new Set(clues)].sort().join('|');
+}
+
+function buildReachableClueStates(story) {
+  const nodeMap = new Map((story.nodes || []).map((node) => [node.id, node]));
+  const byNode = new Map();
+  const visited = new Set();
+  const queue = [{ nodeId: story.meta.entry, clues: [] }];
+  const maxStates = 4096;
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    const visitKey = `${current.nodeId}::${serializeClues(current.clues)}`;
+    if (visited.has(visitKey)) {
+      continue;
+    }
+    visited.add(visitKey);
+
+    if (visited.size > maxStates) {
+      throw new Error(`Interactive thriller doctor exceeded ${maxStates} clue states. Simplify loops or add route checkpoints.`);
+    }
+
+    const node = nodeMap.get(current.nodeId);
+    if (!node) {
+      continue;
+    }
+
+    const nodeThriller = isObject(node.thriller) ? node.thriller : {};
+    const nextClues = [...new Set([...current.clues, ...asStringArray(nodeThriller.introducesClues)])];
+    const existingStates = byNode.get(node.id) || [];
+    const nextKey = serializeClues(nextClues);
+    if (!existingStates.some((state) => serializeClues(state) === nextKey)) {
+      existingStates.push(nextClues);
+      byNode.set(node.id, existingStates);
+    }
+
+    for (const transition of collectTransitions(node)) {
+      queue.push({
+        nodeId: transition.to,
+        clues: [...new Set([...nextClues, ...transition.addedClues])],
+      });
+    }
+  }
+
+  return byNode;
+}
+
 function inspectInteractiveThriller(story) {
   const warnings = [];
   const errors = validateStory(story);
@@ -111,6 +229,10 @@ function inspectInteractiveThriller(story) {
   const openingWindow = playerNodes.slice(0, 3);
   const { introduced, required } = collectClueSets(story);
   const inboundCounts = collectInboundCounts(story);
+  const clueDefinitions = collectClueDefinitions(story);
+  const reachableClueStates = buildReachableClueStates(story);
+  const clueReferences = collectClueReferences(story);
+  const nodeIds = new Set((story.nodes || []).map((node) => node.id));
 
   if (openingNodes.length > 0) {
     const openingHasContract = openingNodes.some((node) => {
@@ -142,8 +264,34 @@ function inspectInteractiveThriller(story) {
     warnings.push('The first three player-facing nodes do not contain a high-pressure or spike-pressure beat.');
   }
 
+  if (clueDefinitions.size === 0) {
+    warnings.push('No systems/clues.yaml registry was compiled. Add a clue ledger for route fairness audits.');
+  }
+
+  for (const reference of clueReferences) {
+    if (reference.clueId && !clueDefinitions.has(reference.clueId)) {
+      errors.push(`Clue ${reference.clueId} referenced in ${reference.source} on ${reference.nodeId} is not defined in systems/clues.yaml.`);
+    }
+    if (reference.payoffId && !nodeIds.has(reference.payoffId)) {
+      errors.push(`Payoff target ${reference.payoffId} referenced on ${reference.nodeId} does not exist.`);
+    }
+  }
+
+  for (const [clueId, clue] of clueDefinitions.entries()) {
+    for (const targetId of asStringArray(clue.supports)) {
+      if (!nodeIds.has(targetId)) {
+        errors.push(`Clue ${clueId} supports missing target ${targetId}.`);
+      }
+    }
+    if (clue.critical && !introduced.has(clueId)) {
+      errors.push(`Critical clue ${clueId} is defined but never introduced on any route.`);
+    }
+  }
+
   for (const node of story.nodes || []) {
     const nodeThriller = isObject(node.thriller) ? node.thriller : {};
+    const nodeClueStates = reachableClueStates.get(node.id) || [];
+    const requiredClues = asStringArray(nodeThriller.requiresClues);
 
     if (node.kind === 'scene' && Array.isArray(node.choices)) {
       for (const choice of node.choices) {
@@ -168,6 +316,24 @@ function inspectInteractiveThriller(story) {
         warnings.push(`Ending node ${node.id} is missing thriller.endingContract.`);
       }
     }
+
+    if (requiredClues.length > 0 && nodeClueStates.length > 0) {
+      const unfairStates = nodeClueStates
+        .map((state) => {
+          const missing = requiredClues.filter((clueId) => !state.includes(clueId));
+          return missing.length > 0 ? missing : null;
+        })
+        .filter(Boolean);
+
+      if (unfairStates.length > 0) {
+        const message = `Node ${node.id} can be reached without required clues: ${[...new Set(unfairStates.flat())].join(', ')}.`;
+        if (node.kind === 'ending') {
+          errors.push(message);
+        } else {
+          warnings.push(message);
+        }
+      }
+    }
   }
 
   for (const clueId of required) {
@@ -185,8 +351,18 @@ function inspectInteractiveThriller(story) {
     warnings,
     stats: {
       reachablePlayerNodes: playerNodes.length,
+      definedClues: clueDefinitions.size,
+      criticalClues: [...clueDefinitions.values()].filter((clue) => clue.critical).length,
       introducedClues: introduced.size,
       requiredClues: required.size,
+      fairRequiredNodes: story.nodes.filter((node) => {
+        const requiredClues = asStringArray(isObject(node.thriller) ? node.thriller.requiresClues : []);
+        if (requiredClues.length === 0) {
+          return false;
+        }
+        const states = reachableClueStates.get(node.id) || [];
+        return states.length > 0 && states.every((state) => requiredClues.every((clueId) => state.includes(clueId)));
+      }).length,
       mergedNodesWithRouteMemory: story.nodes.filter((node) => {
         const inbound = inboundCounts.get(node.id) || 0;
         const thriller = isObject(node.thriller) ? node.thriller : {};

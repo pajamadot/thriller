@@ -287,5 +287,36 @@
     "validation": [
       "node thriller/scripts/run-interactive-thriller-evolution-loop.js status --base-dir <temp-run-dir>"
     ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_if_thriller_clue_fairness",
+    "summary": "Treat investigation clues as a modular file-level ledger and audit route fairness before reveal or ending import",
+    "category": "optimize",
+    "signals_match": [
+      "quality_signal:clue_fairness",
+      "quality_signal:route_truth",
+      "capability_gap:thriller_doctor"
+    ],
+    "preconditions": [
+      "the package supports node-level thriller metadata"
+    ],
+    "strategy": [
+      "Keep clue definitions in a dedicated systems file",
+      "Track which clues support each reveal or ending",
+      "Audit required clues against all reachable route states",
+      "Record fairness rules as reusable local references"
+    ],
+    "constraints": {
+      "max_files": 8,
+      "forbidden_paths": [
+        ".git",
+        "node_modules"
+      ]
+    },
+    "validation": [
+      "node thriller/scripts/doctor-interactive-thriller.js thriller/interactive-fiction/templates/vn-project"
+    ]
   }
 ]

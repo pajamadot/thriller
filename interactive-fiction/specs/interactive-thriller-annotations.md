@@ -5,6 +5,36 @@ This overlay adds optional thriller-specific design metadata on top of the gener
 The goal is not engine binding.
 The goal is to make suspense, clue logic, and playable tradeoffs inspectable in files.
 
+## Project-Level Clue Ledger
+
+Interactive thrillers may keep a clue registry in `systems/clues.yaml`:
+
+```yaml
+clues:
+  - id: clue.projector_inventory_gap
+    label: Projector inventory gap
+    kind: physical
+    question: "What piece of projection equipment is missing from the room?"
+    summary: "The host removed a component needed to replay one specific reel."
+    supports:
+      - e120-silent-ending
+      - e130-staged-guest-ending
+    critical: true
+```
+
+Recommended clue fields:
+
+- `id`
+- `label`
+- `kind`
+- `question`
+- `summary`
+- `supports`
+- `critical`
+
+This ledger stays file-first and importer-friendly.
+It exists so local doctors can reason about clue fairness without binding the package to any runtime.
+
 ## Node-Level `thriller` Block
 
 Any runtime node may include:

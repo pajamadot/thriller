@@ -129,6 +129,7 @@ function compileProject(projectDir) {
   const charactersDoc = readYamlFile(path.join(absoluteProjectDir, 'cast', 'characters.yaml'), {});
   const locationsDoc = readYamlFile(path.join(absoluteProjectDir, 'world', 'locations.yaml'), {});
   const variablesDoc = readYamlFile(path.join(absoluteProjectDir, 'systems', 'variables.yaml'), {});
+  const cluesDoc = readYamlFile(path.join(absoluteProjectDir, 'systems', 'clues.yaml'), {});
   const assetsDoc = readYamlFile(path.join(absoluteProjectDir, 'systems', 'assets.yaml'), {});
 
   const nodes = listMarkdownFiles(nodeDir).map((filePath) => {
@@ -152,6 +153,7 @@ function compileProject(projectDir) {
       characters: (charactersDoc.characters || []).map(normalizeCharacter),
       locations: locationsDoc.locations || [],
       variables: (variablesDoc.variables || []).map(normalizeVariable),
+      clues: cluesDoc.clues || [],
       assets: assetsDoc.assets || [],
     },
     nodes,

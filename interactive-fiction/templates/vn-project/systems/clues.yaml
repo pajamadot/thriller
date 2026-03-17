@@ -1,0 +1,136 @@
+clues:
+  - id: clue.rain_cut_road
+    label: Storm cut the road
+    kind: timeline
+    question: Why does Elias stress that Mara cannot leave?
+    summary: Elias frames the visit as unavoidable as soon as Mara arrives.
+    supports:
+      - n010-foyer-arrival
+
+  - id: clue.side_door_fresh_scratches
+    label: Fresh scratches on the side door
+    kind: physical
+    question: Who used the sealed side door recently?
+    summary: The lock was disturbed after the estate was supposed to be closed.
+    supports:
+      - n020-door-check
+      - n040-secret-room
+    critical: true
+
+  - id: clue.scratched_lock
+    label: Scratched brass around the lock
+    kind: physical
+    question: Was the hidden room accessed in haste?
+    summary: The metal around the latch is newly scored.
+    supports:
+      - n020-door-check
+
+  - id: clue.hidden_key
+    label: Hidden key under the brass bowl
+    kind: physical
+    question: Why keep the key close if the room is forbidden?
+    summary: The key is concealed in reach, not archived.
+    supports:
+      - n040-secret-room
+    critical: true
+
+  - id: clue.brass_bowl_recently_moved
+    label: Warm brass bowl
+    kind: physical
+    question: Who touched the foyer console moments ago?
+    summary: The bowl is still rocking when Mara reaches it.
+    supports:
+      - n020-door-check
+
+  - id: clue.elias_watched_door
+    label: Elias watches the side door
+    kind: behavioral
+    question: Why does Elias monitor that threshold so closely?
+    summary: His attention returns to the forbidden door before Mara names it.
+    supports:
+      - n020-door-check
+      - n031-hallway-recovered
+
+  - id: clue.host_flinched
+    label: Elias flinched at the hidden room
+    kind: behavioral
+    question: What does the room represent to him?
+    summary: Mara can provoke a real reaction by naming what should be off limits.
+    supports:
+      - n031-hallway-recovered
+
+  - id: clue.host_controls_route
+    label: Elias controls the route through the house
+    kind: behavioral
+    question: What is he trying to keep outside Mara's line of sight?
+    summary: He guides Mara without touching her, always one room ahead.
+    supports:
+      - n030-hallway-led
+
+  - id: clue.burned_film_smell_returns
+    label: Burned film smell returns in the hall
+    kind: sensory
+    question: What piece of old media was heated or destroyed tonight?
+    summary: The chemical smell from the foyer grows stronger near the portraits.
+    supports:
+      - n030-hallway-led
+      - n036-nameplate-audit
+
+  - id: clue.host_rehearsed_greeting
+    label: Elias rehearsed the welcome
+    kind: behavioral
+    question: Was tonight staged for a different kind of guest?
+    summary: His hospitality sounds practiced rather than spontaneous.
+    supports:
+      - n031-hallway-recovered
+
+  - id: clue.portrait_eyes_scratched
+    label: Portrait eyes are scratched away
+    kind: physical
+    question: Which witness was erased from the family record?
+    summary: The damage is deliberate and selective.
+    supports:
+      - n035-portrait-gallery
+      - e120-silent-ending
+
+  - id: clue.missing_nameplate
+    label: One portrait nameplate is missing
+    kind: physical
+    question: Which absent name mattered enough to remove?
+    summary: A brass mount remains, but the identifying plate is gone.
+    supports:
+      - n035-portrait-gallery
+      - n036-nameplate-audit
+      - e120-silent-ending
+      - e130-staged-guest-ending
+    critical: true
+
+  - id: clue.projector_inventory_gap
+    label: Projector inventory gap
+    kind: physical
+    question: Which projection component was removed from the house?
+    summary: Soot, dust, and a clean rectangular gap imply a missing case or reel.
+    supports:
+      - n036-nameplate-audit
+      - e120-silent-ending
+      - e130-staged-guest-ending
+    critical: true
+
+  - id: clue.guest_card_removed
+    label: Guest card removed from the gallery ledger
+    kind: timeline
+    question: Who was expected before Mara arrived?
+    summary: The empty slot in the visitor ledger turns the evening into a substitution.
+    supports:
+      - n036-nameplate-audit
+      - e120-silent-ending
+      - e130-staged-guest-ending
+    critical: true
+
+  - id: clue.host_knows_about_hidden_room
+    label: Elias knows the hidden room matters
+    kind: behavioral
+    question: Why does he answer accusation with craft instead of surprise?
+    summary: Elias treats the room as a script problem, not a storage problem.
+    supports:
+      - e110-curious-ending

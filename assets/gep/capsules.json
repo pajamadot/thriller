@@ -142,5 +142,35 @@
       "local_mode": "evomap-ledger"
     },
     "success_streak": 1
+  },
+  {
+    "type": "Capsule",
+    "schema_version": "1.5.0",
+    "id": "capsule_if_vn_package_20260317193432213",
+    "trigger": [
+      "capability_gap:engine_neutral_package",
+      "capability_gap:authoring_compile_loop",
+      "scale_signal:chapter_route_layout",
+      "quality_signal:clue_fairness"
+    ],
+    "gene": "gene_if_vn_package_generalize",
+    "summary": "Added a general visual novel package contract with modular clue ledgers, local compile doctor validate workflow, and scalable node-file authoring layout",
+    "content": "The system now defines a stable VN package, compiles markdown-plus-yaml projects into story.json, records node source files, and runs deterministic graph plus thriller doctor passes. Template stats: 12 nodes, 2 characters, 2 locations, 4 variables, 15 clues.",
+    "confidence": 0.9,
+    "blast_radius": {
+      "files": 9,
+      "lines": 350
+    },
+    "outcome": {
+      "status": "success",
+      "score": 0.9
+    },
+    "env_fingerprint": {
+      "platform": "win32",
+      "arch": "x64",
+      "node_version": "v22.13.0",
+      "local_mode": "evomap-ledger"
+    },
+    "success_streak": 1
   }
 ]

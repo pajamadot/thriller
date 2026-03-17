@@ -25,7 +25,7 @@
     },
     "entities": {
       "type": "object",
-      "required": ["characters", "locations", "variables", "assets"],
+      "required": ["characters", "locations", "variables", "clues", "assets"],
       "properties": {
         "characters": {
           "type": "array",
@@ -68,6 +68,26 @@
                 "type": "array",
                 "items": { "type": "string" }
               }
+            },
+            "additionalProperties": true
+          }
+        },
+        "clues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" },
+              "kind": { "type": "string" },
+              "question": { "type": "string" },
+              "summary": { "type": "string" },
+              "supports": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "critical": { "type": "boolean" }
             },
             "additionalProperties": true
           }

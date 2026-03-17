@@ -50,6 +50,7 @@ project/
     locations.yaml
   systems/
     variables.yaml
+    clues.yaml
     assets.yaml
   nodes/
     n000-start.md
@@ -79,6 +80,7 @@ nodes/
 - Keep one runtime node per markdown file.
 - Nested directories under `nodes/` are allowed for chapter or route organization.
 - Put shared entities in `cast/`, `world/`, and `systems/`.
+- Treat `systems/clues.yaml` as the file-based clue ledger for investigation-heavy work.
 - Put prose inside structured `body` blocks, not in frontmatter.
 - Put state rules in `conditions`, `effects`, or logic nodes.
 - Use explicit node kinds instead of inventing new freeform labels.
@@ -177,6 +179,7 @@ For interactive thrillers, use the `thriller` overlay on nodes or choices:
 
 - node-level promise, mystery question, clue introduction, clue requirement, suspicion targets
 - choice-level intent, costs, reveals, and risks
+- optional file-level clue registry in `systems/clues.yaml` for fair-play audits
 
 Reference:
 `interactive-fiction/specs/interactive-thriller-annotations.md`
@@ -264,6 +267,7 @@ Example root keys:
     "characters": [],
     "locations": [],
     "variables": [],
+    "clues": [],
     "assets": []
   },
   "nodes": []
