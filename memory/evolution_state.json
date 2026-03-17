@@ -1,28 +1,22 @@
 {
-  "cycleCount": 1,
-  "lastCycleTimestamp": "2026-03-17T13:37:34Z",
+  "cycleCount": 30,
+  "lastCycleTimestamp": "2026-03-17T15:00:00Z",
   "lastIntent": "innovate",
-  "signals": [
-    "methodology_gap:short_story_workflow_merge",
-    "methodology_gap:minimal_suspect_matrix",
-    "methodology_gap:subtype_specific_knox_check",
-    "methodology_gap:subtype_weighted_scoring",
-    "benchmark:adversarial_suspense_integrated",
-    "benchmark:dual_reader_fairplay_integrated",
-    "benchmark:knowledge_state_tracking_integrated",
-    "benchmark:character_compass_integrated",
-    "benchmark:mice_nesting_integrated",
-    "benchmark:anti_theme_integrated",
-    "test:mirror_visitor_ch1_score_46_of_60",
-    "opportunity:scene_level_knowledge_matrix_automation",
-    "opportunity:clue_dependency_graph_visualization",
-    "opportunity:interactive_fiction_qbn_mode",
-    "opportunity:style_learning_from_existing_works"
-  ],
+  "currentVersion": "v3.0.0",
+  "signals": [],
   "completedEvolutions": [
     "v1.0.0_initial",
     "v1.1.0_iteration",
     "v1.2.0_meta_system",
-    "v2.0.0_research_integration"
-  ]
+    "v2.0.0_research_integration",
+    "v2.1.0_retro_fixes_gep",
+    "v3.0.0_30_rounds_evolution"
+  ],
+  "evolutionLog": {
+    "rounds_1_5": "New refs: narrative-voice, prose-craft, impossible-crime, series-design, testing-methodology",
+    "rounds_6_12": "Deepened: MICE nesting, Sorkin dialogue, Ephron herring lifecycle, cognitive biases, self-editorial letter, anti-patterns, subtype beatsheets",
+    "rounds_13_18": "IF pacing, quick reference cards, hierarchical generation, director/actor pattern",
+    "rounds_19_24": "Scoring rubrics, project templates (honkaku/psychological/social/thriller)",
+    "rounds_25_30": "Locked-room/inverted templates, final integration, GEP state update, README sync"
+  }
 }

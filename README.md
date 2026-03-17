@@ -249,10 +249,13 @@ Files in `projects/mirror-visitor/`.
 thriller/
 ├── thriller-writing/           # Skill 1: Thriller screenplay writing
 │   ├── SKILL.md                # 11 commands, 3 workflow routes
-│   └── references/             # 11 reference documents
+│   ├── QUICKREF.md             # Quick reference card
+│   ├── references/             # 17 reference documents
+│   └── templates/              # 6 sub-type project templates
 ├── interactive-fiction/         # Skill 2: Interactive branching fiction
 │   ├── SKILL.md                # 9 commands, 5 topology models
-│   └── references/             # 8 reference documents
+│   ├── QUICKREF.md             # Quick reference card
+│   └── references/             # 10 reference documents
 ├── meta/                       # Skill 3: Self-evolution system
 │   ├── SKILL.md                # 6 evolution commands
 │   ├── references/             # 5 evolution reference documents
@@ -294,17 +297,20 @@ No dependencies. Pure markdown methodology — works with any LLM that can read 
 
 | Metric | Value |
 |--------|-------|
-| Files | 46 |
-| Lines | 8300+ |
-| Reference docs | 24 (11 + 8 + 5) |
+| Files | 64 |
+| Lines | 10000+ |
+| Reference docs | 32 (17 + 10 + 5) |
 | Methodology sources | 25+ |
 | Sub-types supported | 9 |
 | Commands | 26 (11 + 9 + 6) |
+| Project templates | 6 sub-type presets |
+| Quick reference cards | 2 (thriller + IF) |
 | GEP assets | 4 Genes · 2 Capsules · 3 Events |
+| Evolution rounds | 30 completed |
 | External dependencies | Zero |
 | Language | Chinese (extensible) |
 | License | MIT |
-| Version | v2.1.0 |
+| Version | v3.0.0 |
 
 ---
 
