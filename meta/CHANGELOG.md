@@ -4,7 +4,7 @@
 
 ### 新增
 - `meta/SKILL.md` — 自我进化框架（三环进化模型）
-- 6 个进化命令：`/复盘`、`/进化`、`/对标`、`/解剖`、`/盲区`、`/脉搏`
+- 6 个进化命令：`/retro`、`/evolve`、`/benchmark`、`/autopsy`、`/blindspot`、`/pulse`
 - `meta/references/retrospective-method.md` — 复盘方法论
 - `meta/references/evolution-patterns.md` — 进化模式（填充/修正/重构/蜕变）
 - `meta/references/blind-spot-detection.md` — 认知盲区检测
@@ -16,8 +16,8 @@
 ## v1.1.0 — 重大迭代 (2026-03-17)
 
 ### 新增
-- `/主题` 命令（Egri 前提法）
-- `/改稿` 命令（四种改稿模式）
+- `/theme` 命令（Egri 前提法）
+- `/revise` 命令（四种改稿模式）
 - 倒叙推理、日常推理两个子类型
 - `unreliable-narrator.md` — 不可靠叙述者系统
 - `setting-atmosphere.md` — 场景与氛围设计

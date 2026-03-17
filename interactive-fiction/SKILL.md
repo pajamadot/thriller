@@ -36,7 +36,7 @@
 
 ## 命令体系
 
-### `/互动初始化` — 项目设置
+### `/init` — 项目设置
 
 **输入要求**：
 
@@ -52,7 +52,7 @@
 
 ---
 
-### `/分支架构` — 叙事拓扑设计
+### `/branches` — 叙事拓扑设计
 
 **加载参考**：`references/branch-architecture.md`
 
@@ -98,7 +98,7 @@
 
 ---
 
-### `/选择设计` — 选择点设计
+### `/choices` — 选择点设计
 
 **加载参考**：`references/choice-design.md`
 
@@ -141,7 +141,7 @@
 
 ---
 
-### `/角色分支` — 角色命运分支
+### `/character-paths` — 角色命运分支
 
 **加载参考**：`references/narrative-convergence.md`
 
@@ -170,7 +170,7 @@
 
 ---
 
-### `/节点 {编号}` — 逐节点创作
+### `/node {编号}` — 逐节点创作
 
 **加载参考**：`references/choice-design.md`, `references/state-management.md`
 
@@ -211,7 +211,7 @@
 
 ---
 
-### `/状态系统` — 游戏状态设计
+### `/state` — 游戏状态设计
 
 **加载参考**：`references/state-management.md`
 
@@ -248,7 +248,7 @@
 
 ---
 
-### `/结局 {编号}` — 结局创作
+### `/ending {编号}` — 结局创作
 
 **输出格式**（生成 `endings/ending-{N}.md`）：
 
@@ -277,7 +277,7 @@
 
 ---
 
-### `/一致性检查` — 全局审查
+### `/consistency` — 全局审查
 
 **加载参考**：`references/narrative-convergence.md`
 
@@ -311,7 +311,7 @@
 
 ---
 
-### `/导出 {格式}` — 格式化导出
+### `/export {格式}` — 格式化导出
 
 **支持格式**：
 
@@ -375,7 +375,7 @@
 
 | thriller-writing 产物 | interactive-fiction 用途 |
 |----------------------|------------------------|
-| `.thriller-state.json` | 读取类型、篇幅等元数据 → 填入 `/互动初始化` |
+| `.thriller-state.json` | 读取类型、篇幅等元数据 → 填入 `/init` |
 | `theme.md` | 主题在所有路线和结局中必须一致 |
 | `trick-design.md` → 线索清单 | 映射为 `found_{线索ID}` 布尔变量 |
 | `trick-design.md` → 红鲱鱼清单 | 设计为误导性选择 / 错误推理路线 |
@@ -417,9 +417,9 @@
 ## 工作流程序
 
 ```
-/互动初始化 → /分支架构 → /选择设计 → /角色分支 → /状态系统
+/init → /branches → /choices → /character-paths → /state
                                                         ↓
-              /导出 ← /一致性检查 ← /结局 N..1 ← /节点 1..N
+              /export ← /consistency ← /ending N..1 ← /node 1..N
                                        ↑              |
                                        └── 迭代修改 ──┘
 ```
