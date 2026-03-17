@@ -21,7 +21,37 @@
         "id": "char.host",
         "name": "Elias Voss",
         "description": "The owner of the estate, composed and unreadable.",
+        "thrillerProfile": {
+          "suspectWeight": "major",
+          "innocentRead": "Elias is protecting an old family scandal that predates Mara.",
+          "dangerousRead": "Elias staged the invitation and swapped Mara into a role meant for a missing guest.",
+          "pressureStyle": "smooth deflection"
+        },
         "defaultExpression": "calm"
+      },
+      {
+        "id": "char.housekeeper",
+        "name": "Sabine Vale",
+        "description": "The estate's housekeeper, territorial, efficient, and impossible to rush.",
+        "thrillerProfile": {
+          "suspectWeight": "major",
+          "innocentRead": "Sabine cleans up after the house and protects it from scandal.",
+          "dangerousRead": "Sabine clears names, trays, and evidence before Elias can be caught.",
+          "pressureStyle": "territorial aggression"
+        },
+        "defaultExpression": "stern"
+      },
+      {
+        "id": "char.absent_guest",
+        "name": "Clara Vale",
+        "description": "The missing guest whose name has been removed from the gallery and visitor tray.",
+        "thrillerProfile": {
+          "suspectWeight": "major",
+          "innocentRead": "Clara fled when she realized the evening was staged against her.",
+          "dangerousRead": "Clara engineered the substitution and vanished to weaponize Mara's arrival.",
+          "pressureStyle": "strategic absence"
+        },
+        "defaultExpression": "composed"
       }
     ],
     "locations": [
@@ -35,6 +65,12 @@
         "id": "loc.hallway",
         "name": "Hallway",
         "description": "A narrow hall lined with family portraits.",
+        "background": "bg.hallway"
+      },
+      {
+        "id": "loc.service-landing",
+        "name": "Service Landing",
+        "description": "A narrow landing where staff trays, visitor cards, and household linen pass out of sight.",
         "background": "bg.hallway"
       }
     ],
@@ -226,6 +262,50 @@
         "supports": [
           "e110-curious-ending"
         ]
+      },
+      {
+        "id": "clue.housekeeper_has_gallery_access",
+        "label": "Sabine has direct access to the gallery and visitor tray",
+        "kind": "opportunity",
+        "question": "Could a staff hand have removed the card and nameplate?",
+        "summary": "The service route lets Sabine reach the tray and portraits without crossing the front hall.",
+        "supports": [
+          "n037-service-landing",
+          "e140-housekeeper-ending"
+        ]
+      },
+      {
+        "id": "clue.housekeeper_protects_family",
+        "label": "Sabine protects the house before the truth",
+        "kind": "motive",
+        "question": "Is Sabine hiding scandal or causing it?",
+        "summary": "Her first instinct is to defend the estate's surface rather than answer Mara's questions.",
+        "supports": [
+          "n037-service-landing",
+          "e140-housekeeper-ending"
+        ]
+      },
+      {
+        "id": "clue.absent_guest_left_note",
+        "label": "The missing guest left a warning note",
+        "kind": "documentary",
+        "question": "Did the missing guest know the evening had been staged?",
+        "summary": "A folded note suggests someone expected a second performance and wanted the next witness to flee.",
+        "supports": [
+          "n037-service-landing",
+          "e150-vanished-guest-ending"
+        ]
+      },
+      {
+        "id": "clue.absent_guest_knew_schedule",
+        "label": "The missing guest knew the house schedule",
+        "kind": "timeline",
+        "question": "Was the missing guest inside the plan or outside it?",
+        "summary": "The warning note assumes knowledge of the reel change and staff route timing.",
+        "supports": [
+          "n037-service-landing",
+          "e150-vanished-guest-ending"
+        ]
       }
     ],
     "assets": [
@@ -363,6 +443,70 @@
         "format": "markdown-frontmatter"
       },
       "notes": "# Staged Guest Ending"
+    },
+    {
+      "id": "e140-housekeeper-ending",
+      "kind": "ending",
+      "title": "Housekeeper Ending",
+      "location": "loc.service-landing",
+      "thriller": {
+        "requiresClues": [
+          "clue.housekeeper_has_gallery_access",
+          "clue.housekeeper_protects_family"
+        ],
+        "endingContract": "Pressing Sabine makes the housekeeper theory feel brutally plausible, even if the full architecture still points beyond her."
+      },
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "body": [
+        {
+          "kind": "dialogue",
+          "speaker": "char.housekeeper",
+          "expression": "stern",
+          "text": "I remove what keeps this house standing. Names, cards, broken glass, gossip. If that makes me your villain, at least choose a useful one."
+        },
+        {
+          "kind": "narration",
+          "text": "Sabine never admits to staging the invitation, but she does admit she will erase almost anything to keep the estate from collapsing in public. It is enough to leave Mara with a second suspect theory that does not depend on Elias alone."
+        }
+      ],
+      "source": {
+        "file": "nodes/e140-housekeeper-ending.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Housekeeper Ending"
+    },
+    {
+      "id": "e150-vanished-guest-ending",
+      "kind": "ending",
+      "title": "Vanished Guest Ending",
+      "location": "loc.service-landing",
+      "thriller": {
+        "requiresClues": [
+          "clue.absent_guest_left_note",
+          "clue.absent_guest_knew_schedule"
+        ],
+        "endingContract": "Following the note keeps the missing guest theory alive and reframes the evening as a trap with an absent author."
+      },
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "body": [
+        {
+          "kind": "narration",
+          "text": "The note is too specific to be a random warning. Whoever wrote it knew the reel might be changed, knew there would be a second performance, and knew another witness could be slotted in after the first guest vanished."
+        },
+        {
+          "kind": "narration",
+          "text": "Mara leaves the house with a third theory still burning: the missing guest did not merely disappear from Elias's script. She may have rewritten it and left Mara to read the new draft alone."
+        }
+      ],
+      "source": {
+        "file": "nodes/e150-vanished-guest-ending.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Vanished Guest Ending"
     },
     {
       "id": "n000-start",
@@ -913,7 +1057,26 @@
           "clue.missing_nameplate"
         ],
         "suspicionTargets": [
-          "char.host"
+          "char.host",
+          "char.housekeeper",
+          "char.absent_guest"
+        ],
+        "theorySeeds": [
+          {
+            "suspect": "char.host",
+            "reading": "dangerous",
+            "basis": "Elias staged the substitution and removed the visible traces too late."
+          },
+          {
+            "suspect": "char.housekeeper",
+            "reading": "dangerous",
+            "basis": "A staff hand could have cleared the tray and plate while protecting the house."
+          },
+          {
+            "suspect": "char.absent_guest",
+            "reading": "dangerous",
+            "basis": "The missing guest may have stripped her own trace before turning Mara into the next witness."
+          }
         ],
         "routeMemory": [
           "flag.followed_host",
@@ -921,7 +1084,8 @@
         ],
         "payoffs": [
           "e120-silent-ending",
-          "e130-staged-guest-ending"
+          "e130-staged-guest-ending",
+          "n037-service-landing"
         ]
       },
       "presentation": {
@@ -951,6 +1115,10 @@
         {
           "kind": "narration",
           "text": "The same burned-film smell threading the hall clings to the tray, as if a projector case was set there while someone stripped a name from the wall."
+        },
+        {
+          "kind": "narration",
+          "text": "Too many hands fit the sequence too neatly. Elias could have staged it, a staff hand could have cleared it, or the missing guest could have removed her own trace before Mara ever reached the house."
         },
         {
           "kind": "dialogue",
@@ -987,6 +1155,31 @@
           }
         },
         {
+          "id": "summon-staff",
+          "text": "Ring for the staff member who cleared the tray and watch who Elias protects first.",
+          "to": "n037-service-landing",
+          "effects": [
+            {
+              "op": "decrement",
+              "target": "trust.host",
+              "value": 5
+            }
+          ],
+          "thriller": {
+            "intent": "investigate",
+            "costs": [
+              "trust",
+              "time"
+            ],
+            "reveals": [
+              "clue.projector_inventory_gap"
+            ],
+            "risks": [
+              "Bringing a second witness into the scene multiplies theories and burns social cover."
+            ]
+          }
+        },
+        {
           "id": "force-admission",
           "text": "Read the sequence aloud: missing name, removed card, missing projection case.",
           "to": "e130-staged-guest-ending",
@@ -1018,6 +1211,146 @@
         "format": "markdown-frontmatter"
       },
       "notes": "# Nameplate Audit\n\nShared investigation beat that converts atmosphere clues into a causal theory."
+    },
+    {
+      "id": "n037-service-landing",
+      "kind": "scene",
+      "title": "Service Landing",
+      "location": "loc.service-landing",
+      "thriller": {
+        "promise": "Bringing staff into the scene breaks Elias's monopoly on interpretation.",
+        "mysteryQuestion": "Is Sabine protecting Elias, protecting the house, or cleaning up after the missing guest?",
+        "pressure": "high",
+        "introducesClues": [
+          "clue.housekeeper_has_gallery_access",
+          "clue.housekeeper_protects_family",
+          "clue.absent_guest_left_note",
+          "clue.absent_guest_knew_schedule"
+        ],
+        "suspicionTargets": [
+          "char.host",
+          "char.housekeeper",
+          "char.absent_guest"
+        ],
+        "theorySeeds": [
+          {
+            "suspect": "char.host",
+            "reading": "dangerous",
+            "basis": "Elias lets staff absorb the risk while he manages the script."
+          },
+          {
+            "suspect": "char.housekeeper",
+            "reading": "dangerous",
+            "basis": "Sabine has both access and motive to strip the gallery and visitor tray."
+          },
+          {
+            "suspect": "char.absent_guest",
+            "reading": "dangerous",
+            "basis": "Clara knew enough about the reel change to weaponize her own disappearance."
+          }
+        ],
+        "routeMemory": [
+          "flag.followed_host",
+          "know.host_is_afraid"
+        ],
+        "payoffs": [
+          "e140-housekeeper-ending",
+          "e150-vanished-guest-ending"
+        ]
+      },
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "cast": [
+        {
+          "character": "char.protagonist",
+          "expression": "focused",
+          "pose": "standing",
+          "position": "left",
+          "visible": true
+        },
+        {
+          "character": "char.host",
+          "expression": "tense",
+          "pose": "standing",
+          "position": "center",
+          "visible": true
+        },
+        {
+          "character": "char.housekeeper",
+          "expression": "stern",
+          "pose": "standing",
+          "position": "right",
+          "visible": true
+        }
+      ],
+      "body": [
+        {
+          "kind": "narration",
+          "text": "The service bell barely sounds before Sabine Vale appears from the narrow landing beside the gallery, dry-gloved and unstartled, with a linen cloth folded too carefully over one hand."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.housekeeper",
+          "expression": "stern",
+          "text": "If Mr. Voss asked you not to touch the tray, he expected to be obeyed."
+        },
+        {
+          "kind": "narration",
+          "text": "When Sabine shifts the cloth, Mara catches a damp card corner and a note in another hand. The line is brief and ugly: If he changes the reel, do not stay for the second performance."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "tense",
+          "text": "Sabine clears what the weather and the family leave exposed. That is not the same thing as authorship."
+        }
+      ],
+      "choices": [
+        {
+          "id": "corner-sabine",
+          "text": "Corner Sabine on access, timing, and the missing plate before Elias can answer for her.",
+          "to": "e140-housekeeper-ending",
+          "thriller": {
+            "intent": "accuse",
+            "costs": [
+              "trust",
+              "safety"
+            ],
+            "reveals": [
+              "clue.housekeeper_has_gallery_access",
+              "clue.housekeeper_protects_family"
+            ],
+            "risks": [
+              "Sabine may become the cleanest available culprit whether or not she is the architect."
+            ]
+          }
+        },
+        {
+          "id": "follow-note",
+          "text": "Treat the warning note as a deliberate move by the missing guest, not a piece of housekeeping.",
+          "to": "e150-vanished-guest-ending",
+          "thriller": {
+            "intent": "investigate",
+            "costs": [
+              "certainty",
+              "control"
+            ],
+            "reveals": [
+              "clue.absent_guest_left_note",
+              "clue.absent_guest_knew_schedule"
+            ],
+            "risks": [
+              "The theory turns on an absent actor who cannot be pressured in the room."
+            ]
+          }
+        }
+      ],
+      "source": {
+        "file": "nodes/n037-service-landing.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Service Landing\n\nSocial pressure node that widens the suspect field past Elias alone."
     },
     {
       "id": "n040-secret-room",

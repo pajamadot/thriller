@@ -8,3 +8,28 @@ characters:
     name: Elias Voss
     description: The owner of the estate, composed and unreadable.
     default_expression: calm
+    thrillerProfile:
+      suspectWeight: major
+      innocentRead: Elias is protecting an old family scandal that predates Mara.
+      dangerousRead: Elias staged the invitation and swapped Mara into a role meant for a missing guest.
+      pressureStyle: smooth deflection
+
+  - id: char.housekeeper
+    name: Sabine Vale
+    description: The estate's housekeeper, territorial, efficient, and impossible to rush.
+    default_expression: stern
+    thrillerProfile:
+      suspectWeight: major
+      innocentRead: Sabine cleans up after the house and protects it from scandal.
+      dangerousRead: Sabine clears names, trays, and evidence before Elias can be caught.
+      pressureStyle: territorial aggression
+
+  - id: char.absent_guest
+    name: Clara Vale
+    description: The missing guest whose name has been removed from the gallery and visitor tray.
+    default_expression: composed
+    thrillerProfile:
+      suspectWeight: major
+      innocentRead: Clara fled when she realized the evening was staged against her.
+      dangerousRead: Clara engineered the substitution and vanished to weaponize Mara's arrival.
+      pressureStyle: strategic absence

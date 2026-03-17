@@ -233,6 +233,12 @@ function inspectInteractiveThriller(story) {
   const reachableClueStates = buildReachableClueStates(story);
   const clueReferences = collectClueReferences(story);
   const nodeIds = new Set((story.nodes || []).map((node) => node.id));
+  const majorSuspects = (story.entities?.characters || []).filter((character) => {
+    const profile = isObject(character.thrillerProfile) ? character.thrillerProfile : {};
+    return profile.suspectWeight === 'major';
+  });
+  const reachableSuspicionTargets = new Set();
+  const reachableTheorySuspects = new Set();
 
   if (openingNodes.length > 0) {
     const openingHasContract = openingNodes.some((node) => {
@@ -266,6 +272,48 @@ function inspectInteractiveThriller(story) {
 
   if (clueDefinitions.size === 0) {
     warnings.push('No systems/clues.yaml registry was compiled. Add a clue ledger for route fairness audits.');
+  }
+
+  for (const node of playerNodes) {
+    const thriller = isObject(node.thriller) ? node.thriller : {};
+    for (const suspectId of asStringArray(thriller.suspicionTargets)) {
+      reachableSuspicionTargets.add(suspectId);
+    }
+    for (const theorySeed of Array.isArray(thriller.theorySeeds) ? thriller.theorySeeds : []) {
+      if (isObject(theorySeed) && typeof theorySeed.suspect === 'string' && theorySeed.suspect.length > 0) {
+        reachableTheorySuspects.add(theorySeed.suspect);
+      }
+    }
+  }
+
+  if (majorSuspects.length < 3) {
+    warnings.push('The cast defines fewer than three major suspects. Suspicion ecology will stay thin.');
+  }
+
+  if (majorSuspects.length > 0) {
+    const pressureStyles = new Set(
+      majorSuspects
+        .map((character) => (isObject(character.thrillerProfile) ? character.thrillerProfile.pressureStyle : null))
+        .filter(Boolean)
+    );
+    if (pressureStyles.size < majorSuspects.length) {
+      warnings.push('Major suspects do not yet have distinct thrillerProfile.pressureStyle values.');
+    }
+
+    const missingCoverage = majorSuspects
+      .map((character) => character.id)
+      .filter((suspectId) => !reachableSuspicionTargets.has(suspectId) && !reachableTheorySuspects.has(suspectId));
+    if (missingCoverage.length > 0) {
+      warnings.push(`Major suspects missing from reachable suspicion metadata: ${missingCoverage.join(', ')}.`);
+    }
+  }
+
+  if (reachableTheorySuspects.size > 0 && reachableTheorySuspects.size < 3) {
+    warnings.push('Fewer than three suspect theories are legible in reachable thriller.theorySeeds metadata.');
+  }
+
+  if (reachableSuspicionTargets.size > 0 && reachableSuspicionTargets.size < 3) {
+    warnings.push('Reachable thriller.suspicionTargets do not yet keep at least three suspects in play.');
   }
 
   for (const reference of clueReferences) {
@@ -355,6 +403,9 @@ function inspectInteractiveThriller(story) {
       criticalClues: [...clueDefinitions.values()].filter((clue) => clue.critical).length,
       introducedClues: introduced.size,
       requiredClues: required.size,
+      majorSuspects: majorSuspects.length,
+      reachableSuspicionTargets: reachableSuspicionTargets.size,
+      legibleTheorySuspects: reachableTheorySuspects.size,
       fairRequiredNodes: story.nodes.filter((node) => {
         const requiredClues = asStringArray(isObject(node.thriller) ? node.thriller.requiresClues : []);
         if (requiredClues.length === 0) {

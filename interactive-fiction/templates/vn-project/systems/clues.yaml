@@ -134,3 +134,39 @@ clues:
     summary: Elias treats the room as a script problem, not a storage problem.
     supports:
       - e110-curious-ending
+
+  - id: clue.housekeeper_has_gallery_access
+    label: Sabine has direct access to the gallery and visitor tray
+    kind: opportunity
+    question: Could a staff hand have removed the card and nameplate?
+    summary: The service route lets Sabine reach the tray and portraits without crossing the front hall.
+    supports:
+      - n037-service-landing
+      - e140-housekeeper-ending
+
+  - id: clue.housekeeper_protects_family
+    label: Sabine protects the house before the truth
+    kind: motive
+    question: Is Sabine hiding scandal or causing it?
+    summary: Her first instinct is to defend the estate's surface rather than answer Mara's questions.
+    supports:
+      - n037-service-landing
+      - e140-housekeeper-ending
+
+  - id: clue.absent_guest_left_note
+    label: The missing guest left a warning note
+    kind: documentary
+    question: Did the missing guest know the evening had been staged?
+    summary: A folded note suggests someone expected a second performance and wanted the next witness to flee.
+    supports:
+      - n037-service-landing
+      - e150-vanished-guest-ending
+
+  - id: clue.absent_guest_knew_schedule
+    label: The missing guest knew the house schedule
+    kind: timeline
+    question: Was the missing guest inside the plan or outside it?
+    summary: The warning note assumes knowledge of the reel change and staff route timing.
+    supports:
+      - n037-service-landing
+      - e150-vanished-guest-ending

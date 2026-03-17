@@ -8,3 +8,8 @@ locations:
     name: Hallway
     description: A narrow hall lined with family portraits.
     background: bg.hallway
+
+  - id: loc.service-landing
+    name: Service Landing
+    description: A narrow landing where staff trays, visitor cards, and household linen pass out of sight.
+    background: bg.hallway

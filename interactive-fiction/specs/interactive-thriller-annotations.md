@@ -47,6 +47,10 @@ thriller:
   introducesClues: [clue.burned_film, clue.scratched_lock]
   requiresClues: [clue.projector_room]
   suspicionTargets: [char.host]
+  theorySeeds:
+    - suspect: char.host
+      reading: dangerous
+      basis: "The host is controlling who sees what."
   routeMemory: [flag.followed_host, trust.host]
   payoffs: [ending.secret_room]
   endingContract: "Curiosity over caution reveals the hidden room."
@@ -60,6 +64,7 @@ Recommended fields:
 - `introducesClues`
 - `requiresClues`
 - `suspicionTargets`
+- `theorySeeds`
 - `routeMemory`
 - `payoffs`
 - `endingContract`
@@ -117,3 +122,22 @@ These fields let local tools ask useful thriller questions:
 
 This overlay is optional.
 The base VN package stays valid without it.
+
+## Character-Level Thriller Profile
+
+Projects may also annotate suspect-facing characters in `cast/characters.yaml`:
+
+```yaml
+thrillerProfile:
+  suspectWeight: major
+  innocentRead: "Protecting the household from scandal."
+  dangerousRead: "Destroying evidence before the witness can compare notes."
+  pressureStyle: territorial aggression
+```
+
+Recommended fields:
+
+- `suspectWeight`
+- `innocentRead`
+- `dangerousRead`
+- `pressureStyle`

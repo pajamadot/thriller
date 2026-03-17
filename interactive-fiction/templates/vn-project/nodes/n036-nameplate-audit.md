@@ -14,12 +14,25 @@ thriller:
     - clue.missing_nameplate
   suspicionTargets:
     - char.host
+    - char.housekeeper
+    - char.absent_guest
+  theorySeeds:
+    - suspect: char.host
+      reading: dangerous
+      basis: Elias staged the substitution and removed the visible traces too late.
+    - suspect: char.housekeeper
+      reading: dangerous
+      basis: A staff hand could have cleared the tray and plate while protecting the house.
+    - suspect: char.absent_guest
+      reading: dangerous
+      basis: The missing guest may have stripped her own trace before turning Mara into the next witness.
   routeMemory:
     - flag.followed_host
     - know.host_is_afraid
   payoffs:
     - e120-silent-ending
     - e130-staged-guest-ending
+    - n037-service-landing
 presentation:
   background: bg.hallway
 cast:
@@ -38,6 +51,8 @@ body:
     text: Mara steps closer to the empty brass mount and sees a clean soot ring beneath it, the shape of something heated and removed in the last hour. On the side table below, a visitor card tray holds one fresh indentation with no card left inside.
   - kind: narration
     text: The same burned-film smell threading the hall clings to the tray, as if a projector case was set there while someone stripped a name from the wall.
+  - kind: narration
+    text: Too many hands fit the sequence too neatly. Elias could have staged it, a staff hand could have cleared it, or the missing guest could have removed her own trace before Mara ever reached the house.
   - kind: dialogue
     speaker: char.host
     expression: calm
@@ -58,6 +73,20 @@ choices:
         - clue.projector_inventory_gap
       risks:
         - Mara leaves with a theory, not a confession.
+  - id: summon-staff
+    text: Ring for the staff member who cleared the tray and watch who Elias protects first.
+    to: n037-service-landing
+    effects:
+      - op: decrement
+        target: trust.host
+        value: 5
+    thriller:
+      intent: investigate
+      costs: [trust, time]
+      reveals:
+        - clue.projector_inventory_gap
+      risks:
+        - Bringing a second witness into the scene multiplies theories and burns social cover.
   - id: force-admission
     text: "Read the sequence aloud: missing name, removed card, missing projection case."
     to: e130-staged-guest-ending
