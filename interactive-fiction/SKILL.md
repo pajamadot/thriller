@@ -48,13 +48,23 @@
 | 平台 | 目标发布平台 | Twine / ink / ChoiceScript / 橙光 / 纯文本 / 通用 |
 | 互动模式 | 读者角色定位 | 侦探视角（读者即侦探）/ 上帝视角（读者影响多角色）/ 旁观者（读者决定关注谁）|
 
-**输出**：`.interactive-state.json` + 项目概要
+**输出**：`.interactive-state.json` + 项目概要 + 项目目录结构初始化
+
+**大规模项目初始化**（15+ 决策点 / 50+ 节点）：
+自动生成工程化目录结构（参照 `references/scale-engineering.md`）：
+- `story-bible.md` — 全局设定（始终加载的固定上下文）
+- `manifest.yaml` — 节点索引 + 依赖图
+- `variables.yaml` — 状态变量注册表（含 written_by / read_by 追踪）
+- `codex/` — 知识条目目录（角色/地点/线索，按需加载）
+- `nodes/` — 节点文件目录（一节点一文件，YAML frontmatter）
+- `summaries/` — 滚动摘要目录
+- `validation/` — 验证报告
 
 ---
 
 ### `/branches` — 叙事拓扑设计
 
-**加载参考**：`references/branch-architecture.md`
+**加载参考**：`references/branch-architecture.md`, `references/scale-engineering.md`
 
 **输出结构**（生成 `branch-map.md`）：
 
@@ -172,42 +182,64 @@
 
 ### `/node {编号}` — 逐节点创作
 
-**加载参考**：`references/choice-design.md`, `references/state-management.md`
+**加载参考**：`references/choice-design.md`, `references/state-management.md`, `references/scale-engineering.md`
 
-**输出格式**（生成 `nodes/node-{NNN}.md`）：
+**上下文注入协议**（大规模项目必须遵守）：
+```
+写作节点 N 时，加载以下上下文（按优先级）：
 
-```markdown
-# 节点 {编号}：{标题}
+固定层（始终加载）：
+  1. story-bible.md（全局设定精简版）
+  2. variables.yaml（状态变量定义）
+  3. manifest.yaml 中本节点的元数据
 
-## 元数据
-- 类型：叙事 / 决策 / 汇聚 / 结局
-- 前置节点：{来源节点编号列表}
-- 后续节点：{目标节点编号列表}
-- 条件前提：{到达此节点需要的状态}
-- 预计阅读时间：{分钟}
+动态层（按需加载）：
+  4. codex/ 中本节点 codex_links 引用的条目
+  5. summaries/running-summary.md（全局滚动摘要）
+  6. from[] 节点中最近的一个（完整文本）
+  7. 同章节其他节点的 1 句话摘要
 
-## 叙事内容
+绝不加载：
+  ✗ 所有节点的完整文本
+  ✗ 与本节点无关的 codex 条目
+  ✗ 已消解的红鲱鱼详情
+```
+
+**输出格式**（生成 `nodes/{chapter}/n{NNN}-{slug}.md`）：
+
+```yaml
+---
+id: n{NNN}
+title: {标题}
+chapter: {章节号}
+type: narrative | decision | convergence | ending
+from: [{来源节点ID列表}]
+to: [{后续节点ID列表}]
+reads: [{读取的状态变量}]
+writes: [{修改的状态变量}]
+conditions: "{进入条件表达式}"
+codex_links: [{关联的知识条目ID}]
+word_count: {实际字数}
+status: draft | review | final
+---
+
+# {标题}
 
 {正文：800-2000字}
 
 ## 选择（如果是决策节点）
 
 > **{选项 A 文案}**
-> → 前往节点 {N}
+> → n{目标} ({状态变更})
 
 > **{选项 B 文案}**
-> → 前往节点 {N}
-
-## 状态变更
-- {变量名} += {值}  （例：trust_detective += 1）
-- {flag} = true      （例：found_murder_weapon = true）
-
----
-### 创作备注
-- 从不同路径到达此节点时的叙事调整说明
-- 需要检查的状态变量
-- 与其他节点的连续性要求
+> → n{目标} ({状态变更})
 ```
+
+**写完后必须执行**：
+1. 更新 `summaries/` 中本章摘要
+2. 更新 `codex/` 中发生状态变化的角色/线索条目
+3. 更新 `manifest.yaml` 中本节点的 status 和 word_count
 
 ---
 
@@ -279,27 +311,44 @@
 
 ### `/consistency` — 全局审查
 
-**加载参考**：`references/narrative-convergence.md`
+**加载参考**：`references/narrative-convergence.md`, `references/scale-engineering.md`
 
-**执行逻辑**：
+**执行逻辑**（两阶段）：
+
+**阶段 1：结构验证（只读 frontmatter，不读正文——省上下文）**
+
+解析所有节点的 YAML frontmatter + manifest.yaml + variables.yaml：
 
 ```
 一、路径完整性
-   - 所有节点是否可达？
-   - 是否存在死胡同（无后续节点的非结局节点）？
-   - 是否存在孤立节点？
+   □ 所有节点从起始节点可达（图遍历）
+   □ 所有非结局节点有至少一个后续（无死胡同）
+   □ 不存在孤立节点子集
+   □ 每个结局至少有一条路径可达
 
 二、状态一致性
-   - 所有使用的状态变量是否已定义？
-   - 状态检查条件是否可能为真？
-   - 是否存在不可能到达的结局？
+   □ 所有 reads 中引用的变量在 variables.yaml 中存在
+   □ 所有 reads 之前有对应的 writes（沿路径追溯）
+   □ 每个 conditions 至少在一条路径上可满足
+   □ 数值变量不会超出定义的 range
+   □ 不存在矛盾的状态组合
 
-三、叙事连贯性
-   - 从每条可能路径阅读，故事是否通顺？
-   - 汇聚节点是否能兼容所有来源路径？
-   - 角色是否在不同路径中行为自洽？
+三、涟漪分析
+   输出每个变量的 writers→readers 依赖链
+   标记"修改此节点会影响哪些下游节点"
+```
 
-四、线索公平性（悬疑特有）
+**阶段 2：叙事验证（按路径加载正文——逐路径检查）**
+
+```
+四、关键路径通读（最少 5 条路径）
+   - 最短路径 / 最长路径 / 最佳结局 / 最差结局 / 随机路径
+   - 每条路径检查：叙事连贯、角色一致、信息无矛盾
+
+五、汇聚节点兼容性
+   - 对每个 convergence 类型节点，检查所有 from[] 路径到达时的体验
+
+六、线索公平性（悬疑特有）
    - 每个结局所需的关键线索，是否在该路径上可获取？
    - 是否存在"读者做了正确选择却无法获得真相"的情况？
 
