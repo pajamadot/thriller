@@ -240,6 +240,29 @@ function collectVariableUsage(story) {
   return { variableReads, variableWrites };
 }
 
+function mergeCallbackCoverage(node) {
+  const thriller = isObject(node.thriller) ? node.thriller : {};
+  const routeMemory = asStringArray(thriller.routeMemory);
+  const callbacks = Array.isArray(thriller.mergeCallbacks) ? thriller.mergeCallbacks : [];
+  const covered = new Set();
+
+  for (const callback of callbacks) {
+    if (!isObject(callback)) {
+      continue;
+    }
+    const whenVariables = asStringArray(callback.when);
+    for (const variableId of whenVariables) {
+      covered.add(variableId);
+    }
+  }
+
+  return {
+    callbacks,
+    routeMemory,
+    covered,
+  };
+}
+
 function buildReachableClueStates(story) {
   const nodeMap = new Map((story.nodes || []).map((node) => [node.id, node]));
   const byNode = new Map();
@@ -483,6 +506,21 @@ function inspectInteractiveThriller(story) {
       if (!Array.isArray(nodeThriller.routeMemory) || nodeThriller.routeMemory.length === 0) {
         warnings.push(`Node ${node.id} has multiple inbound paths but no thriller.routeMemory annotation.`);
       }
+      const mergeState = mergeCallbackCoverage(node);
+      if (mergeState.routeMemory.length > 0) {
+        if (mergeState.callbacks.length === 0) {
+          warnings.push(`Merged node ${node.id} has routeMemory but no thriller.mergeCallbacks.`);
+        }
+        const uncovered = mergeState.routeMemory.filter((variableId) => !mergeState.covered.has(variableId));
+        if (uncovered.length > 0) {
+          warnings.push(`Merged node ${node.id} does not cover all routeMemory variables in thriller.mergeCallbacks: ${uncovered.join(', ')}.`);
+        }
+        for (const callback of mergeState.callbacks) {
+          if (!isObject(callback) || typeof callback.callback !== 'string' || callback.callback.length === 0) {
+            warnings.push(`Merged node ${node.id} has a thriller.mergeCallbacks entry without callback text.`);
+          }
+        }
+      }
     }
 
     if (node.kind === 'ending') {
@@ -534,6 +572,11 @@ function inspectInteractiveThriller(story) {
       legibleTheorySuspects: reachableTheorySuspects.size,
       criticalVariables: (story.entities?.variables || []).filter((variable) => variable.designRole === 'critical').length,
       writtenVariables: [...variableWrites.values()].filter((writes) => writes.size > 0).length,
+      mergedNodesWithCallbacks: story.nodes.filter((node) => {
+        const inbound = inboundCounts.get(node.id) || 0;
+        const thriller = isObject(node.thriller) ? node.thriller : {};
+        return inbound > 1 && Array.isArray(thriller.mergeCallbacks) && thriller.mergeCallbacks.length > 0;
+      }).length,
       fairRequiredNodes: story.nodes.filter((node) => {
         const requiredClues = asStringArray(isObject(node.thriller) ? node.thriller.requiresClues : []);
         if (requiredClues.length === 0) {

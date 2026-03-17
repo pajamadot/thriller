@@ -15,6 +15,13 @@ thriller:
   routeMemory:
     - flag.followed_host
     - know.host_is_afraid
+  mergeCallbacks:
+    - when:
+        - flag.followed_host
+      callback: Elias arrives in the gallery acting as if the route is still his to control.
+    - when:
+        - know.host_is_afraid
+      callback: Elias is composed again, but the earlier flinch still leaks through the way he watches Mara read the wall.
   payoffs:
     - e110-curious-ending
     - n036-nameplate-audit

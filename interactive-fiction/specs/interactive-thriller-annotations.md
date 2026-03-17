@@ -52,6 +52,11 @@ thriller:
       reading: dangerous
       basis: "The host is controlling who sees what."
   routeMemory: [flag.followed_host, trust.host]
+  mergeCallbacks:
+    - when: [flag.followed_host]
+      callback: "The host still thinks he is setting the pace."
+    - when: [know.host_is_afraid]
+      callback: "The earlier flinch keeps leaking through the host's posture."
   payoffs: [ending.secret_room]
   endingContract: "Curiosity over caution reveals the hidden room."
 ```
@@ -66,6 +71,7 @@ Recommended fields:
 - `suspicionTargets`
 - `theorySeeds`
 - `routeMemory`
+- `mergeCallbacks`
 - `payoffs`
 - `endingContract`
 

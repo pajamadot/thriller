@@ -14,6 +14,13 @@ thriller:
   routeMemory:
     - flag.sabine_cornered
     - flag.followed_guest_note
+  mergeCallbacks:
+    - when:
+        - flag.sabine_cornered
+      callback: Sabine answers like a trapped custodian who knows the room wants her as the simplest culprit.
+    - when:
+        - flag.followed_guest_note
+      callback: Elias pushes hard against the note theory because it keeps the room from settling on Sabine.
   payoffs:
     - e140-housekeeper-ending
     - e150-vanished-guest-ending

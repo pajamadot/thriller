@@ -1046,6 +1046,20 @@
           "flag.followed_host",
           "know.host_is_afraid"
         ],
+        "mergeCallbacks": [
+          {
+            "when": [
+              "flag.followed_host"
+            ],
+            "callback": "Elias arrives in the gallery acting as if the route is still his to control."
+          },
+          {
+            "when": [
+              "know.host_is_afraid"
+            ],
+            "callback": "Elias is composed again, but the earlier flinch still leaks through the way he watches Mara read the wall."
+          }
+        ],
         "payoffs": [
           "e110-curious-ending",
           "n036-nameplate-audit"
@@ -1614,6 +1628,20 @@
         "routeMemory": [
           "flag.sabine_cornered",
           "flag.followed_guest_note"
+        ],
+        "mergeCallbacks": [
+          {
+            "when": [
+              "flag.sabine_cornered"
+            ],
+            "callback": "Sabine answers like a trapped custodian who knows the room wants her as the simplest culprit."
+          },
+          {
+            "when": [
+              "flag.followed_guest_note"
+            ],
+            "callback": "Elias pushes hard against the note theory because it keeps the room from settling on Sabine."
+          }
         ],
         "payoffs": [
           "e140-housekeeper-ending",
