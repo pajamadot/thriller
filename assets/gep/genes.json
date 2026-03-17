@@ -74,5 +74,26 @@
     ],
     "constraints": { "max_files": 4, "forbidden_paths": [".git", "node_modules"] },
     "validation": ["node -e \"console.log('autopsy gene ok')\""]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_thriller_dynamic_interactivity",
+    "summary": "Integrate dynamic narrative generation techniques (Dramamancer/Drama Llama/StoryVerse) into the interactive fiction skill",
+    "category": "innovate",
+    "signals_match": ["dynamic_narrative", "player_agency", "runtime_generation", "static_branch_limitation"],
+    "preconditions": ["interactive-fiction/SKILL.md exists", "research on dynamic narrative systems completed"],
+    "strategy": [
+      "Identify gaps between static branching and dynamic generation capabilities",
+      "Integrate Story Schema pattern (author defines constraints, LLM generates at runtime)",
+      "Add NL-trigger Drama Manager for floating storylet events",
+      "Add NPC Ego/Superego dual-agent model for character simulation",
+      "Design mixed mode: static nodes for key plot + dynamic for exploration",
+      "Add constraint hierarchy (L0 hard → L3 free) for authorial intent control",
+      "Update SKILL.md with /schema, /drama-manager, /npc commands",
+      "Create dynamic-narrative.md reference with full technical specification"
+    ],
+    "constraints": { "max_files": 8, "forbidden_paths": [".git", "node_modules"] },
+    "validation": ["node -e \"console.log('dynamic narrative gene ok')\""]
   }
 ]
