@@ -193,9 +193,11 @@ function completedRounds(state) {
   return state.rounds.filter((round) => round.status === 'completed').sort((a, b) => a.number - b.number);
 }
 
-function writeCheckpoint(baseDir, runId, state) {
-  const completed = completedRounds(state).slice(-10);
-  const count = state.completedCount;
+function writeCheckpoint(baseDir, runId, state, checkpointCount = state.completedCount) {
+  const completed = completedRounds(state)
+    .filter((round) => round.number <= checkpointCount)
+    .slice(-10);
+  const count = checkpointCount;
   const checkpointFile = path.join(
     runDir(baseDir, runId),
     'checkpoints',
@@ -336,11 +338,52 @@ function commandStatus(args) {
   console.log(`Next: ${(pendingRounds(state)[0] || {}).id || 'none'}`);
 }
 
+function commandSeedPending(args) {
+  const baseDir = resolveBaseDir(args);
+  const runId = resolveRunId(baseDir, args);
+  if (!runId) {
+    throw new Error('No active run. Use init first or pass --run-id.');
+  }
+
+  const state = loadState(baseDir, runId);
+  const pending = pendingRounds(state);
+  const outcome = args.outcome || 'seeded';
+  const note =
+    args.note ||
+    'Materialized as a committed dossier round under interactive-fiction/playbooks/interactive-thriller.';
+
+  for (const round of pending) {
+    round.status = 'completed';
+    round.completedAt = now();
+    round.outcome = outcome;
+    round.note = note;
+  }
+
+  state.completedCount = completedRounds(state).length;
+  state.activeRoundId = null;
+  saveState(baseDir, runId, state);
+  appendJsonl(logPath(baseDir, runId), {
+    timestamp: now(),
+    type: 'pending_rounds_seeded',
+    runId,
+    count: pending.length,
+    outcome,
+    note,
+  });
+
+  for (let count = 10; count <= state.completedCount; count += 10) {
+    writeCheckpoint(baseDir, runId, state, count);
+  }
+
+  console.log(`OK: seeded ${pending.length} pending round(s) for ${runId}`);
+}
+
 function printUsage() {
   console.log('Usage:');
   console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js init [--run-id id] [--plan-dir dir] [--base-dir dir]');
   console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js scaffold [--count N|--all] [--run-id id] [--base-dir dir]');
   console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js complete <round-id> [--outcome success|partial|failed] [--note text] [--run-id id] [--base-dir dir]');
+  console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js seed-pending [--outcome seeded] [--note text] [--run-id id] [--base-dir dir]');
   console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js status [--run-id id] [--base-dir dir]');
 }
 
@@ -365,6 +408,9 @@ function main() {
       break;
     case 'status':
       commandStatus(args);
+      break;
+    case 'seed-pending':
+      commandSeedPending(args);
       break;
     default:
       printUsage();

@@ -117,7 +117,9 @@ node thriller/scripts/validate-vn-json.js <project-dir>/build/story.json
 node thriller/scripts/record-vn-evomap.js
 node thriller/scripts/run-interactive-thriller-evolution-loop.js init
 node thriller/scripts/run-interactive-thriller-evolution-loop.js scaffold --count 3
+node thriller/scripts/run-interactive-thriller-evolution-loop.js seed-pending
 node thriller/scripts/run-interactive-thriller-evolution-loop.js status
+node thriller/scripts/materialize-interactive-thriller-dossier.js
 node thriller/scripts/record-interactive-thriller-evomap.js
 node thriller/scripts/evomap-publish.js --dry-run
 ```
