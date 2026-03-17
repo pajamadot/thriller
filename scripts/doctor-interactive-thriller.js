@@ -69,6 +69,135 @@ function collectReachablePlayerNodes(story) {
   return ordered;
 }
 
+function collectPlayerPaths(story) {
+  const nodeMap = new Map((story.nodes || []).map((node) => [node.id, node]));
+  const paths = [];
+  const maxPaths = 256;
+  const maxDepth = 128;
+
+  function dfs(nodeId, stack, playerPath) {
+    if (!nodeId || stack.includes(nodeId)) {
+      return;
+    }
+    if (stack.length > maxDepth) {
+      throw new Error(`Interactive thriller doctor exceeded ${maxDepth} graph steps while tracing player paths.`);
+    }
+
+    const node = nodeMap.get(nodeId);
+    if (!node) {
+      return;
+    }
+
+    const nextStack = [...stack, nodeId];
+    const nextPlayerPath =
+      node.kind === 'scene' || node.kind === 'ending'
+        ? [...playerPath, node]
+        : playerPath;
+
+    if (node.kind === 'ending') {
+      paths.push(nextPlayerPath);
+      if (paths.length > maxPaths) {
+        throw new Error(`Interactive thriller doctor exceeded ${maxPaths} player paths. Simplify branching or add route checkpoints.`);
+      }
+      return;
+    }
+
+    const targets = collectTargets(node);
+    if (targets.length === 0) {
+      if (nextPlayerPath.length > 0) {
+        paths.push(nextPlayerPath);
+      }
+      return;
+    }
+
+    for (const targetId of targets) {
+      dfs(targetId, nextStack, nextPlayerPath);
+    }
+  }
+
+  dfs(story.meta.entry, [], []);
+  return paths;
+}
+
+function pressureValue(node) {
+  const thriller = isObject(node.thriller) ? node.thriller : {};
+  return typeof thriller.pressure === 'string' ? thriller.pressure : null;
+}
+
+function formatPathIds(path) {
+  return path.map((node) => node.id).join(' -> ');
+}
+
+function auditPressurePaths(playerPaths) {
+  const warnings = [];
+  let maxHighRun = 0;
+  let pathsWithSpike = 0;
+  let pathsWithReliefAfterSpike = 0;
+  let spikeBeats = 0;
+
+  for (const path of playerPaths) {
+    const beats = path
+      .map((node) => ({
+        id: node.id,
+        pressure: pressureValue(node),
+      }))
+      .filter((beat) => beat.pressure);
+
+    if (beats.length === 0) {
+      continue;
+    }
+
+    let currentHighRun = 0;
+    let pathHighRun = 0;
+    let firstSpikeIndex = -1;
+
+    for (let index = 0; index < beats.length; index += 1) {
+      const beat = beats[index];
+      if (beat.pressure === 'spike') {
+        spikeBeats += 1;
+        if (firstSpikeIndex === -1) {
+          firstSpikeIndex = index;
+        }
+      }
+
+      if (beat.pressure === 'high' || beat.pressure === 'spike') {
+        currentHighRun += 1;
+        pathHighRun = Math.max(pathHighRun, currentHighRun);
+      } else {
+        currentHighRun = 0;
+      }
+    }
+
+    maxHighRun = Math.max(maxHighRun, pathHighRun);
+    if (pathHighRun >= 3) {
+      warnings.push(`Route ${formatPathIds(path)} stacks ${pathHighRun} consecutive high-pressure beats.`);
+    }
+
+    if (firstSpikeIndex !== -1) {
+      pathsWithSpike += 1;
+      const reliefAfterSpike = beats
+        .slice(firstSpikeIndex + 1)
+        .some((beat) => beat.pressure === 'low' || beat.pressure === 'medium');
+      if (reliefAfterSpike) {
+        pathsWithReliefAfterSpike += 1;
+      } else if (beats.length >= 4) {
+        warnings.push(`Route ${formatPathIds(path)} spikes without a later relief beat.`);
+      }
+    }
+  }
+
+  return {
+    warnings,
+    stats: {
+      playerPaths: playerPaths.length,
+      pathsWithSpike,
+      pathsWithReliefAfterSpike,
+      maxHighRun,
+      spikeBeats,
+    },
+  };
+}
+
 function collectClueSets(story) {
   const introduced = new Set();
   const required = new Set();
@@ -311,6 +440,8 @@ function inspectInteractiveThriller(story) {
   const warnings = [];
   const errors = validateStory(story);
   const playerNodes = collectReachablePlayerNodes(story);
+  const playerPaths = collectPlayerPaths(story);
+  const pressureAudit = auditPressurePaths(playerPaths);
   const openingNodes = playerNodes.slice(0, 2);
   const openingWindow = playerNodes.slice(0, 3);
   const { introduced, required } = collectClueSets(story);
@@ -327,6 +458,8 @@ function inspectInteractiveThriller(story) {
   });
   const reachableSuspicionTargets = new Set();
   const reachableTheorySuspects = new Set();
+
+  warnings.push(...pressureAudit.warnings);
 
   if (openingNodes.length > 0) {
     const openingHasContract = openingNodes.some((node) => {
@@ -590,6 +723,11 @@ function inspectInteractiveThriller(story) {
         const thriller = isObject(node.thriller) ? node.thriller : {};
         return inbound > 1 && Array.isArray(thriller.routeMemory) && thriller.routeMemory.length > 0;
       }).length,
+      playerPaths: pressureAudit.stats.playerPaths,
+      pathsWithSpike: pressureAudit.stats.pathsWithSpike,
+      pathsWithReliefAfterSpike: pressureAudit.stats.pathsWithReliefAfterSpike,
+      maxHighRun: pressureAudit.stats.maxHighRun,
+      spikeBeats: pressureAudit.stats.spikeBeats,
     },
   };
 }

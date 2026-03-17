@@ -4,9 +4,9 @@ kind: scene
 title: Cross Accusation
 location: loc.service-landing
 thriller:
-  promise: The social cost of the player's theory becomes visible before the route resolves.
+  promise: After the spike, the room starts bargaining for the safest lie the player might accept.
   mysteryQuestion: Does pressure make the room tell the truth, or only force everyone to choose the safest lie?
-  pressure: high
+  pressure: medium
   suspicionTargets:
     - char.host
     - char.housekeeper
@@ -44,7 +44,7 @@ cast:
     visible: true
 body:
   - kind: narration
-    text: The landing tightens instead of clarifying. Sabine steps closer to the tray; Elias steps closer to Sabine. For the first time all night, Mara can see exactly which theory the room most wants her to accept.
+    text: The landing does not explode. It settles. Sabine steps closer to the tray; Elias steps closer to Sabine. For the first time all night, Mara can see exactly which theory the room most wants her to accept because it is the least costly one to survive.
   - kind: dialogue
     speaker: char.housekeeper
     expression: stern

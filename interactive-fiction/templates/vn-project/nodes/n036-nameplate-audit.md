@@ -4,9 +4,9 @@ kind: scene
 title: Nameplate Audit
 location: loc.hallway
 thriller:
-  promise: The missing plate, visitor ledger, and projector residue turn atmosphere into method.
+  promise: The missing plate, visitor ledger, and projector residue finally give Mara a workable sequence instead of one more mood.
   mysteryQuestion: Was Mara invited for herself, or slotted into a role prepared for someone who never arrived?
-  pressure: medium
+  pressure: low
   introducesClues:
     - clue.projector_inventory_gap
     - clue.guest_card_removed
@@ -50,9 +50,7 @@ body:
   - kind: narration
     text: Mara steps closer to the empty brass mount and sees a clean soot ring beneath it, the shape of something heated and removed in the last hour. On the side table below, a visitor card tray holds one fresh indentation with no card left inside.
   - kind: narration
-    text: The same burned-film smell threading the hall clings to the tray, as if a projector case was set there while someone stripped a name from the wall.
-  - kind: narration
-    text: Too many hands fit the sequence too neatly. Elias could have staged it, a staff hand could have cleared it, or the missing guest could have removed her own trace before Mara ever reached the house.
+    text: The burned-film smell clinging to the hallway clings to the tray as well. Plate removed. Card lifted. Projection equipment rested here and disappeared. For one clean breath, the house stops being mood and becomes order.
   - kind: dialogue
     speaker: char.host
     expression: calm

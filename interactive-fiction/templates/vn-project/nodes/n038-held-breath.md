@@ -6,7 +6,7 @@ location: loc.hallway
 thriller:
   promise: Restraint buys Mara a little more room, but only by forcing her to live with what she now knows.
   mysteryQuestion: Can Mara carry the theory out intact, or will the house make silence costlier than accusation?
-  pressure: medium
+  pressure: low
   requiresClues:
     - clue.projector_inventory_gap
     - clue.guest_card_removed
@@ -38,6 +38,8 @@ body:
     speaker: char.host
     expression: calm
     text: If you are finished reading the walls, Mara, I can at least show you the room that was actually prepared.
+  - kind: narration
+    text: The offer lands like velvet over a blade. The room is calmer now only because Elias thinks he has bought back the pace.
 choices:
   - id: keep-mask
     text: Keep the theory hidden and leave before the house can close the gap again.
@@ -56,4 +58,4 @@ choices:
 
 # Held Breath
 
-Immediate aftermath node for banking the theory instead of escalating.
+Low-pressure aftermath node for banking the theory instead of escalating.

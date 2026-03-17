@@ -1171,9 +1171,9 @@
       "title": "Nameplate Audit",
       "location": "loc.hallway",
       "thriller": {
-        "promise": "The missing plate, visitor ledger, and projector residue turn atmosphere into method.",
+        "promise": "The missing plate, visitor ledger, and projector residue finally give Mara a workable sequence instead of one more mood.",
         "mysteryQuestion": "Was Mara invited for herself, or slotted into a role prepared for someone who never arrived?",
-        "pressure": "medium",
+        "pressure": "low",
         "introducesClues": [
           "clue.projector_inventory_gap",
           "clue.guest_card_removed"
@@ -1239,11 +1239,7 @@
         },
         {
           "kind": "narration",
-          "text": "The same burned-film smell threading the hall clings to the tray, as if a projector case was set there while someone stripped a name from the wall."
-        },
-        {
-          "kind": "narration",
-          "text": "Too many hands fit the sequence too neatly. Elias could have staged it, a staff hand could have cleared it, or the missing guest could have removed her own trace before Mara ever reached the house."
+          "text": "The burned-film smell clinging to the hallway clings to the tray as well. Plate removed. Card lifted. Projection equipment rested here and disappeared. For one clean breath, the house stops being mood and becomes order."
         },
         {
           "kind": "dialogue",
@@ -1366,9 +1362,9 @@
       "title": "Service Landing",
       "location": "loc.service-landing",
       "thriller": {
-        "promise": "Bringing staff into the scene breaks Elias's monopoly on interpretation.",
-        "mysteryQuestion": "Is Sabine protecting Elias, protecting the house, or cleaning up after the missing guest?",
-        "pressure": "high",
+        "promise": "Bringing staff into the scene turns a private theory into a public rupture and breaks Elias's monopoly on interpretation.",
+        "mysteryQuestion": "Which explanation panics first once a second witness is standing in the room?",
+        "pressure": "spike",
         "introducesClues": [
           "clue.housekeeper_has_gallery_access",
           "clue.housekeeper_protects_family",
@@ -1435,7 +1431,7 @@
       "body": [
         {
           "kind": "narration",
-          "text": "The service bell barely sounds before Sabine Vale appears from the narrow landing beside the gallery, dry-gloved and unstartled, with a linen cloth folded too carefully over one hand."
+          "text": "The service bell barely finishes its note before Sabine Vale appears from the narrow landing beside the gallery, dry-gloved and unstartled, with a linen cloth folded too carefully over one hand."
         },
         {
           "kind": "dialogue",
@@ -1445,7 +1441,7 @@
         },
         {
           "kind": "narration",
-          "text": "When Sabine shifts the cloth, Mara catches a damp card corner and a note in another hand. The line is brief and ugly: If he changes the reel, do not stay for the second performance."
+          "text": "When Sabine shifts the cloth, Mara catches a damp card corner and a note in another hand. The warning is blunt enough to split the room open. If he changes the reel, do not stay for the second performance."
         },
         {
           "kind": "dialogue",
@@ -1524,7 +1520,7 @@
         "file": "nodes/n037-service-landing.md",
         "format": "markdown-frontmatter"
       },
-      "notes": "# Service Landing\n\nSocial pressure node that widens the suspect field past Elias alone."
+      "notes": "# Service Landing\n\nSocial rupture node that widens the suspect field past Elias alone."
     },
     {
       "id": "n038-held-breath",
@@ -1534,7 +1530,7 @@
       "thriller": {
         "promise": "Restraint buys Mara a little more room, but only by forcing her to live with what she now knows.",
         "mysteryQuestion": "Can Mara carry the theory out intact, or will the house make silence costlier than accusation?",
-        "pressure": "medium",
+        "pressure": "low",
         "requiresClues": [
           "clue.projector_inventory_gap",
           "clue.guest_card_removed"
@@ -1580,6 +1576,10 @@
           "speaker": "char.host",
           "expression": "calm",
           "text": "If you are finished reading the walls, Mara, I can at least show you the room that was actually prepared."
+        },
+        {
+          "kind": "narration",
+          "text": "The offer lands like velvet over a blade. The room is calmer now only because Elias thinks he has bought back the pace."
         }
       ],
       "choices": [
@@ -1609,7 +1609,7 @@
         "file": "nodes/n038-held-breath.md",
         "format": "markdown-frontmatter"
       },
-      "notes": "# Held Breath\n\nImmediate aftermath node for banking the theory instead of escalating."
+      "notes": "# Held Breath\n\nLow-pressure aftermath node for banking the theory instead of escalating."
     },
     {
       "id": "n039-cross-accusation",
@@ -1617,9 +1617,9 @@
       "title": "Cross Accusation",
       "location": "loc.service-landing",
       "thriller": {
-        "promise": "The social cost of the player's theory becomes visible before the route resolves.",
+        "promise": "After the spike, the room starts bargaining for the safest lie the player might accept.",
         "mysteryQuestion": "Does pressure make the room tell the truth, or only force everyone to choose the safest lie?",
-        "pressure": "high",
+        "pressure": "medium",
         "suspicionTargets": [
           "char.host",
           "char.housekeeper",
@@ -1677,7 +1677,7 @@
       "body": [
         {
           "kind": "narration",
-          "text": "The landing tightens instead of clarifying. Sabine steps closer to the tray; Elias steps closer to Sabine. For the first time all night, Mara can see exactly which theory the room most wants her to accept."
+          "text": "The landing does not explode. It settles. Sabine steps closer to the tray; Elias steps closer to Sabine. For the first time all night, Mara can see exactly which theory the room most wants her to accept because it is the least costly one to survive."
         },
         {
           "kind": "dialogue",

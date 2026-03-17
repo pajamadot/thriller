@@ -4,9 +4,9 @@ kind: scene
 title: Service Landing
 location: loc.service-landing
 thriller:
-  promise: Bringing staff into the scene breaks Elias's monopoly on interpretation.
-  mysteryQuestion: Is Sabine protecting Elias, protecting the house, or cleaning up after the missing guest?
-  pressure: high
+  promise: Bringing staff into the scene turns a private theory into a public rupture and breaks Elias's monopoly on interpretation.
+  mysteryQuestion: Which explanation panics first once a second witness is standing in the room?
+  pressure: spike
   introducesClues:
     - clue.housekeeper_has_gallery_access
     - clue.housekeeper_protects_family
@@ -52,13 +52,13 @@ cast:
     visible: true
 body:
   - kind: narration
-    text: The service bell barely sounds before Sabine Vale appears from the narrow landing beside the gallery, dry-gloved and unstartled, with a linen cloth folded too carefully over one hand.
+    text: The service bell barely finishes its note before Sabine Vale appears from the narrow landing beside the gallery, dry-gloved and unstartled, with a linen cloth folded too carefully over one hand.
   - kind: dialogue
     speaker: char.housekeeper
     expression: stern
     text: If Mr. Voss asked you not to touch the tray, he expected to be obeyed.
   - kind: narration
-    text: "When Sabine shifts the cloth, Mara catches a damp card corner and a note in another hand. The line is brief and ugly: If he changes the reel, do not stay for the second performance."
+    text: When Sabine shifts the cloth, Mara catches a damp card corner and a note in another hand. The warning is blunt enough to split the room open. If he changes the reel, do not stay for the second performance.
   - kind: dialogue
     speaker: char.host
     expression: tense
@@ -108,4 +108,4 @@ choices:
 
 # Service Landing
 
-Social pressure node that widens the suspect field past Elias alone.
+Social rupture node that widens the suspect field past Elias alone.
