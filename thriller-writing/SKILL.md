@@ -91,7 +91,9 @@
 
 ---
 
-### `/trick` — 核心谜团架构
+### `/trick` — 核心谜团架构（Shonda Rhimes 原则："先知道最后一个场景"）
+
+> 在设计谜团之前，先确定揭示的那一刻：真相是什么？读者会感受到什么？从终点倒推起点。
 
 **触发条件**：`/theme` 完成后（本格/密室/叙述诡计型优先），或 `/characters` 完成后（社会派/心理悬疑型可后置）
 **加载参考**：`references/clue-design.md`, `references/red-herring.md`, `references/twist-design.md`, `references/knowledge-state.md`
