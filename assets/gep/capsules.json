@@ -1,0 +1,30 @@
+[
+  {
+    "type": "Capsule",
+    "schema_version": "1.5.0",
+    "id": "capsule_1773754800000",
+    "trigger": ["methodology_gap:short_story_workflow_merge", "methodology_gap:minimal_suspect_matrix", "methodology_gap:subtype_specific_knox_check", "methodology_gap:subtype_weighted_scoring"],
+    "gene": "gene_thriller_methodology_gap_fix",
+    "summary": "Fixed 4 methodology gaps from mirror-visitor ch1 test: short-story workflow, minimal cast matrix, sub-type Knox filtering, weighted scoring",
+    "content": "1. Short stories (<50k) can merge /start+/theme into single step. 2. Added 'minimal cast' mode (2-3 suspects) for psychological thriller. 3. Knox checks now filtered by sub-type relevance. 4. /check scoring weights adjusted per sub-type (psychological: character+literary weighted higher).",
+    "confidence": 0.75,
+    "blast_radius": { "files": 2, "lines": 40 },
+    "outcome": { "status": "success", "score": 0.75 },
+    "env_fingerprint": { "platform": "win32", "arch": "x64", "evolver_version": "1.32.1" },
+    "success_streak": 1
+  },
+  {
+    "type": "Capsule",
+    "schema_version": "1.5.0",
+    "id": "capsule_1773755400000",
+    "trigger": ["benchmark_finding", "external_methodology", "research_insight"],
+    "gene": "gene_thriller_benchmark_integrate",
+    "summary": "Integrated 12 key findings from 30+ papers, 42 repos, and 15+ professional methods into v2.0",
+    "content": "Major integrations: knowledge-state.md (epistemic logic + competing narratives + villain engine + dual-reader verification), advanced-if.md (Accept/Reject/Deflect + QBN + vertical drilling), character compass (Corbett), MICE nesting (Sanderson), adversarial suspense (Xie&Riedl), anti-theme architecture (Mazin). Added 12 new methodology sources.",
+    "confidence": 0.85,
+    "blast_radius": { "files": 10, "lines": 762 },
+    "outcome": { "status": "success", "score": 0.85 },
+    "env_fingerprint": { "platform": "win32", "arch": "x64", "evolver_version": "1.32.1" },
+    "success_streak": 2
+  }
+]

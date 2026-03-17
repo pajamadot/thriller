@@ -1,0 +1,78 @@
+[
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_thriller_methodology_gap_fix",
+    "summary": "Detect and fix methodology gaps identified through /retro project retrospectives",
+    "category": "repair",
+    "signals_match": ["methodology_gap", "retro_finding", "workflow_friction"],
+    "preconditions": ["at least one /retro has been completed with methodology findings"],
+    "strategy": [
+      "Read all meta/retro-*.md files to collect methodology gap signals",
+      "Classify gaps: workflow (SKILL.md), reference (references/*.md), or evaluation (/check)",
+      "For workflow gaps: update SKILL.md command definitions or add conditional logic",
+      "For reference gaps: add new sections to existing reference files or create new ones",
+      "For evaluation gaps: update scoring rubrics with sub-type-specific weights",
+      "Validate: re-run the test scenario that exposed the gap to confirm fix"
+    ],
+    "constraints": { "max_files": 8, "forbidden_paths": [".git", "node_modules", "projects"] },
+    "validation": ["node -e \"const fs=require('fs'); const f=fs.readdirSync('thriller-writing/references'); console.log('refs:', f.length); if(f.length<10) throw new Error('missing refs')\""]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_thriller_benchmark_integrate",
+    "summary": "Integrate findings from external methodology benchmarks into the skill system",
+    "category": "optimize",
+    "signals_match": ["benchmark_finding", "external_methodology", "research_insight"],
+    "preconditions": ["meta/benchmark-*.md exists with actionable findings"],
+    "strategy": [
+      "Read meta/benchmark-*.md to identify high-priority integration items",
+      "For each item: determine target file (existing reference or new file)",
+      "Apply minimum viable change: add new section, not rewrite existing content",
+      "Cross-reference with existing content to avoid duplication",
+      "Update README.md methodology sources table if new sources added",
+      "Update meta/CHANGELOG.md and meta/VERSION.md"
+    ],
+    "constraints": { "max_files": 12, "forbidden_paths": [".git", "node_modules"] },
+    "validation": ["node -e \"const fs=require('fs'); const c=fs.readFileSync('meta/CHANGELOG.md','utf8'); if(!c.includes('v2')) throw new Error('changelog not updated')\""]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_thriller_innovate_new_technique",
+    "summary": "Create novel thriller writing techniques by synthesizing multiple methodology sources",
+    "category": "innovate",
+    "signals_match": ["opportunity", "capability_gap", "creative_writing_innovation", "test_low_score"],
+    "preconditions": ["system is stable (no active repair signals)", "at least one test project completed"],
+    "strategy": [
+      "Identify the capability gap from test results or user feedback",
+      "Search across all reference files for related partial solutions",
+      "Synthesize a new technique that combines insights from 2+ sources",
+      "Write the technique as a new section in the most relevant reference file",
+      "If the technique is substantial enough, create a new reference file",
+      "Test by applying the technique to the active project (mirror-visitor)",
+      "Record the innovation in meta/CHANGELOG.md"
+    ],
+    "constraints": { "max_files": 6, "forbidden_paths": [".git", "node_modules"] },
+    "validation": ["node -e \"const fs=require('fs'); console.log('ok')\""]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_thriller_autopsy_extract",
+    "summary": "Reverse-engineer published thriller works to extract techniques not in current methodology",
+    "category": "innovate",
+    "signals_match": ["autopsy_completed", "work_analysis", "technique_extraction"],
+    "preconditions": ["meta/autopsy-*.md exists with extracted patterns"],
+    "strategy": [
+      "Read the autopsy report for techniques marked as 'method cannot explain'",
+      "For each unexplainable technique: formalize it into a reusable pattern",
+      "Determine which reference file should contain the new pattern",
+      "Add with [Experiment] tag for future validation",
+      "Cross-reference: does this technique conflict with any existing principle?"
+    ],
+    "constraints": { "max_files": 4, "forbidden_paths": [".git", "node_modules"] },
+    "validation": ["node -e \"console.log('autopsy gene ok')\""]
+  }
+]

@@ -1,5 +1,22 @@
 # 变更日志
 
+## v2.1.0 — Retro 修正 + GEP 本地进化 (2026-03-17)
+
+### 修正（来自 /retro mirror-visitor ch1 测试）
+- `/start` 短篇模式（≤5万字）：允许与 `/theme` 合并执行
+- `/characters` 嫌疑人矩阵：新增极简模式（2-3人，适用于心理悬疑/短篇）
+- `/audit` 公平性检查：按子类型过滤 Knox 十诫适用条目（心理悬疑不检查全部10条）
+- `/check` 评分权重：按子类型加权（心理悬疑加重人物+文学，本格加重线索+逻辑）
+
+### 新增
+- `assets/gep/` — GEP 本地进化基础设施（genes.json, capsules.json, events.jsonl）
+- 4 个 Gene 定义：methodology-gap-fix, benchmark-integrate, innovate-new-technique, autopsy-extract
+- 2 个 Capsule 记录：retro 修正 + v2.0 研究整合
+- `memory/` — 进化状态和 session 信号文件
+- EvoMap 节点已注册（node_2f9e46c279dc3f87）
+
+---
+
 ## v2.0.0 — 全网研究整合 (2026-03-17)
 
 基于 30+ 学术论文、42 个开源项目、15+ 专业编剧方法论的系统性升级。

@@ -23,3 +23,4 @@ desktop.ini
 
 # Node (if any tooling added later)
 node_modules/
+.env.evolver
