@@ -54,5 +54,26 @@ variables:
     default: false
     designRole: critical
     payoffs:
+      - n041-second-performance
+      - n039-cross-accusation
+      - e150-vanished-guest-ending
+
+  - id: flag.note_read_aloud
+    type: boolean
+    default: false
+    designRole: local
+    rationale: Tracks how Mara weaponizes the note inside the shared accusation node and only needs local payoff coverage.
+    payoffs:
+      - n041-second-performance
+      - n039-cross-accusation
+      - e150-vanished-guest-ending
+
+  - id: flag.note_pocketed
+    type: boolean
+    default: false
+    designRole: local
+    rationale: Tracks whether Mara keeps the note private before the route reconverges.
+    payoffs:
+      - n041-second-performance
       - n039-cross-accusation
       - e150-vanished-guest-ending

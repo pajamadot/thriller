@@ -26,6 +26,10 @@ thriller:
     - suspect: char.absent_guest
       reading: dangerous
       basis: The missing guest may have stripped her own trace before turning Mara into the next witness.
+  theoryRevisions:
+    - from: char.host
+      to: char.housekeeper
+      reason: The visitor tray and missing plate could have been cleared through service access rather than Elias's direct hand.
   routeMemory:
     - flag.followed_host
     - know.host_is_afraid

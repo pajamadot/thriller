@@ -240,6 +240,10 @@ function collectClueDefinitions(story) {
   return new Map((story.entities?.clues || []).map((clue) => [clue.id, clue]));
 }
 
+function collectCharacterIds(story) {
+  return new Set((story.entities?.characters || []).map((character) => character.id));
+}
+
 function collectClueReferences(story) {
   const references = [];
 
@@ -447,6 +451,7 @@ function inspectInteractiveThriller(story) {
   const { introduced, required } = collectClueSets(story);
   const inboundCounts = collectInboundCounts(story);
   const clueDefinitions = collectClueDefinitions(story);
+  const characterIds = collectCharacterIds(story);
   const reachableClueStates = buildReachableClueStates(story);
   const clueReferences = collectClueReferences(story);
   const nodeIds = new Set((story.nodes || []).map((node) => node.id));
@@ -458,6 +463,8 @@ function inspectInteractiveThriller(story) {
   });
   const reachableSuspicionTargets = new Set();
   const reachableTheorySuspects = new Set();
+  const reachableTheoryRevisionNodes = new Set();
+  const reachableTheoryRevisionTargets = new Set();
 
   warnings.push(...pressureAudit.warnings);
 
@@ -505,6 +512,36 @@ function inspectInteractiveThriller(story) {
         reachableTheorySuspects.add(theorySeed.suspect);
       }
     }
+    const theoryRevisions = Array.isArray(thriller.theoryRevisions) ? thriller.theoryRevisions : [];
+    if (theoryRevisions.length > 0) {
+      reachableTheoryRevisionNodes.add(node.id);
+    }
+    for (const revision of theoryRevisions) {
+      if (!isObject(revision)) {
+        warnings.push(`Node ${node.id} has a non-object thriller.theoryRevisions entry.`);
+        continue;
+      }
+      const from = typeof revision.from === 'string' ? revision.from : null;
+      const to = typeof revision.to === 'string' ? revision.to : null;
+      const reason = typeof revision.reason === 'string' ? revision.reason : '';
+      if (!from || !to || reason.length === 0) {
+        warnings.push(`Node ${node.id} has an incomplete thriller.theoryRevisions entry.`);
+        continue;
+      }
+      if (!characterIds.has(from)) {
+        errors.push(`Node ${node.id} references missing theoryRevisions.from character ${from}.`);
+      }
+      if (!characterIds.has(to)) {
+        errors.push(`Node ${node.id} references missing theoryRevisions.to character ${to}.`);
+      }
+      if (from === to) {
+        warnings.push(`Node ${node.id} has a theory revision from ${from} to itself.`);
+      }
+      if (!asStringArray(thriller.suspicionTargets).includes(to)) {
+        warnings.push(`Node ${node.id} revises toward ${to} without listing that suspect in thriller.suspicionTargets.`);
+      }
+      reachableTheoryRevisionTargets.add(to);
+    }
   }
 
   if (majorSuspects.length < 3) {
@@ -535,6 +572,14 @@ function inspectInteractiveThriller(story) {
 
   if (reachableSuspicionTargets.size > 0 && reachableSuspicionTargets.size < 3) {
     warnings.push('Reachable thriller.suspicionTargets do not yet keep at least three suspects in play.');
+  }
+
+  if (majorSuspects.length >= 2 && reachableTheoryRevisionNodes.size === 0) {
+    warnings.push('No reachable scene declares thriller.theoryRevisions, so the middle game may widen suspicion without actually shifting the working theory.');
+  }
+
+  if (reachableTheoryRevisionNodes.size > 0 && reachableTheoryRevisionTargets.size < 2) {
+    warnings.push('Reachable theory revisions currently point to fewer than two suspect targets.');
   }
 
   for (const variable of story.entities?.variables || []) {
@@ -703,6 +748,8 @@ function inspectInteractiveThriller(story) {
       majorSuspects: majorSuspects.length,
       reachableSuspicionTargets: reachableSuspicionTargets.size,
       legibleTheorySuspects: reachableTheorySuspects.size,
+      theoryRevisionNodes: reachableTheoryRevisionNodes.size,
+      theoryRevisionTargets: reachableTheoryRevisionTargets.size,
       criticalVariables: (story.entities?.variables || []).filter((variable) => variable.designRole === 'critical').length,
       writtenVariables: [...variableWrites.values()].filter((writes) => writes.size > 0).length,
       mergedNodesWithCallbacks: story.nodes.filter((node) => {

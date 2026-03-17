@@ -142,6 +142,31 @@
         "default": false,
         "designRole": "critical",
         "payoffs": [
+          "n041-second-performance",
+          "n039-cross-accusation",
+          "e150-vanished-guest-ending"
+        ]
+      },
+      {
+        "id": "flag.note_read_aloud",
+        "type": "boolean",
+        "default": false,
+        "designRole": "local",
+        "rationale": "Tracks how Mara weaponizes the note inside the shared accusation node and only needs local payoff coverage.",
+        "payoffs": [
+          "n041-second-performance",
+          "n039-cross-accusation",
+          "e150-vanished-guest-ending"
+        ]
+      },
+      {
+        "id": "flag.note_pocketed",
+        "type": "boolean",
+        "default": false,
+        "designRole": "local",
+        "rationale": "Tracks whether Mara keeps the note private before the route reconverges.",
+        "payoffs": [
+          "n041-second-performance",
           "n039-cross-accusation",
           "e150-vanished-guest-ending"
         ]
@@ -355,6 +380,20 @@
         "summary": "The warning note assumes knowledge of the reel change and staff route timing.",
         "supports": [
           "n037-service-landing",
+          "n041-second-performance",
+          "n039-cross-accusation",
+          "e150-vanished-guest-ending"
+        ]
+      },
+      {
+        "id": "clue.second_performance_expected",
+        "label": "Someone expected a second performance",
+        "kind": "documentary",
+        "question": "Who besides Elias knew the reel would change before Mara arrived?",
+        "summary": "The note turns the night from a simple cover-up into a prepared relay.",
+        "supports": [
+          "n041-second-performance",
+          "n039-cross-accusation",
           "e150-vanished-guest-ending"
         ]
       }
@@ -1203,6 +1242,13 @@
             "basis": "The missing guest may have stripped her own trace before turning Mara into the next witness."
           }
         ],
+        "theoryRevisions": [
+          {
+            "from": "char.host",
+            "to": "char.housekeeper",
+            "reason": "The visitor tray and missing plate could have been cleared through service access rather than Elias's direct hand."
+          }
+        ],
         "routeMemory": [
           "flag.followed_host",
           "know.host_is_afraid"
@@ -1393,6 +1439,18 @@
             "basis": "Clara knew enough about the reel change to weaponize her own disappearance."
           }
         ],
+        "theoryRevisions": [
+          {
+            "from": "char.host",
+            "to": "char.absent_guest",
+            "reason": "The warning note implies Clara knew the timing of the second performance before Mara arrived."
+          },
+          {
+            "from": "char.housekeeper",
+            "to": "char.absent_guest",
+            "reason": "Sabine may be containing the fallout of Clara's plan rather than authoring it herself."
+          }
+        ],
         "routeMemory": [
           "flag.followed_host",
           "know.host_is_afraid"
@@ -1486,7 +1544,7 @@
         {
           "id": "follow-note",
           "text": "Treat the warning note as a deliberate move by the missing guest, not a piece of housekeeping.",
-          "to": "n039-cross-accusation",
+          "to": "n041-second-performance",
           "effects": [
             {
               "op": "set",
@@ -1510,6 +1568,7 @@
             "immediateOutcome": "Elias loses the benefit of Sabine as a convenient answer.",
             "delayedRisk": "Chasing the absent author keeps the present room unresolved.",
             "visibleWithinNodes": [
+              "n041-second-performance",
               "n039-cross-accusation",
               "e150-vanished-guest-ending"
             ]
@@ -1627,7 +1686,9 @@
         ],
         "routeMemory": [
           "flag.sabine_cornered",
-          "flag.followed_guest_note"
+          "flag.followed_guest_note",
+          "flag.note_read_aloud",
+          "flag.note_pocketed"
         ],
         "mergeCallbacks": [
           {
@@ -1641,6 +1702,18 @@
               "flag.followed_guest_note"
             ],
             "callback": "Elias pushes hard against the note theory because it keeps the room from settling on Sabine."
+          },
+          {
+            "when": [
+              "flag.note_read_aloud"
+            ],
+            "callback": "The note has already been heard aloud, so Elias is arguing against a documented schedule rather than a rumor."
+          },
+          {
+            "when": [
+              "flag.note_pocketed"
+            ],
+            "callback": "Only Mara still holds the note, and the room keeps guessing how much she is willing to weaponize."
           }
         ],
         "payoffs": [
@@ -1774,6 +1847,168 @@
         "format": "markdown-frontmatter"
       },
       "notes": "# Secret Room\n\nTerminal ending node."
+    },
+    {
+      "id": "n041-second-performance",
+      "kind": "scene",
+      "title": "Second Performance",
+      "location": "loc.service-landing",
+      "thriller": {
+        "promise": "The note forces Mara to decide whether the missing guest is a warning voice or an absent author.",
+        "mysteryQuestion": "Did Clara flee the trap, or did she design the relay that left Mara holding the next cue?",
+        "pressure": "medium",
+        "introducesClues": [
+          "clue.second_performance_expected"
+        ],
+        "suspicionTargets": [
+          "char.host",
+          "char.housekeeper",
+          "char.absent_guest"
+        ],
+        "theorySeeds": [
+          {
+            "suspect": "char.absent_guest",
+            "reading": "dangerous",
+            "basis": "The note proves the second performance was expected, not improvised."
+          }
+        ],
+        "theoryRevisions": [
+          {
+            "from": "char.host",
+            "to": "char.absent_guest",
+            "reason": "The note proves someone beyond Elias knew the timing of the second reel."
+          },
+          {
+            "from": "char.housekeeper",
+            "to": "char.absent_guest",
+            "reason": "Sabine may be preserving order around a plan she did not begin."
+          }
+        ],
+        "routeMemory": [
+          "flag.followed_guest_note"
+        ],
+        "payoffs": [
+          "n039-cross-accusation",
+          "e150-vanished-guest-ending"
+        ]
+      },
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "cast": [
+        {
+          "character": "char.protagonist",
+          "expression": "focused",
+          "pose": "standing",
+          "position": "left",
+          "visible": true
+        },
+        {
+          "character": "char.host",
+          "expression": "tense",
+          "pose": "standing",
+          "position": "center",
+          "visible": true
+        },
+        {
+          "character": "char.housekeeper",
+          "expression": "stern",
+          "pose": "standing",
+          "position": "right",
+          "visible": true
+        }
+      ],
+      "body": [
+        {
+          "kind": "narration",
+          "text": "The folded note changes the geometry of the room. It is no longer enough to ask what Elias hid. Someone else expected a second performance and wrote for the next witness as if Mara had already been cast."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "tense",
+          "text": "Clara always knew how to turn an exit into a warning. That does not make her truthful. It makes her practiced."
+        }
+      ],
+      "choices": [
+        {
+          "id": "read-note-aloud",
+          "text": "Read the warning aloud and force Elias to deny the second performance in front of Sabine.",
+          "to": "n039-cross-accusation",
+          "effects": [
+            {
+              "op": "set",
+              "target": "flag.note_read_aloud",
+              "value": true
+            },
+            {
+              "op": "decrement",
+              "target": "trust.host",
+              "value": 5
+            }
+          ],
+          "thriller": {
+            "intent": "accuse",
+            "costs": [
+              "cover",
+              "leverage"
+            ],
+            "reveals": [
+              "clue.second_performance_expected"
+            ],
+            "risks": [
+              "Publicly naming the relay makes every later answer more performative."
+            ],
+            "immediateOutcome": "Elias has to argue with the document instead of Mara's tone.",
+            "delayedRisk": "A public theory revision may push the room into coordinated denial.",
+            "visibleWithinNodes": [
+              "n039-cross-accusation",
+              "e150-vanished-guest-ending"
+            ]
+          }
+        },
+        {
+          "id": "pocket-note",
+          "text": "Pocket the note and watch who panics at your silence.",
+          "to": "n039-cross-accusation",
+          "effects": [
+            {
+              "op": "set",
+              "target": "flag.note_pocketed",
+              "value": true
+            },
+            {
+              "op": "increment",
+              "target": "trust.host",
+              "value": 5
+            }
+          ],
+          "thriller": {
+            "intent": "conceal",
+            "costs": [
+              "certainty",
+              "control"
+            ],
+            "reveals": [
+              "clue.second_performance_expected"
+            ],
+            "risks": [
+              "Keeping the note private preserves ambiguity but lets Elias keep speaking first."
+            ],
+            "immediateOutcome": "Sabine starts watching Mara instead of Elias, which is its own answer.",
+            "delayedRisk": "A private theory keeps more options alive at the cost of open leverage.",
+            "visibleWithinNodes": [
+              "n039-cross-accusation",
+              "e150-vanished-guest-ending"
+            ]
+          }
+        }
+      ],
+      "source": {
+        "file": "nodes/n041-second-performance.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Second Performance\n\nMidgame theory-shift node that reframes the missing guest as an active author candidate."
     }
   ]
 }

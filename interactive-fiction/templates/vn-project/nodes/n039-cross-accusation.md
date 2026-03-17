@@ -14,6 +14,8 @@ thriller:
   routeMemory:
     - flag.sabine_cornered
     - flag.followed_guest_note
+    - flag.note_read_aloud
+    - flag.note_pocketed
   mergeCallbacks:
     - when:
         - flag.sabine_cornered
@@ -21,6 +23,12 @@ thriller:
     - when:
         - flag.followed_guest_note
       callback: Elias pushes hard against the note theory because it keeps the room from settling on Sabine.
+    - when:
+        - flag.note_read_aloud
+      callback: The note has already been heard aloud, so Elias is arguing against a documented schedule rather than a rumor.
+    - when:
+        - flag.note_pocketed
+      callback: Only Mara still holds the note, and the room keeps guessing how much she is willing to weaponize.
   payoffs:
     - e140-housekeeper-ending
     - e150-vanished-guest-ending

@@ -51,6 +51,10 @@ thriller:
     - suspect: char.host
       reading: dangerous
       basis: "The host is controlling who sees what."
+  theoryRevisions:
+    - from: char.host
+      to: char.absent_guest
+      reason: "A new clue forces Mara to treat the missing guest as an active author, not only a victim."
   routeMemory: [flag.followed_host, trust.host]
   mergeCallbacks:
     - when: [flag.followed_host]
@@ -70,6 +74,7 @@ Recommended fields:
 - `requiresClues`
 - `suspicionTargets`
 - `theorySeeds`
+- `theoryRevisions`
 - `routeMemory`
 - `mergeCallbacks`
 - `payoffs`

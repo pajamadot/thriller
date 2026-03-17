@@ -169,4 +169,16 @@ clues:
     summary: The warning note assumes knowledge of the reel change and staff route timing.
     supports:
       - n037-service-landing
+      - n041-second-performance
+      - n039-cross-accusation
+      - e150-vanished-guest-ending
+
+  - id: clue.second_performance_expected
+    label: Someone expected a second performance
+    kind: documentary
+    question: Who besides Elias knew the reel would change before Mara arrived?
+    summary: The note turns the night from a simple cover-up into a prepared relay.
+    supports:
+      - n041-second-performance
+      - n039-cross-accusation
       - e150-vanished-guest-ending

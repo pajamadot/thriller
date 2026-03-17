@@ -26,6 +26,13 @@ thriller:
     - suspect: char.absent_guest
       reading: dangerous
       basis: Clara knew enough about the reel change to weaponize her own disappearance.
+  theoryRevisions:
+    - from: char.host
+      to: char.absent_guest
+      reason: The warning note implies Clara knew the timing of the second performance before Mara arrived.
+    - from: char.housekeeper
+      to: char.absent_guest
+      reason: Sabine may be containing the fallout of Clara's plan rather than authoring it herself.
   routeMemory:
     - flag.followed_host
     - know.host_is_afraid
@@ -86,7 +93,7 @@ choices:
         - e140-housekeeper-ending
   - id: follow-note
     text: Treat the warning note as a deliberate move by the missing guest, not a piece of housekeeping.
-    to: n039-cross-accusation
+    to: n041-second-performance
     effects:
       - op: set
         target: flag.followed_guest_note
@@ -102,6 +109,7 @@ choices:
       immediateOutcome: Elias loses the benefit of Sabine as a convenient answer.
       delayedRisk: Chasing the absent author keeps the present room unresolved.
       visibleWithinNodes:
+        - n041-second-performance
         - n039-cross-accusation
         - e150-vanished-guest-ending
 ---
