@@ -10,3 +10,7 @@ variables:
   - id: flag.followed_host
     type: boolean
     default: false
+
+  - id: know.host_is_afraid
+    type: boolean
+    default: false

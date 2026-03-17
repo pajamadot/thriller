@@ -169,6 +169,18 @@ Each choice should contain:
 Choices belong inside the source `scene`.
 Do not create a separate choice node unless the target engine requires it.
 
+## Optional Genre Overlays
+
+Projects may add optional design metadata for genre-specific analysis.
+
+For interactive thrillers, use the `thriller` overlay on nodes or choices:
+
+- node-level promise, mystery question, clue introduction, clue requirement, suspicion targets
+- choice-level intent, costs, reveals, and risks
+
+Reference:
+`interactive-fiction/specs/interactive-thriller-annotations.md`
+
 ## Project Scale Conventions
 
 For medium or large novels, use `chapter`, `route`, and `tags` on nodes.

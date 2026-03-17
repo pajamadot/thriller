@@ -112,6 +112,7 @@ Compiled package spec:
 ```bash
 node thriller/scripts/compile-vn-project.js <project-dir>
 node thriller/scripts/doctor-vn-project.js <project-dir>
+node thriller/scripts/doctor-interactive-thriller.js <project-dir>
 node thriller/scripts/validate-vn-json.js <project-dir>/build/story.json
 node thriller/scripts/record-vn-evomap.js
 node thriller/scripts/run-interactive-thriller-evolution-loop.js init
@@ -123,3 +124,6 @@ node thriller/scripts/evomap-publish.js --dry-run
 
 Interactive thriller loop:
 `interactive-fiction/specs/interactive-thriller-100-rounds.md`
+
+Thriller annotation overlay:
+`interactive-fiction/specs/interactive-thriller-annotations.md`

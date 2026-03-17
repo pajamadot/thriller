@@ -53,6 +53,11 @@
         "id": "flag.followed_host",
         "type": "boolean",
         "default": false
+      },
+      {
+        "id": "know.host_is_afraid",
+        "type": "boolean",
+        "default": false
       }
     ],
     "assets": [
@@ -79,13 +84,16 @@
       "kind": "ending",
       "title": "Locked Out",
       "location": "loc.foyer",
+      "thriller": {
+        "endingContract": "Caution without leverage leaves Mara outside the truth and outside the room built to contain it."
+      },
       "presentation": {
         "background": "bg.foyer"
       },
       "body": [
         {
           "kind": "narration",
-          "text": "Mara rattles the handle, but the lock refuses to yield."
+          "text": "Mara tests the handle once, then again. The lock does not move, and Elias says nothing that sounds like surprise."
         }
       ],
       "source": {
@@ -99,6 +107,12 @@
       "kind": "ending",
       "title": "Curious Ending",
       "location": "loc.hallway",
+      "thriller": {
+        "requiresClues": [
+          "clue.host_knows_about_hidden_room"
+        ],
+        "endingContract": "Pressure applied too early wins an admission, but not access."
+      },
       "presentation": {
         "background": "bg.hallway"
       },
@@ -107,7 +121,7 @@
           "kind": "dialogue",
           "speaker": "char.host",
           "expression": "calm",
-          "text": "If you ask the wrong question too early, the house answers instead of me."
+          "text": "If you ask the right question before you have any leverage, Mara, all you learn is how practiced I am at lying to frightened guests."
         }
       ],
       "source": {
@@ -121,13 +135,16 @@
       "kind": "ending",
       "title": "Silent Ending",
       "location": "loc.hallway",
+      "thriller": {
+        "endingContract": "Restraint preserves the relationship surface, but the house keeps control of the truth."
+      },
       "presentation": {
         "background": "bg.hallway"
       },
       "body": [
         {
           "kind": "narration",
-          "text": "Mara says nothing. The silence becomes its own accusation."
+          "text": "Mara says nothing. Elias mistakes her silence for patience, and the house keeps one more minute of advantage."
         }
       ],
       "source": {
@@ -152,6 +169,18 @@
       "kind": "scene",
       "title": "Foyer Arrival",
       "location": "loc.foyer",
+      "thriller": {
+        "promise": "The house may already know why Mara came, and Elias is controlling what she sees first.",
+        "mysteryQuestion": "Why is the side door recently used if the estate is supposed to be sealed for the storm?",
+        "pressure": "medium",
+        "introducesClues": [
+          "clue.rain_cut_road",
+          "clue.side_door_fresh_scratches"
+        ],
+        "suspicionTargets": [
+          "char.host"
+        ]
+      },
       "presentation": {
         "background": "bg.foyer",
         "music": "bgm.intro"
@@ -175,31 +204,44 @@
       "body": [
         {
           "kind": "narration",
-          "text": "The foyer smells faintly of rain and old varnish."
+          "text": "The foyer smells of rain, old varnish, and something hotter underneath, like film left too close to a lamp."
         },
         {
           "kind": "dialogue",
           "speaker": "char.host",
           "expression": "calm",
-          "text": "Welcome. The storm cut the road behind you."
+          "text": "Welcome. The storm cut the road behind you ten minutes ago, so whatever brought you here is staying the night."
         }
       ],
       "choices": [
         {
           "id": "inspect-door",
-          "text": "Inspect the locked side door.",
+          "text": "Test the scratched side door before Elias can redirect you.",
           "to": "n020-door-check",
           "effects": [
             {
-              "op": "set",
-              "target": "flag.key_found",
-              "value": true
+              "op": "decrement",
+              "target": "trust.host",
+              "value": 5
             }
-          ]
+          ],
+          "thriller": {
+            "intent": "investigate",
+            "costs": [
+              "trust",
+              "time"
+            ],
+            "reveals": [
+              "clue.side_door_fresh_scratches"
+            ],
+            "risks": [
+              "Elias sees that Mara is already looking for a hidden room."
+            ]
+          }
         },
         {
           "id": "follow-host",
-          "text": "Follow Elias deeper into the house.",
+          "text": "Let Elias choose the route and study what he avoids mentioning.",
           "to": "n030-hallway",
           "effects": [
             {
@@ -212,7 +254,20 @@
               "target": "trust.host",
               "value": 10
             }
-          ]
+          ],
+          "thriller": {
+            "intent": "comply",
+            "costs": [
+              "access",
+              "information"
+            ],
+            "reveals": [
+              "clue.host_controls_route"
+            ],
+            "risks": [
+              "The player gives up immediate access to the side door."
+            ]
+          }
         }
       ],
       "source": {
@@ -223,30 +278,129 @@
     },
     {
       "id": "n020-door-check",
-      "kind": "condition",
+      "kind": "scene",
       "title": "Door Check",
-      "expression": {
-        "all": [
-          {
-            "var": "flag.key_found",
-            "op": "eq",
-            "value": true
-          }
+      "location": "loc.foyer",
+      "thriller": {
+        "promise": "The side door may hide the real reason Elias invited Mara before the road closed.",
+        "mysteryQuestion": "If the door is supposed to stay locked, why are the scratches fresh and the brass bowl warm?",
+        "pressure": "high",
+        "introducesClues": [
+          "clue.scratched_lock",
+          "clue.hidden_key"
+        ],
+        "suspicionTargets": [
+          "char.host"
         ]
       },
-      "onTrue": "n040-secret-room",
-      "onFalse": "e100-locked-out",
+      "presentation": {
+        "background": "bg.foyer"
+      },
+      "cast": [
+        {
+          "character": "char.protagonist",
+          "expression": "focused",
+          "pose": "crouching",
+          "position": "left",
+          "visible": true
+        },
+        {
+          "character": "char.host",
+          "expression": "calm",
+          "pose": "standing",
+          "position": "right",
+          "visible": true
+        }
+      ],
+      "body": [
+        {
+          "kind": "narration",
+          "text": "Fresh brass dust glitters around the lock. A shallow bowl on the console table still rocks from being moved in a hurry."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "calm",
+          "text": "That room is full of old equipment. Nothing in there is meant to survive a curious guest."
+        }
+      ],
+      "choices": [
+        {
+          "id": "lift-bowl",
+          "text": "Lift the bowl and try the hidden key before Elias can stop you.",
+          "to": "n040-secret-room",
+          "effects": [
+            {
+              "op": "set",
+              "target": "flag.key_found",
+              "value": true
+            },
+            {
+              "op": "decrement",
+              "target": "trust.host",
+              "value": 10
+            }
+          ],
+          "thriller": {
+            "intent": "investigate",
+            "costs": [
+              "trust",
+              "safety"
+            ],
+            "reveals": [
+              "clue.hidden_key",
+              "clue.projector_room"
+            ],
+            "risks": [
+              "Elias now knows Mara will cross a boundary to get an answer."
+            ]
+          }
+        },
+        {
+          "id": "back-away",
+          "text": "Step back before Elias can catch you crossing the line.",
+          "to": "e100-locked-out",
+          "thriller": {
+            "intent": "stall",
+            "costs": [
+              "access",
+              "leverage"
+            ],
+            "reveals": [
+              "clue.elias_watched_door"
+            ],
+            "risks": [
+              "The hidden room closes again before Mara gains leverage."
+            ]
+          }
+        }
+      ],
       "source": {
         "file": "nodes/n020-door-check.md",
         "format": "markdown-frontmatter"
       },
-      "notes": "# Door Check\n\nLogic-only node. No player-facing prose required."
+      "notes": "# Door Check\n\nInvestigation pressure scene with a visible access tradeoff."
     },
     {
       "id": "n030-hallway",
       "kind": "scene",
       "title": "Hallway",
       "location": "loc.hallway",
+      "thriller": {
+        "promise": "The portraits and Elias's language suggest the house has rehearsed this conversation before.",
+        "mysteryQuestion": "Is Elias warning Mara away from a family shame, or from proof that he staged the whole invitation?",
+        "pressure": "medium",
+        "introducesClues": [
+          "clue.portrait_eyes_scratched"
+        ],
+        "suspicionTargets": [
+          "char.host"
+        ],
+        "routeMemory": [
+          "flag.followed_host",
+          "trust.host"
+        ]
+      },
       "presentation": {
         "background": "bg.hallway"
       },
@@ -269,25 +423,70 @@
       "body": [
         {
           "kind": "narration",
-          "text": "The portraits seem to watch Mara as she walks."
+          "text": "Every portrait in the hall has the eyes scored away with the same careful blade stroke."
         },
         {
           "kind": "dialogue",
           "speaker": "char.host",
           "expression": "calm",
-          "text": "My family had a habit of keeping secrets in plain sight."
+          "text": "My family believed a secret stayed polite as long as everyone agreed to look beside it instead of at it."
         }
       ],
       "choices": [
         {
           "id": "press-host",
-          "text": "Ask what he means.",
-          "to": "e110-curious-ending"
+          "text": "Press Elias before he can turn the hallway into another performance.",
+          "to": "e110-curious-ending",
+          "effects": [
+            {
+              "op": "set",
+              "target": "know.host_is_afraid",
+              "value": true
+            },
+            {
+              "op": "decrement",
+              "target": "trust.host",
+              "value": 15
+            }
+          ],
+          "thriller": {
+            "intent": "accuse",
+            "costs": [
+              "trust",
+              "safety"
+            ],
+            "reveals": [
+              "clue.host_knows_about_hidden_room"
+            ],
+            "risks": [
+              "Pushing too early may cost future access."
+            ]
+          }
         },
         {
           "id": "stay-silent",
-          "text": "Keep the thought to yourself for now.",
-          "to": "e120-silent-ending"
+          "text": "Stay quiet and let the hallway tell you what Elias will not.",
+          "to": "e120-silent-ending",
+          "effects": [
+            {
+              "op": "increment",
+              "target": "trust.host",
+              "value": 5
+            }
+          ],
+          "thriller": {
+            "intent": "conceal",
+            "costs": [
+              "information",
+              "time"
+            ],
+            "reveals": [
+              "clue.portrait_eyes_scratched"
+            ],
+            "risks": [
+              "The player preserves access but postpones confrontation."
+            ]
+          }
         }
       ],
       "source": {
@@ -301,19 +500,26 @@
       "kind": "ending",
       "title": "Secret Room",
       "location": "loc.foyer",
+      "thriller": {
+        "requiresClues": [
+          "clue.hidden_key",
+          "clue.projector_room"
+        ],
+        "endingContract": "Curiosity over caution exposes the room Elias was trying to keep outside the night's script."
+      },
       "presentation": {
         "background": "bg.foyer"
       },
       "body": [
         {
           "kind": "narration",
-          "text": "The door gives way. A hidden room waits behind it, lit by the pulse of an old projector."
+          "text": "The door gives way on the second turn. Behind it, an old projector throws Mara's own published byline across the wall in trembling light."
         },
         {
           "kind": "dialogue",
           "speaker": "char.host",
           "expression": "calm",
-          "text": "You found the version of the story I was trying to bury."
+          "text": "You found the version of the story I prepared for the guest I expected, not the one who actually came."
         }
       ],
       "source": {

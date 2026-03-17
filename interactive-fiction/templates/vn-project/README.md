@@ -13,6 +13,7 @@ This template is the recommended authoring layout for a general visual novel pro
 ```bash
 node thriller/scripts/compile-vn-project.js thriller/interactive-fiction/templates/vn-project
 node thriller/scripts/doctor-vn-project.js thriller/interactive-fiction/templates/vn-project
+node thriller/scripts/doctor-interactive-thriller.js thriller/interactive-fiction/templates/vn-project
 node thriller/scripts/validate-vn-json.js thriller/interactive-fiction/templates/vn-project/build/story.json
 ```
 
