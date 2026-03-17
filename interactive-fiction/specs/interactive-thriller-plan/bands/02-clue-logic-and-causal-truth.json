@@ -1,0 +1,26 @@
+{
+  "bandId": "band_02_clue_logic",
+  "title": "Clue Logic And Causal Truth",
+  "roundStart": 11,
+  "roundEnd": 20,
+  "objective": "Ensure that method, timeline, and motive survive scrutiny and that clue access is fair.",
+  "focusPlanes": [
+    "Clue Logic And Causal Truth",
+    "Verification Fitness"
+  ],
+  "storyQuestions": [
+    "What clues are mandatory for the major reveal or ending variants?",
+    "Can the culprit's method be explained without handwaving?",
+    "Does every critical route surface enough evidence before judgment?"
+  ],
+  "defaultTargetFiles": [
+    "nodes/investigation/**",
+    "nodes/clues/**",
+    "nodes/reveal/**",
+    "systems/variables.yaml"
+  ],
+  "baseAcceptanceChecks": [
+    "Each touched reveal has a visible clue dependency chain.",
+    "Critical deductions do not rely on information unavailable on the route that uses them."
+  ]
+}

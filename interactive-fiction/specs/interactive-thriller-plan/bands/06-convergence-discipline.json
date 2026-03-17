@@ -1,0 +1,25 @@
+{
+  "bandId": "band_06_convergence",
+  "title": "Convergence Discipline",
+  "roundStart": 51,
+  "roundEnd": 60,
+  "objective": "Allow branches to merge without erasing route history or introducing contradictions.",
+  "focusPlanes": [
+    "Convergence Discipline",
+    "Reader Legibility"
+  ],
+  "storyQuestions": [
+    "Which convergence points currently forget meaningful prior play?",
+    "Which shared nodes assume facts not guaranteed on all incoming paths?",
+    "Can shared pressure replace shared text where the merge is too blunt?"
+  ],
+  "defaultTargetFiles": [
+    "nodes/merge/**",
+    "nodes/routes/**",
+    "nodes/ending/**"
+  ],
+  "baseAcceptanceChecks": [
+    "Merged nodes do not reference unavailable events.",
+    "The touched convergence retains route texture through conditionals, callbacks, or altered access."
+  ]
+}

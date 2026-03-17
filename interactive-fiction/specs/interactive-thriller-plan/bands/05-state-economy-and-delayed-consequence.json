@@ -1,0 +1,25 @@
+{
+  "bandId": "band_05_state_and_ripple",
+  "title": "State Economy And Delayed Consequence",
+  "roundStart": 41,
+  "roundEnd": 50,
+  "objective": "Keep state minimal but meaningful, and ensure important decisions echo later rather than disappearing.",
+  "focusPlanes": [
+    "State Parsimony And Delayed Consequence",
+    "Convergence Discipline"
+  ],
+  "storyQuestions": [
+    "Which variables are redundant, dead, or flavor-only?",
+    "Which choices write state that later scenes never read?",
+    "Where should a delayed consequence echo back into suspicion, access, or endings?"
+  ],
+  "defaultTargetFiles": [
+    "systems/variables.yaml",
+    "nodes/**",
+    "nodes/ending/**"
+  ],
+  "baseAcceptanceChecks": [
+    "Every touched critical variable is read later in at least two places or is intentionally downgraded.",
+    "State changes in the touched span have identifiable later payoffs."
+  ]
+}

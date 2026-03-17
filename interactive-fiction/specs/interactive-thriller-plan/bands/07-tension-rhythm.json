@@ -1,0 +1,25 @@
+{
+  "bandId": "band_07_tension_rhythm",
+  "title": "Tension Rhythm",
+  "roundStart": 61,
+  "roundEnd": 70,
+  "objective": "Tune pressure waves so the thriller accelerates, breathes, and hits harder instead of flattening out.",
+  "focusPlanes": [
+    "Tension Modulation And Play Rhythm",
+    "Hook And Player Promise"
+  ],
+  "storyQuestions": [
+    "Where is the route fatiguing because too many high-burden choices stack together?",
+    "Where is it stalling because investigation loops do not escalate?",
+    "Which scenes should shorten, and which need more oxygen?"
+  ],
+  "defaultTargetFiles": [
+    "nodes/chapter-02/**",
+    "nodes/chapter-03/**",
+    "nodes/midgame/**"
+  ],
+  "baseAcceptanceChecks": [
+    "The touched span shows a clearer pressure rise-fall pattern.",
+    "The revision reduces either repetition or reader exhaustion without lowering suspense."
+  ]
+}

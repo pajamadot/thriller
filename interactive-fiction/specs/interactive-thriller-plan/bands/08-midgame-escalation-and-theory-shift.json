@@ -1,0 +1,25 @@
+{
+  "bandId": "band_08_midgame_shift",
+  "title": "Midgame Escalation And Theory Shift",
+  "roundStart": 71,
+  "roundEnd": 80,
+  "objective": "Make the middle game reframe the player's working theories instead of simply extending investigation.",
+  "focusPlanes": [
+    "Suspicion Ecology",
+    "Tension Modulation And Play Rhythm"
+  ],
+  "storyQuestions": [
+    "What causes the player's current leading theory to wobble or mutate?",
+    "Where does the thriller escalate from clue gathering to accusation risk or exposure risk?",
+    "What changes after the midpoint besides more content?"
+  ],
+  "defaultTargetFiles": [
+    "nodes/midgame/**",
+    "nodes/reversal/**",
+    "nodes/chapter-03/**"
+  ],
+  "baseAcceptanceChecks": [
+    "The touched midgame span forces at least one serious theory revision.",
+    "Escalation introduces new pressure, not just additional exposition."
+  ]
+}

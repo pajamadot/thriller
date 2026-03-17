@@ -113,5 +113,34 @@
       "local_mode": "evomap-ledger"
     },
     "success_streak": 1
+  },
+  {
+    "type": "Capsule",
+    "schema_version": "1.5.0",
+    "id": "capsule_if_thriller_loop_20260317181309236",
+    "trigger": [
+      "genre_signal:interactive_thriller",
+      "process_signal:long_horizon_iteration",
+      "capability_gap:file_first_task_loop"
+    ],
+    "gene": "gene_if_thriller_100_round_loop",
+    "summary": "Added a modular file-first 100-round interactive thriller evolution system with quality planes, band files, and a local loop runner",
+    "content": "The system now defines 100 rounds across 10 band modules. The local quality framework begins with: # Interactive Thriller Quality Framework  This reference defines the capability targets for an interactive thriller that must be:  - gripping enough to pull the reader forward - rigorous enough to survive scrutiny",
+    "confidence": 0.91,
+    "blast_radius": {
+      "files": 8,
+      "lines": 900
+    },
+    "outcome": {
+      "status": "success",
+      "score": 0.91
+    },
+    "env_fingerprint": {
+      "platform": "win32",
+      "arch": "x64",
+      "node_version": "v22.13.0",
+      "local_mode": "evomap-ledger"
+    },
+    "success_streak": 1
   }
 ]

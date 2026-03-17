@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "interactive_thriller_100_rounds",
+  "title": "File-first 100-round interactive thriller evolution loop",
+  "mode": "file-first",
+  "totalRounds": 100,
+  "slotsFile": "slots.json",
+  "bandsDir": "bands",
+  "references": [
+    "interactive-fiction/references/interactive-thriller-quality.md",
+    "interactive-fiction/references/choice-design.md",
+    "interactive-fiction/references/interactive-pacing.md",
+    "interactive-fiction/references/narrative-convergence.md",
+    "interactive-fiction/references/state-management.md",
+    "interactive-fiction/references/testing-methodology.md"
+  ],
+  "defaultVerificationCommands": [
+    "node thriller/scripts/compile-vn-project.js <project-dir>",
+    "node thriller/scripts/doctor-vn-project.js <project-dir>",
+    "node thriller/scripts/validate-vn-json.js <project-dir>/build/story.json"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "bandId": "band_01_promise_and_agency",
+  "title": "Promise and Agency",
+  "roundStart": 1,
+  "roundEnd": 10,
+  "objective": "Make the opening irresistible and define what the player can actually do inside the thriller.",
+  "focusPlanes": [
+    "Hook And Player Promise",
+    "Choice Pressure"
+  ],
+  "storyQuestions": [
+    "What danger, mystery, or social threat arrives inside the first two scenes?",
+    "What can the player actually choose to do besides reading exposition?",
+    "What first choice changes information, trust, or risk in a visible way?"
+  ],
+  "defaultTargetFiles": [
+    "manifest.yaml",
+    "nodes/opening/**",
+    "nodes/chapter-01/**",
+    "systems/variables.yaml"
+  ],
+  "baseAcceptanceChecks": [
+    "A first-time reader can state the central mystery after the opening.",
+    "The first interactive choice alters the next scene, available clue, or relationship pressure."
+  ]
+}

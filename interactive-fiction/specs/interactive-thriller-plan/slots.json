@@ -1,0 +1,173 @@
+[
+  {
+    "slot": 1,
+    "label": "Audit the current weakness",
+    "hypothesisStem": "If the current weakness is described precisely, later rounds can target the real failure instead of a surface symptom.",
+    "mutationMoves": [
+      "Name the current failure in one sentence.",
+      "List the scene, choice, clue, or convergence pattern causing it.",
+      "Translate the weakness into a player-facing failure."
+    ],
+    "acceptanceAdditions": [
+      "The weakness is framed as an observable reader or player failure.",
+      "The round leaves behind a falsifiable hypothesis."
+    ],
+    "deliverables": [
+      "A round brief with a named failure mode.",
+      "A before-state note anchored to concrete files."
+    ]
+  },
+  {
+    "slot": 2,
+    "label": "Tighten the contract",
+    "hypothesisStem": "If the local contract is clearer, the player will understand the threat, the verb set, and the immediate stakes sooner.",
+    "mutationMoves": [
+      "Tighten the promise in opening or transition text.",
+      "Clarify what the player is choosing between.",
+      "Reduce ambiguity that hides intent rather than building suspense."
+    ],
+    "acceptanceAdditions": [
+      "The local scene or segment signals intent before choice.",
+      "The revised text preserves suspense while improving legibility."
+    ],
+    "deliverables": [
+      "A rewritten opening, transition, or choice prompt."
+    ]
+  },
+  {
+    "slot": 3,
+    "label": "Rewrite a small structural unit",
+    "hypothesisStem": "If one small structural unit is rewritten instead of patched, the surrounding route will become easier to reason about.",
+    "mutationMoves": [
+      "Replace one brittle node cluster with a cleaner local sequence.",
+      "Remove one false branch that adds cost without value.",
+      "Add one missing structural beat where the route currently jumps too fast."
+    ],
+    "acceptanceAdditions": [
+      "The rewritten unit has a clearer causal shape than before.",
+      "The change reduces hidden assumptions between adjacent nodes."
+    ],
+    "deliverables": [
+      "A compact rewrite affecting one node family or one route segment."
+    ]
+  },
+  {
+    "slot": 4,
+    "label": "Sharpen choice consequence",
+    "hypothesisStem": "If option intent and cost are sharper, the interaction will feel more playable and less cosmetic.",
+    "mutationMoves": [
+      "Rewrite choice labels around distinct intentions.",
+      "Expose a trust, time, risk, or information tradeoff.",
+      "Make at least one consequence visible within one to three later nodes."
+    ],
+    "acceptanceAdditions": [
+      "Each choice can be paraphrased as a distinct strategy.",
+      "At least one downstream effect becomes visible quickly."
+    ],
+    "deliverables": [
+      "One choice set with clearer strategic contrast."
+    ]
+  },
+  {
+    "slot": 5,
+    "label": "Reinforce logic and redundancy",
+    "hypothesisStem": "If clue and state dependencies are reinforced here, the route will better survive scrutiny and replay.",
+    "mutationMoves": [
+      "Add or reroute one clue path.",
+      "Remove one reveal that lacks prerequisite support.",
+      "Mark one state change that needs a later payoff."
+    ],
+    "acceptanceAdditions": [
+      "No reveal in the touched area depends on unreachable knowledge.",
+      "Critical information has at least one visible support path."
+    ],
+    "deliverables": [
+      "One dependency note or rewrite that improves fairness."
+    ]
+  },
+  {
+    "slot": 6,
+    "label": "Preserve route memory",
+    "hypothesisStem": "If convergence preserves route memory instead of flattening it, the story will stay replayable without multiplying content forever.",
+    "mutationMoves": [
+      "Add conditional texture at a merge.",
+      "Replace one generic merge with a pressure-based convergence.",
+      "Carry a prior action forward through dialogue, access, or suspicion."
+    ],
+    "acceptanceAdditions": [
+      "The merge acknowledges meaningful prior play when relevant.",
+      "Shared text does not assume facts absent on some incoming paths."
+    ],
+    "deliverables": [
+      "One convergence point with stronger path memory."
+    ]
+  },
+  {
+    "slot": 7,
+    "label": "Tune pace and tension",
+    "hypothesisStem": "If the local rhythm is tuned, the player will feel accumulation instead of repetition or exhaustion.",
+    "mutationMoves": [
+      "Shorten one overlong pressure scene.",
+      "Insert one reflection or investigation beat before a burden spike.",
+      "Compress one repetitive clue loop into a sharper exchange."
+    ],
+    "acceptanceAdditions": [
+      "The touched span has a clearer rise-fall pattern.",
+      "The revision reduces boredom without flattening suspense."
+    ],
+    "deliverables": [
+      "A pacing adjustment note and one edited scene cluster."
+    ]
+  },
+  {
+    "slot": 8,
+    "label": "Test downstream payoff",
+    "hypothesisStem": "If downstream payoff is checked early, the route will feel earned when replayed and less hollow on first read.",
+    "mutationMoves": [
+      "Trace one local change into later scenes or endings.",
+      "Add one callback line, gate, or reveal response.",
+      "Cut one dangling setup that never pays off."
+    ],
+    "acceptanceAdditions": [
+      "The touched element now has a later consequence or callback.",
+      "The route gains at least one replay-relevant texture."
+    ],
+    "deliverables": [
+      "One explicit payoff map or inserted callback."
+    ]
+  },
+  {
+    "slot": 9,
+    "label": "Red-team the route",
+    "hypothesisStem": "If the route is attacked from a hostile reader viewpoint, hidden contradictions and dead energy will surface before they harden.",
+    "mutationMoves": [
+      "Attack the route for boredom, unfairness, or impossible inference.",
+      "Write the strongest skeptical reading of the current logic.",
+      "List one change that would break the route and guard against it."
+    ],
+    "acceptanceAdditions": [
+      "The round records one adversarial objection and one response.",
+      "A contradiction, fairness gap, or dull patch is either fixed or explicitly parked."
+    ],
+    "deliverables": [
+      "A red-team note with one defended fix."
+    ]
+  },
+  {
+    "slot": 10,
+    "label": "Codify the gain",
+    "hypothesisStem": "If the gain is codified now, later rounds can reuse it instead of re-learning the same lesson.",
+    "mutationMoves": [
+      "Write a stable rule for future rounds.",
+      "Record what improved and why.",
+      "Name the next likely blind spot created by this improvement."
+    ],
+    "acceptanceAdditions": [
+      "The round leaves behind one reusable rule.",
+      "The checkpoint explains why the band mattered."
+    ],
+    "deliverables": [
+      "A checkpoint summary and one next-band handoff note."
+    ]
+  }
+]

@@ -226,5 +226,66 @@
     "validation": [
       "node thriller/scripts/compile-vn-project.js thriller/interactive-fiction/templates/vn-project"
     ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_if_thriller_quality_planes",
+    "summary": "Model interactive thriller quality as reader pull, deductive integrity, and playable consequence across explicit capability planes",
+    "category": "innovate",
+    "signals_match": [
+      "genre_signal:interactive_thriller",
+      "capability_gap:playable_suspense",
+      "capability_gap:logic_rigor"
+    ],
+    "preconditions": [
+      "the project already uses a file-first visual novel package layout"
+    ],
+    "strategy": [
+      "Define quality planes instead of relying on vague taste",
+      "Name failure modes for suspense, logic, convergence, and endings",
+      "Turn narrative taste into acceptance checks that a later round can challenge"
+    ],
+    "constraints": {
+      "max_files": 6,
+      "forbidden_paths": [
+        ".git",
+        "node_modules",
+        "projects"
+      ]
+    },
+    "validation": [
+      "interactive-fiction/references/interactive-thriller-quality.md exists"
+    ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_if_thriller_100_round_loop",
+    "summary": "Run a file-only 100-round thriller evolution loop that scaffolds rounds, checkpoints, and local logs without requiring a database",
+    "category": "optimize",
+    "signals_match": [
+      "process_signal:long_horizon_iteration",
+      "capability_gap:file_first_task_loop",
+      "capability_gap:checkpointed_thriller_iteration"
+    ],
+    "preconditions": [
+      "the repository can run local node scripts"
+    ],
+    "strategy": [
+      "Expand a 10-band plan into 100 concrete rounds",
+      "Generate round briefs, checkpoints, and run state under meta/runs",
+      "Keep generated run artifacts local and git-ignored while preserving the method in code"
+    ],
+    "constraints": {
+      "max_files": 8,
+      "forbidden_paths": [
+        ".git",
+        "node_modules"
+      ]
+    },
+    "validation": [
+      "node thriller/scripts/run-interactive-thriller-evolution-loop.js status --base-dir <temp-run-dir>"
+    ]
   }
 ]

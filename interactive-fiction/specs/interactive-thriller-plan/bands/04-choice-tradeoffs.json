@@ -1,0 +1,25 @@
+{
+  "bandId": "band_04_choice_tradeoffs",
+  "title": "Choice Tradeoffs",
+  "roundStart": 31,
+  "roundEnd": 40,
+  "objective": "Turn choices into meaningful trades of information, trust, safety, time, and moral position.",
+  "focusPlanes": [
+    "Choice Pressure",
+    "State Parsimony And Delayed Consequence"
+  ],
+  "storyQuestions": [
+    "Where are current choices cosmetic or dominant-strategy?",
+    "What does each option cost the player in the short term and later on?",
+    "Which choices need earlier or clearer consequence?"
+  ],
+  "defaultTargetFiles": [
+    "nodes/choices/**",
+    "nodes/dialogue/**",
+    "systems/variables.yaml"
+  ],
+  "baseAcceptanceChecks": [
+    "Each touched choice set expresses distinct intention and tradeoff.",
+    "At least one consequence becomes visible within one to three subsequent nodes."
+  ]
+}

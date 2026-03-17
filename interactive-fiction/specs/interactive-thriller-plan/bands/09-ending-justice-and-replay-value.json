@@ -1,0 +1,25 @@
+{
+  "bandId": "band_09_endings_and_replay",
+  "title": "Ending Justice And Replay Value",
+  "roundStart": 81,
+  "roundEnd": 90,
+  "objective": "Make endings feel earned and ensure replay reveals new interpretive value rather than alternate wallpaper.",
+  "focusPlanes": [
+    "Ending Justice And Replay Value",
+    "Clue Logic And Causal Truth"
+  ],
+  "storyQuestions": [
+    "What pattern of play leads to each ending, and is that pattern traceable?",
+    "Do non-ideal endings still resolve emotionally and logically?",
+    "What replay-only texture changes interpretation rather than merely branching text?"
+  ],
+  "defaultTargetFiles": [
+    "nodes/ending/**",
+    "nodes/reveal/**",
+    "systems/variables.yaml"
+  ],
+  "baseAcceptanceChecks": [
+    "Each touched ending corresponds to a traceable pattern of play.",
+    "At least one replay path now reveals theory-level meaning rather than only extra prose."
+  ]
+}

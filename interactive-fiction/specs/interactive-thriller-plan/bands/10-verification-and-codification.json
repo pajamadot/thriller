@@ -1,0 +1,25 @@
+{
+  "bandId": "band_10_verification_and_codification",
+  "title": "Verification And Codification",
+  "roundStart": 91,
+  "roundEnd": 100,
+  "objective": "Leave behind a stronger local method so larger thriller projects remain testable, explainable, and reusable.",
+  "focusPlanes": [
+    "Verification Fitness",
+    "Reader Legibility"
+  ],
+  "storyQuestions": [
+    "Which failure classes still escape local checks?",
+    "What should become a stable rule or checklist instead of a rediscovered instinct?",
+    "What parts of the workflow are still too implicit for another writer or agent to repeat?"
+  ],
+  "defaultTargetFiles": [
+    "interactive-fiction/references/**",
+    "interactive-fiction/specs/**",
+    "scripts/**"
+  ],
+  "baseAcceptanceChecks": [
+    "The round leaves behind a reusable rule, template, or check.",
+    "The method can explain why a round mattered and what it changed."
+  ]
+}

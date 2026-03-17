@@ -1,0 +1,26 @@
+{
+  "bandId": "band_03_suspicion_ecology",
+  "title": "Suspicion Ecology",
+  "roundStart": 21,
+  "roundEnd": 30,
+  "objective": "Make multiple suspect theories feel alive at once through distinct motives, opportunities, and reactions.",
+  "focusPlanes": [
+    "Suspicion Ecology",
+    "Reader Legibility"
+  ],
+  "storyQuestions": [
+    "How many plausible suspect theories can a midgame player currently hold?",
+    "What does each major suspect look like when read as innocent versus dangerous?",
+    "Where is social pressure generating theory rather than noise?"
+  ],
+  "defaultTargetFiles": [
+    "cast/characters.yaml",
+    "nodes/interrogation/**",
+    "nodes/social/**",
+    "nodes/midgame/**"
+  ],
+  "baseAcceptanceChecks": [
+    "At least three plausible theories remain legible in the touched span.",
+    "Major suspects react to pressure in distinguishable ways."
+  ]
+}
