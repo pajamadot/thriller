@@ -1,0 +1,10 @@
+characters:
+  - id: char.protagonist
+    name: Mara
+    description: A skeptical investigative journalist.
+    default_expression: neutral
+
+  - id: char.host
+    name: Elias Voss
+    description: The owner of the estate, composed and unreadable.
+    default_expression: calm

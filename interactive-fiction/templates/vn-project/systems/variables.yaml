@@ -1,0 +1,12 @@
+variables:
+  - id: flag.key_found
+    type: boolean
+    default: false
+
+  - id: trust.host
+    type: number
+    default: 40
+
+  - id: flag.followed_host
+    type: boolean
+    default: false

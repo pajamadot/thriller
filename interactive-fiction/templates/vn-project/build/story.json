@@ -1,0 +1,326 @@
+{
+  "meta": {
+    "format": "vn-package/v1",
+    "id": "project.mirror-house",
+    "title": "Mirror House",
+    "entry": "n000-start",
+    "defaultLocale": "en",
+    "tags": [],
+    "compiler": "thriller/compile-vn-project",
+    "sourceLayout": "vn-project/v1"
+  },
+  "entities": {
+    "characters": [
+      {
+        "id": "char.protagonist",
+        "name": "Mara",
+        "description": "A skeptical investigative journalist.",
+        "defaultExpression": "neutral"
+      },
+      {
+        "id": "char.host",
+        "name": "Elias Voss",
+        "description": "The owner of the estate, composed and unreadable.",
+        "defaultExpression": "calm"
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc.foyer",
+        "name": "Foyer",
+        "description": "A cold marble foyer with a locked side door.",
+        "background": "bg.foyer"
+      },
+      {
+        "id": "loc.hallway",
+        "name": "Hallway",
+        "description": "A narrow hall lined with family portraits.",
+        "background": "bg.hallway"
+      }
+    ],
+    "variables": [
+      {
+        "id": "flag.key_found",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "id": "trust.host",
+        "type": "number",
+        "default": 40
+      },
+      {
+        "id": "flag.followed_host",
+        "type": "boolean",
+        "default": false
+      }
+    ],
+    "assets": [
+      {
+        "id": "bg.foyer",
+        "kind": "background",
+        "path": "assets/backgrounds/foyer.png"
+      },
+      {
+        "id": "bg.hallway",
+        "kind": "background",
+        "path": "assets/backgrounds/hallway.png"
+      },
+      {
+        "id": "bgm.intro",
+        "kind": "music",
+        "path": "assets/audio/intro.ogg"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "e100-locked-out",
+      "kind": "ending",
+      "title": "Locked Out",
+      "location": "loc.foyer",
+      "presentation": {
+        "background": "bg.foyer"
+      },
+      "body": [
+        {
+          "kind": "narration",
+          "text": "Mara rattles the handle, but the lock refuses to yield."
+        }
+      ],
+      "source": {
+        "file": "nodes/e100-locked-out.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Locked Out"
+    },
+    {
+      "id": "e110-curious-ending",
+      "kind": "ending",
+      "title": "Curious Ending",
+      "location": "loc.hallway",
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "body": [
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "calm",
+          "text": "If you ask the wrong question too early, the house answers instead of me."
+        }
+      ],
+      "source": {
+        "file": "nodes/e110-curious-ending.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Curious Ending"
+    },
+    {
+      "id": "e120-silent-ending",
+      "kind": "ending",
+      "title": "Silent Ending",
+      "location": "loc.hallway",
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "body": [
+        {
+          "kind": "narration",
+          "text": "Mara says nothing. The silence becomes its own accusation."
+        }
+      ],
+      "source": {
+        "file": "nodes/e120-silent-ending.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Silent Ending"
+    },
+    {
+      "id": "n000-start",
+      "kind": "start",
+      "title": "Start",
+      "to": "n010-foyer-arrival",
+      "source": {
+        "file": "nodes/n000-start.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Start\n\nRuntime entry node. No prose lives here."
+    },
+    {
+      "id": "n010-foyer-arrival",
+      "kind": "scene",
+      "title": "Foyer Arrival",
+      "location": "loc.foyer",
+      "presentation": {
+        "background": "bg.foyer",
+        "music": "bgm.intro"
+      },
+      "cast": [
+        {
+          "character": "char.protagonist",
+          "expression": "neutral",
+          "pose": "standing",
+          "position": "left",
+          "visible": true
+        },
+        {
+          "character": "char.host",
+          "expression": "calm",
+          "pose": "standing",
+          "position": "right",
+          "visible": true
+        }
+      ],
+      "body": [
+        {
+          "kind": "narration",
+          "text": "The foyer smells faintly of rain and old varnish."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "calm",
+          "text": "Welcome. The storm cut the road behind you."
+        }
+      ],
+      "choices": [
+        {
+          "id": "inspect-door",
+          "text": "Inspect the locked side door.",
+          "to": "n020-door-check",
+          "effects": [
+            {
+              "op": "set",
+              "target": "flag.key_found",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "follow-host",
+          "text": "Follow Elias deeper into the house.",
+          "to": "n030-hallway",
+          "effects": [
+            {
+              "op": "set",
+              "target": "flag.followed_host",
+              "value": true
+            },
+            {
+              "op": "increment",
+              "target": "trust.host",
+              "value": 10
+            }
+          ]
+        }
+      ],
+      "source": {
+        "file": "nodes/n010-foyer-arrival.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Foyer Arrival\n\nUse `scene` for most visual novel moments."
+    },
+    {
+      "id": "n020-door-check",
+      "kind": "condition",
+      "title": "Door Check",
+      "expression": {
+        "all": [
+          {
+            "var": "flag.key_found",
+            "op": "eq",
+            "value": true
+          }
+        ]
+      },
+      "onTrue": "n040-secret-room",
+      "onFalse": "e100-locked-out",
+      "source": {
+        "file": "nodes/n020-door-check.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Door Check\n\nLogic-only node. No player-facing prose required."
+    },
+    {
+      "id": "n030-hallway",
+      "kind": "scene",
+      "title": "Hallway",
+      "location": "loc.hallway",
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "cast": [
+        {
+          "character": "char.protagonist",
+          "expression": "wary",
+          "pose": "walking",
+          "position": "center",
+          "visible": true
+        },
+        {
+          "character": "char.host",
+          "expression": "calm",
+          "pose": "walking",
+          "position": "right",
+          "visible": true
+        }
+      ],
+      "body": [
+        {
+          "kind": "narration",
+          "text": "The portraits seem to watch Mara as she walks."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "calm",
+          "text": "My family had a habit of keeping secrets in plain sight."
+        }
+      ],
+      "choices": [
+        {
+          "id": "press-host",
+          "text": "Ask what he means.",
+          "to": "e110-curious-ending"
+        },
+        {
+          "id": "stay-silent",
+          "text": "Keep the thought to yourself for now.",
+          "to": "e120-silent-ending"
+        }
+      ],
+      "source": {
+        "file": "nodes/n030-hallway.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Hallway\n\nExample of a standard prose node with local choices."
+    },
+    {
+      "id": "n040-secret-room",
+      "kind": "ending",
+      "title": "Secret Room",
+      "location": "loc.foyer",
+      "presentation": {
+        "background": "bg.foyer"
+      },
+      "body": [
+        {
+          "kind": "narration",
+          "text": "The door gives way. A hidden room waits behind it, lit by the pulse of an old projector."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "calm",
+          "text": "You found the version of the story I was trying to bury."
+        }
+      ],
+      "source": {
+        "file": "nodes/n040-secret-room.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Secret Room\n\nTerminal ending node."
+    }
+  ]
+}

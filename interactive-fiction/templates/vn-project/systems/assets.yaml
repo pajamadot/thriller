@@ -1,0 +1,12 @@
+assets:
+  - id: bg.foyer
+    kind: background
+    path: assets/backgrounds/foyer.png
+
+  - id: bg.hallway
+    kind: background
+    path: assets/backgrounds/hallway.png
+
+  - id: bgm.intro
+    kind: music
+    path: assets/audio/intro.ogg

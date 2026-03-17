@@ -5,8 +5,14 @@
     "id": "gene_thriller_methodology_gap_fix",
     "summary": "Detect and fix methodology gaps identified through /retro project retrospectives",
     "category": "repair",
-    "signals_match": ["methodology_gap", "retro_finding", "workflow_friction"],
-    "preconditions": ["at least one /retro has been completed with methodology findings"],
+    "signals_match": [
+      "methodology_gap",
+      "retro_finding",
+      "workflow_friction"
+    ],
+    "preconditions": [
+      "at least one /retro has been completed with methodology findings"
+    ],
     "strategy": [
       "Read all meta/retro-*.md files to collect methodology gap signals",
       "Classify gaps: workflow (SKILL.md), reference (references/*.md), or evaluation (/check)",
@@ -15,8 +21,17 @@
       "For evaluation gaps: update scoring rubrics with sub-type-specific weights",
       "Validate: re-run the test scenario that exposed the gap to confirm fix"
     ],
-    "constraints": { "max_files": 8, "forbidden_paths": [".git", "node_modules", "projects"] },
-    "validation": ["node -e \"const fs=require('fs'); const f=fs.readdirSync('thriller-writing/references'); console.log('refs:', f.length); if(f.length<10) throw new Error('missing refs')\""]
+    "constraints": {
+      "max_files": 8,
+      "forbidden_paths": [
+        ".git",
+        "node_modules",
+        "projects"
+      ]
+    },
+    "validation": [
+      "node -e \"const fs=require('fs'); const f=fs.readdirSync('thriller-writing/references'); console.log('refs:', f.length); if(f.length<10) throw new Error('missing refs')\""
+    ]
   },
   {
     "type": "Gene",
@@ -24,8 +39,14 @@
     "id": "gene_thriller_benchmark_integrate",
     "summary": "Integrate findings from external methodology benchmarks into the skill system",
     "category": "optimize",
-    "signals_match": ["benchmark_finding", "external_methodology", "research_insight"],
-    "preconditions": ["meta/benchmark-*.md exists with actionable findings"],
+    "signals_match": [
+      "benchmark_finding",
+      "external_methodology",
+      "research_insight"
+    ],
+    "preconditions": [
+      "meta/benchmark-*.md exists with actionable findings"
+    ],
     "strategy": [
       "Read meta/benchmark-*.md to identify high-priority integration items",
       "For each item: determine target file (existing reference or new file)",
@@ -34,8 +55,16 @@
       "Update README.md methodology sources table if new sources added",
       "Update meta/CHANGELOG.md and meta/VERSION.md"
     ],
-    "constraints": { "max_files": 12, "forbidden_paths": [".git", "node_modules"] },
-    "validation": ["node -e \"const fs=require('fs'); const c=fs.readFileSync('meta/CHANGELOG.md','utf8'); if(!c.includes('v2')) throw new Error('changelog not updated')\""]
+    "constraints": {
+      "max_files": 12,
+      "forbidden_paths": [
+        ".git",
+        "node_modules"
+      ]
+    },
+    "validation": [
+      "node -e \"const fs=require('fs'); const c=fs.readFileSync('meta/CHANGELOG.md','utf8'); if(!c.includes('v2')) throw new Error('changelog not updated')\""
+    ]
   },
   {
     "type": "Gene",
@@ -43,8 +72,16 @@
     "id": "gene_thriller_innovate_new_technique",
     "summary": "Create novel thriller writing techniques by synthesizing multiple methodology sources",
     "category": "innovate",
-    "signals_match": ["opportunity", "capability_gap", "creative_writing_innovation", "test_low_score"],
-    "preconditions": ["system is stable (no active repair signals)", "at least one test project completed"],
+    "signals_match": [
+      "opportunity",
+      "capability_gap",
+      "creative_writing_innovation",
+      "test_low_score"
+    ],
+    "preconditions": [
+      "system is stable (no active repair signals)",
+      "at least one test project completed"
+    ],
     "strategy": [
       "Identify the capability gap from test results or user feedback",
       "Search across all reference files for related partial solutions",
@@ -54,8 +91,16 @@
       "Test by applying the technique to the active project (mirror-visitor)",
       "Record the innovation in meta/CHANGELOG.md"
     ],
-    "constraints": { "max_files": 6, "forbidden_paths": [".git", "node_modules"] },
-    "validation": ["node -e \"const fs=require('fs'); console.log('ok')\""]
+    "constraints": {
+      "max_files": 6,
+      "forbidden_paths": [
+        ".git",
+        "node_modules"
+      ]
+    },
+    "validation": [
+      "node -e \"const fs=require('fs'); console.log('ok')\""
+    ]
   },
   {
     "type": "Gene",
@@ -63,8 +108,14 @@
     "id": "gene_thriller_autopsy_extract",
     "summary": "Reverse-engineer published thriller works to extract techniques not in current methodology",
     "category": "innovate",
-    "signals_match": ["autopsy_completed", "work_analysis", "technique_extraction"],
-    "preconditions": ["meta/autopsy-*.md exists with extracted patterns"],
+    "signals_match": [
+      "autopsy_completed",
+      "work_analysis",
+      "technique_extraction"
+    ],
+    "preconditions": [
+      "meta/autopsy-*.md exists with extracted patterns"
+    ],
     "strategy": [
       "Read the autopsy report for techniques marked as 'method cannot explain'",
       "For each unexplainable technique: formalize it into a reusable pattern",
@@ -72,7 +123,108 @@
       "Add with [Experiment] tag for future validation",
       "Cross-reference: does this technique conflict with any existing principle?"
     ],
-    "constraints": { "max_files": 4, "forbidden_paths": [".git", "node_modules"] },
-    "validation": ["node -e \"console.log('autopsy gene ok')\""]
+    "constraints": {
+      "max_files": 4,
+      "forbidden_paths": [
+        ".git",
+        "node_modules"
+      ]
+    },
+    "validation": [
+      "node -e \"console.log('autopsy gene ok')\""
+    ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_if_vn_package_generalize",
+    "summary": "Generalize visual novel content into an engine-neutral package with stable node taxonomy and import-friendly exchange format",
+    "category": "innovate",
+    "signals_match": [
+      "capability_gap:engine_neutral_package",
+      "capability_gap:node_taxonomy",
+      "import_signal:runtime_adapter_needs"
+    ],
+    "preconditions": [
+      "interactive-fiction project uses manifest plus nodes directory layout"
+    ],
+    "strategy": [
+      "Refine the node taxonomy around start scene ending and explicit logic nodes",
+      "Keep prose presentation and logic separated in the compiled contract",
+      "Preserve declarative conditions and effects instead of engine-specific scripting",
+      "Validate the result as a single compiled exchange artifact"
+    ],
+    "constraints": {
+      "max_files": 10,
+      "forbidden_paths": [
+        ".git",
+        "node_modules",
+        "projects"
+      ]
+    },
+    "validation": [
+      "node thriller/scripts/validate-vn-json.js thriller/interactive-fiction/templates/vn-project/build/story.json"
+    ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_if_compile_doctor_loop",
+    "summary": "Strengthen the local authoring loop by compiling markdown-plus-yaml projects and running deterministic graph doctor checks",
+    "category": "optimize",
+    "signals_match": [
+      "capability_gap:authoring_compile_loop",
+      "capability_gap:graph_doctor",
+      "scale_signal:chapter_route_layout"
+    ],
+    "preconditions": [
+      "authoring layout uses one node file per runtime node"
+    ],
+    "strategy": [
+      "Compile project folders into one story.json artifact",
+      "Track the source file for each compiled node",
+      "Detect missing targets and unreachable runtime nodes",
+      "Keep the workflow local and deterministic before any importer step"
+    ],
+    "constraints": {
+      "max_files": 8,
+      "forbidden_paths": [
+        ".git",
+        "node_modules"
+      ]
+    },
+    "validation": [
+      "node thriller/scripts/doctor-vn-project.js thriller/interactive-fiction/templates/vn-project"
+    ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_if_scale_authoring_layout",
+    "summary": "Scale the one-node-one-file visual novel layout with chapter route and tag metadata plus recursive node discovery",
+    "category": "optimize",
+    "signals_match": [
+      "scale_signal:chapter_route_layout",
+      "capability_gap:large_project_authoring"
+    ],
+    "preconditions": [
+      "the package already has a stable compiled contract"
+    ],
+    "strategy": [
+      "Allow nested folders under nodes",
+      "Add chapter route and tags to node metadata",
+      "Keep source files small and semantically scoped",
+      "Preserve the same compiled exchange contract regardless of folder depth"
+    ],
+    "constraints": {
+      "max_files": 6,
+      "forbidden_paths": [
+        ".git",
+        "node_modules"
+      ]
+    },
+    "validation": [
+      "node thriller/scripts/compile-vn-project.js thriller/interactive-fiction/templates/vn-project"
+    ]
   }
 ]

@@ -1,0 +1,10 @@
+locations:
+  - id: loc.foyer
+    name: Foyer
+    description: A cold marble foyer with a locked side door.
+    background: bg.foyer
+
+  - id: loc.hallway
+    name: Hallway
+    description: A narrow hall lined with family portraits.
+    background: bg.hallway

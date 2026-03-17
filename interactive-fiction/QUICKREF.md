@@ -82,3 +82,37 @@ Twine Sugar:    <<set $var to val>> <<if $var>>text<</if>> [[link]]
 ink:            ~ var = val  { var: text }  -> knot  + [choice]
 ChoiceScript:   *set var val  *if (var)  *choice  #option  *goto label
 ```
+
+## General VN Node Kinds
+```
+start       entry only
+scene       primary VN prose + cast + presentation + optional choices
+condition   branch on state
+instruction apply effects then continue
+hub         merge / route without prose
+jump        redirect to another node
+ending      terminal prose node
+annotation  authoring-only note
+```
+
+## AI-Friendly Project Layout
+```text
+manifest.yaml
+cast/characters.yaml
+world/locations.yaml
+systems/variables.yaml
+nodes/*.md
+build/story.json
+```
+
+Compiled package spec:
+`interactive-fiction/specs/vn-package.md`
+
+## Local Toolchain
+```bash
+node thriller/scripts/compile-vn-project.js <project-dir>
+node thriller/scripts/doctor-vn-project.js <project-dir>
+node thriller/scripts/validate-vn-json.js <project-dir>/build/story.json
+node thriller/scripts/record-vn-evomap.js
+node thriller/scripts/evomap-publish.js --dry-run
+```

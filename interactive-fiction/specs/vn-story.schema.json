@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/vn-story.schema.json",
+  "title": "Visual Novel Content Package",
+  "type": "object",
+  "required": ["meta", "entities", "nodes"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["format", "id", "title", "entry", "defaultLocale"],
+      "properties": {
+        "format": { "const": "vn-package/v1" },
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "entry": { "type": "string", "minLength": 1 },
+        "defaultLocale": { "type": "string", "minLength": 2 },
+        "compiler": { "type": "string" },
+        "sourceLayout": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "entities": {
+      "type": "object",
+      "required": ["characters", "locations", "variables", "assets"],
+      "properties": {
+        "characters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "defaultExpression": { "type": "string" }
+            },
+            "additionalProperties": true
+          }
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "background": { "type": "string" }
+            },
+            "additionalProperties": true
+          }
+        },
+        "variables": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type", "default"],
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "enum": ["boolean", "number", "string", "enum"] },
+              "default": {},
+              "enumValues": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "kind"],
+            "properties": {
+              "id": { "type": "string" },
+              "kind": { "type": "string" },
+              "path": { "type": "string" }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "title"],
+        "properties": {
+          "id": { "type": "string" },
+          "kind": {
+            "enum": [
+              "start",
+              "scene",
+              "condition",
+              "instruction",
+              "hub",
+              "jump",
+              "ending",
+              "annotation"
+            ]
+          },
+          "title": { "type": "string" },
+          "chapter": { "type": "string" },
+          "route": { "type": "string" },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "location": { "type": "string" },
+          "to": { "type": "string" },
+          "target": { "type": "string" },
+          "onTrue": { "type": "string" },
+          "onFalse": { "type": "string" },
+          "expression": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "object" }
+            ]
+          },
+          "presentation": { "type": "object" },
+          "cast": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["character"],
+              "properties": {
+                "character": { "type": "string" },
+                "expression": { "type": "string" },
+                "pose": { "type": "string" },
+                "position": {
+                  "enum": ["far-left", "left", "center", "right", "far-right"]
+                },
+                "visible": { "type": "boolean" }
+              },
+              "additionalProperties": true
+            }
+          },
+          "body": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["kind", "text"],
+              "properties": {
+                "kind": {
+                  "enum": ["narration", "dialogue", "stage_direction", "aside"]
+                },
+                "text": { "type": "string" },
+                "speaker": { "type": "string" },
+                "expression": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "text", "to"],
+              "properties": {
+                "id": { "type": "string" },
+                "text": { "type": "string" },
+                "to": { "type": "string" },
+                "conditions": {
+                  "oneOf": [
+                    { "type": "string" },
+                    { "type": "object" }
+                  ]
+                },
+                "effects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["op", "target"],
+                    "properties": {
+                      "op": {
+                        "enum": [
+                          "set",
+                          "increment",
+                          "decrement",
+                          "toggle",
+                          "push_tag",
+                          "remove_tag"
+                        ]
+                      },
+                      "target": { "type": "string" },
+                      "value": {}
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "tags": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "effects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["op", "target"],
+              "properties": {
+                "op": {
+                  "enum": [
+                    "set",
+                    "increment",
+                    "decrement",
+                    "toggle",
+                    "push_tag",
+                    "remove_tag"
+                  ]
+                },
+                "target": { "type": "string" },
+                "value": {}
+              },
+              "additionalProperties": true
+            }
+          },
+          "notes": { "type": "string" }
+          ,
+          "source": {
+            "type": "object",
+            "properties": {
+              "file": { "type": "string" },
+              "format": { "type": "string" }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

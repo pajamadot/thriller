@@ -1,0 +1,7 @@
+format: vn-package/v1
+project_id: project.mirror-house
+title: Mirror House
+default_locale: en
+entry: n000-start
+node_directory: nodes
+compiled_story: build/story.json
