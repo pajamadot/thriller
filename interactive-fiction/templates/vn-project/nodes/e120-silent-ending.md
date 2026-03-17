@@ -9,7 +9,7 @@ presentation:
   background: bg.hallway
 body:
   - kind: narration
-    text: Mara says nothing. Elias mistakes her silence for patience, and the house keeps one more minute of advantage.
+    text: Mara says nothing. Elias mistakes her silence for patience, and the house gives her one more minute to learn why a missing nameplate matters.
 ---
 
 # Silent Ending

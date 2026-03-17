@@ -25,8 +25,8 @@ Make the opening irresistible and define what the player can actually do inside 
 - The first interactive choice alters the next scene, available clue, or relationship pressure.
 
 ## Baseline Snapshot
-- Reachable player nodes: 7
-- Introduced clues: 9
+- Reachable player nodes: 9
+- Introduced clues: 13
 - Required clues: 3
 - Current general warnings: 0
 - Current thriller warnings: 0

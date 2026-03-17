@@ -13,7 +13,7 @@ body:
   - kind: dialogue
     speaker: char.host
     expression: calm
-    text: If you ask the right question before you have any leverage, Mara, all you learn is how practiced I am at lying to frightened guests.
+    text: If you accuse me while the gallery is still doing the accusing for you, Mara, all you learn is how practiced I am at surviving the first question.
 ---
 
 # Curious Ending

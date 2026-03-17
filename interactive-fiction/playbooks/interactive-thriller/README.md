@@ -5,8 +5,8 @@ Total rounds: 100
 Bands: 10
 
 ## Baseline
-- Reachable player nodes: 7
-- Introduced clues: 9
+- Reachable player nodes: 9
+- Introduced clues: 13
 - Required clues: 3
 - General warnings: 0
 - Thriller warnings: 0

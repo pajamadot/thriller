@@ -338,6 +338,55 @@ function commandStatus(args) {
   console.log(`Next: ${(pendingRounds(state)[0] || {}).id || 'none'}`);
 }
 
+function commandSetRound(args) {
+  const baseDir = resolveBaseDir(args);
+  const runId = resolveRunId(baseDir, args);
+  const roundId = args._[1];
+  if (!runId) {
+    throw new Error('No active run. Use init first or pass --run-id.');
+  }
+  if (!roundId) {
+    throw new Error('Usage: set-round <round-id> [--status pending|completed] [--outcome value] [--note text]');
+  }
+
+  const state = loadState(baseDir, runId);
+  const round = state.rounds.find((item) => item.id === roundId);
+  if (!round) {
+    throw new Error(`Unknown round id: ${roundId}`);
+  }
+
+  if (args.status) {
+    round.status = args.status;
+  }
+  if (args.outcome) {
+    round.outcome = args.outcome;
+  }
+  if (Object.prototype.hasOwnProperty.call(args, 'note')) {
+    round.note = args.note;
+  }
+  if (round.status === 'completed' && !round.completedAt) {
+    round.completedAt = now();
+  }
+  if (round.status !== 'completed') {
+    round.completedAt = null;
+  }
+
+  state.completedCount = completedRounds(state).length;
+  state.activeRoundId = (pendingRounds(state)[0] || {}).id || null;
+  saveState(baseDir, runId, state);
+  appendJsonl(logPath(baseDir, runId), {
+    timestamp: now(),
+    type: 'round_updated',
+    runId,
+    roundId,
+    status: round.status,
+    outcome: round.outcome,
+    note: round.note,
+  });
+
+  console.log(`OK: updated ${roundId}`);
+}
+
 function commandSeedPending(args) {
   const baseDir = resolveBaseDir(args);
   const runId = resolveRunId(baseDir, args);
@@ -383,6 +432,7 @@ function printUsage() {
   console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js init [--run-id id] [--plan-dir dir] [--base-dir dir]');
   console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js scaffold [--count N|--all] [--run-id id] [--base-dir dir]');
   console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js complete <round-id> [--outcome success|partial|failed] [--note text] [--run-id id] [--base-dir dir]');
+  console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js set-round <round-id> [--status pending|completed] [--outcome value] [--note text] [--run-id id] [--base-dir dir]');
   console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js seed-pending [--outcome seeded] [--note text] [--run-id id] [--base-dir dir]');
   console.log('  node thriller/scripts/run-interactive-thriller-evolution-loop.js status [--run-id id] [--base-dir dir]');
 }
@@ -411,6 +461,9 @@ function main() {
       break;
     case 'seed-pending':
       commandSeedPending(args);
+      break;
+    case 'set-round':
+      commandSetRound(args);
       break;
     default:
       printUsage();

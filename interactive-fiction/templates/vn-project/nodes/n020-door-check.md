@@ -10,6 +10,7 @@ thriller:
   introducesClues:
     - clue.scratched_lock
     - clue.hidden_key
+    - clue.brass_bowl_recently_moved
   suspicionTargets:
     - char.host
 presentation:
@@ -48,9 +49,27 @@ choices:
       costs: [trust, safety]
       reveals:
         - clue.hidden_key
-        - clue.projector_room
+        - clue.side_door_fresh_scratches
       risks:
         - Elias now knows Mara will cross a boundary to get an answer.
+  - id: confront-host
+    text: Leave the lock alone and watch whether Elias flinches when you name the hidden room.
+    to: n031-hallway-recovered
+    effects:
+      - op: set
+        target: know.host_is_afraid
+        value: true
+      - op: decrement
+        target: trust.host
+        value: 5
+    thriller:
+      intent: accuse
+      costs: [trust, leverage]
+      reveals:
+        - clue.elias_watched_door
+        - clue.host_flinched
+      risks:
+        - Elias regains control of the route before Mara gains access.
   - id: back-away
     text: Step back before Elias can catch you crossing the line.
     to: e100-locked-out

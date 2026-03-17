@@ -50,7 +50,7 @@ choices:
         - Elias sees that Mara is already looking for a hidden room.
   - id: follow-host
     text: Let Elias choose the route and study what he avoids mentioning.
-    to: n030-hallway
+    to: n030-hallway-led
     effects:
       - op: set
         target: flag.followed_host

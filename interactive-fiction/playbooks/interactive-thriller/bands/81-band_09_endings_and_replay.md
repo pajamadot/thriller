@@ -24,8 +24,8 @@ Make endings feel earned and ensure replay reveals new interpretive value rather
 - At least one replay path now reveals theory-level meaning rather than only extra prose.
 
 ## Baseline Snapshot
-- Reachable player nodes: 7
-- Introduced clues: 9
+- Reachable player nodes: 9
+- Introduced clues: 13
 - Required clues: 3
 - Current general warnings: 0
 - Current thriller warnings: 0

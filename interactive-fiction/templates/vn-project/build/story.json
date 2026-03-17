@@ -121,7 +121,7 @@
           "kind": "dialogue",
           "speaker": "char.host",
           "expression": "calm",
-          "text": "If you ask the right question before you have any leverage, Mara, all you learn is how practiced I am at lying to frightened guests."
+          "text": "If you accuse me while the gallery is still doing the accusing for you, Mara, all you learn is how practiced I am at surviving the first question."
         }
       ],
       "source": {
@@ -144,7 +144,7 @@
       "body": [
         {
           "kind": "narration",
-          "text": "Mara says nothing. Elias mistakes her silence for patience, and the house keeps one more minute of advantage."
+          "text": "Mara says nothing. Elias mistakes her silence for patience, and the house gives her one more minute to learn why a missing nameplate matters."
         }
       ],
       "source": {
@@ -242,7 +242,7 @@
         {
           "id": "follow-host",
           "text": "Let Elias choose the route and study what he avoids mentioning.",
-          "to": "n030-hallway",
+          "to": "n030-hallway-led",
           "effects": [
             {
               "op": "set",
@@ -287,7 +287,8 @@
         "pressure": "high",
         "introducesClues": [
           "clue.scratched_lock",
-          "clue.hidden_key"
+          "clue.hidden_key",
+          "clue.brass_bowl_recently_moved"
         ],
         "suspicionTargets": [
           "char.host"
@@ -349,10 +350,41 @@
             ],
             "reveals": [
               "clue.hidden_key",
-              "clue.projector_room"
+              "clue.side_door_fresh_scratches"
             ],
             "risks": [
               "Elias now knows Mara will cross a boundary to get an answer."
+            ]
+          }
+        },
+        {
+          "id": "confront-host",
+          "text": "Leave the lock alone and watch whether Elias flinches when you name the hidden room.",
+          "to": "n031-hallway-recovered",
+          "effects": [
+            {
+              "op": "set",
+              "target": "know.host_is_afraid",
+              "value": true
+            },
+            {
+              "op": "decrement",
+              "target": "trust.host",
+              "value": 5
+            }
+          ],
+          "thriller": {
+            "intent": "accuse",
+            "costs": [
+              "trust",
+              "leverage"
+            ],
+            "reveals": [
+              "clue.elias_watched_door",
+              "clue.host_flinched"
+            ],
+            "risks": [
+              "Elias regains control of the route before Mara gains access."
             ]
           }
         },
@@ -382,23 +414,23 @@
       "notes": "# Door Check\n\nInvestigation pressure scene with a visible access tradeoff."
     },
     {
-      "id": "n030-hallway",
+      "id": "n030-hallway-led",
       "kind": "scene",
-      "title": "Hallway",
+      "title": "Hallway Lead",
       "location": "loc.hallway",
       "thriller": {
-        "promise": "The portraits and Elias's language suggest the house has rehearsed this conversation before.",
-        "mysteryQuestion": "Is Elias warning Mara away from a family shame, or from proof that he staged the whole invitation?",
+        "promise": "Elias has won the first exchange and is trying to turn that advantage into narrative control.",
+        "mysteryQuestion": "What did Elias need Mara to miss while he kept her moving?",
         "pressure": "medium",
         "introducesClues": [
-          "clue.portrait_eyes_scratched"
+          "clue.host_controls_route",
+          "clue.burned_film_smell_returns"
         ],
         "suspicionTargets": [
           "char.host"
         ],
         "routeMemory": [
-          "flag.followed_host",
-          "trust.host"
+          "flag.followed_host"
         ]
       },
       "presentation": {
@@ -423,26 +455,180 @@
       "body": [
         {
           "kind": "narration",
-          "text": "Every portrait in the hall has the eyes scored away with the same careful blade stroke."
+          "text": "Elias keeps half a step ahead of Mara, as if the hall itself had taught him how to guide a guest away from the wrong door without ever touching her."
+        },
+        {
+          "kind": "narration",
+          "text": "The hot, chemical smell from the foyer returns between the portraits, stronger now that she knows to look for it."
         },
         {
           "kind": "dialogue",
           "speaker": "char.host",
           "expression": "calm",
-          "text": "My family believed a secret stayed polite as long as everyone agreed to look beside it instead of at it."
+          "text": "A house is easiest to misread when the host looks cooperative."
+        }
+      ],
+      "choices": [
+        {
+          "id": "continue-gallery",
+          "text": "Keep following and look for what the hallway records instead of what Elias says.",
+          "to": "n035-portrait-gallery",
+          "thriller": {
+            "intent": "investigate",
+            "costs": [
+              "time",
+              "leverage"
+            ],
+            "reveals": [
+              "clue.burned_film_smell_returns"
+            ],
+            "risks": [
+              "Elias keeps the initiative while Mara studies the environment."
+            ]
+          }
+        }
+      ],
+      "source": {
+        "file": "nodes/n030-hallway-led.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Hallway Lead\n\nRoute-specific aftermath of letting Elias set the pace."
+    },
+    {
+      "id": "n031-hallway-recovered",
+      "kind": "scene",
+      "title": "Hallway Recovery",
+      "location": "loc.hallway",
+      "thriller": {
+        "promise": "Mara has rattled Elias, but not enough to stop him from reclaiming control of the house.",
+        "mysteryQuestion": "Why did Elias react to the hidden room as if Mara had spoken a forbidden name?",
+        "pressure": "medium",
+        "introducesClues": [
+          "clue.host_flinched",
+          "clue.host_rehearsed_greeting"
+        ],
+        "suspicionTargets": [
+          "char.host"
+        ],
+        "routeMemory": [
+          "know.host_is_afraid"
+        ]
+      },
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "cast": [
+        {
+          "character": "char.protagonist",
+          "expression": "focused",
+          "pose": "walking",
+          "position": "left",
+          "visible": true
+        },
+        {
+          "character": "char.host",
+          "expression": "tense",
+          "pose": "walking",
+          "position": "right",
+          "visible": true
+        }
+      ],
+      "body": [
+        {
+          "kind": "narration",
+          "text": "Elias flinches once, almost invisibly, then turns the motion into an invitation deeper into the hall."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "tense",
+          "text": "You came here expecting a confession. Most visitors only expect hospitality."
+        }
+      ],
+      "choices": [
+        {
+          "id": "continue-gallery",
+          "text": "Let him recover his composure and study what the corridor preserved from the slip.",
+          "to": "n035-portrait-gallery",
+          "thriller": {
+            "intent": "investigate",
+            "costs": [
+              "time",
+              "leverage"
+            ],
+            "reveals": [
+              "clue.host_rehearsed_greeting"
+            ],
+            "risks": [
+              "Elias restores his mask before Mara can force a second mistake."
+            ]
+          }
+        }
+      ],
+      "source": {
+        "file": "nodes/n031-hallway-recovered.md",
+        "format": "markdown-frontmatter"
+      },
+      "notes": "# Hallway Recovery\n\nRoute-specific aftermath of confronting Elias at the door."
+    },
+    {
+      "id": "n035-portrait-gallery",
+      "kind": "scene",
+      "title": "Portrait Gallery",
+      "location": "loc.hallway",
+      "thriller": {
+        "promise": "The house itself starts corroborating the suspicion that Elias has staged the evening.",
+        "mysteryQuestion": "Are the damaged portraits hiding family shame, or evidence that tonight's visit was prepared in advance?",
+        "pressure": "medium",
+        "introducesClues": [
+          "clue.portrait_eyes_scratched",
+          "clue.projector_inventory_gap"
+        ],
+        "suspicionTargets": [
+          "char.host"
+        ],
+        "routeMemory": [
+          "flag.followed_host",
+          "know.host_is_afraid"
+        ]
+      },
+      "presentation": {
+        "background": "bg.hallway"
+      },
+      "cast": [
+        {
+          "character": "char.protagonist",
+          "expression": "wary",
+          "pose": "standing",
+          "position": "left",
+          "visible": true
+        },
+        {
+          "character": "char.host",
+          "expression": "calm",
+          "pose": "standing",
+          "position": "right",
+          "visible": true
+        }
+      ],
+      "body": [
+        {
+          "kind": "narration",
+          "text": "By the time they reach the portrait gallery, Elias has the lead again, but the house has stopped helping him. Every canvas has the eyes scored away, and one brass nameplate is missing altogether."
+        },
+        {
+          "kind": "dialogue",
+          "speaker": "char.host",
+          "expression": "calm",
+          "text": "Families remove faces when they cannot bear what those faces witnessed."
         }
       ],
       "choices": [
         {
           "id": "press-host",
-          "text": "Press Elias before he can turn the hallway into another performance.",
+          "text": "Press Elias now, while the gallery is still speaking louder than he is.",
           "to": "e110-curious-ending",
           "effects": [
-            {
-              "op": "set",
-              "target": "know.host_is_afraid",
-              "value": true
-            },
             {
               "op": "decrement",
               "target": "trust.host",
@@ -465,7 +651,7 @@
         },
         {
           "id": "stay-silent",
-          "text": "Stay quiet and let the hallway tell you what Elias will not.",
+          "text": "Stay silent and keep the advantage of being underestimated.",
           "to": "e120-silent-ending",
           "effects": [
             {
@@ -490,10 +676,10 @@
         }
       ],
       "source": {
-        "file": "nodes/n030-hallway.md",
+        "file": "nodes/n035-portrait-gallery.md",
         "format": "markdown-frontmatter"
       },
-      "notes": "# Hallway\n\nExample of a standard prose node with local choices."
+      "notes": "# Portrait Gallery\n\nShared pressure scene after the route-specific hallway lead-in."
     },
     {
       "id": "n040-secret-room",
@@ -503,7 +689,7 @@
       "thriller": {
         "requiresClues": [
           "clue.hidden_key",
-          "clue.projector_room"
+          "clue.side_door_fresh_scratches"
         ],
         "endingContract": "Curiosity over caution exposes the room Elias was trying to keep outside the night's script."
       },

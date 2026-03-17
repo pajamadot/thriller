@@ -6,7 +6,7 @@ location: loc.foyer
 thriller:
   requiresClues:
     - clue.hidden_key
-    - clue.projector_room
+    - clue.side_door_fresh_scratches
   endingContract: Curiosity over caution exposes the room Elias was trying to keep outside the night's script.
 presentation:
   background: bg.foyer

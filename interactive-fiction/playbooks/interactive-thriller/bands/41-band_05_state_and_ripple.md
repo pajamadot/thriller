@@ -24,8 +24,8 @@ Keep state minimal but meaningful, and ensure important decisions echo later rat
 - State changes in the touched span have identifiable later payoffs.
 
 ## Baseline Snapshot
-- Reachable player nodes: 7
-- Introduced clues: 9
+- Reachable player nodes: 9
+- Introduced clues: 13
 - Required clues: 3
 - Current general warnings: 0
 - Current thriller warnings: 0

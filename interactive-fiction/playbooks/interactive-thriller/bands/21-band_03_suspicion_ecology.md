@@ -25,8 +25,8 @@ Make multiple suspect theories feel alive at once through distinct motives, oppo
 - Major suspects react to pressure in distinguishable ways.
 
 ## Baseline Snapshot
-- Reachable player nodes: 7
-- Introduced clues: 9
+- Reachable player nodes: 9
+- Introduced clues: 13
 - Required clues: 3
 - Current general warnings: 0
 - Current thriller warnings: 0

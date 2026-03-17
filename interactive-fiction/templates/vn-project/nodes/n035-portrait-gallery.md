@@ -1,47 +1,45 @@
 ---
-id: n030-hallway
+id: n035-portrait-gallery
 kind: scene
-title: Hallway
+title: Portrait Gallery
 location: loc.hallway
 thriller:
-  promise: The portraits and Elias's language suggest the house has rehearsed this conversation before.
-  mysteryQuestion: Is Elias warning Mara away from a family shame, or from proof that he staged the whole invitation?
+  promise: The house itself starts corroborating the suspicion that Elias has staged the evening.
+  mysteryQuestion: Are the damaged portraits hiding family shame, or evidence that tonight's visit was prepared in advance?
   pressure: medium
   introducesClues:
     - clue.portrait_eyes_scratched
+    - clue.projector_inventory_gap
   suspicionTargets:
     - char.host
   routeMemory:
     - flag.followed_host
-    - trust.host
+    - know.host_is_afraid
 presentation:
   background: bg.hallway
 cast:
   - character: char.protagonist
     expression: wary
-    pose: walking
-    position: center
+    pose: standing
+    position: left
     visible: true
   - character: char.host
     expression: calm
-    pose: walking
+    pose: standing
     position: right
     visible: true
 body:
   - kind: narration
-    text: Every portrait in the hall has the eyes scored away with the same careful blade stroke.
+    text: By the time they reach the portrait gallery, Elias has the lead again, but the house has stopped helping him. Every canvas has the eyes scored away, and one brass nameplate is missing altogether.
   - kind: dialogue
     speaker: char.host
     expression: calm
-    text: My family believed a secret stayed polite as long as everyone agreed to look beside it instead of at it.
+    text: Families remove faces when they cannot bear what those faces witnessed.
 choices:
   - id: press-host
-    text: Press Elias before he can turn the hallway into another performance.
+    text: Press Elias now, while the gallery is still speaking louder than he is.
     to: e110-curious-ending
     effects:
-      - op: set
-        target: know.host_is_afraid
-        value: true
       - op: decrement
         target: trust.host
         value: 15
@@ -53,7 +51,7 @@ choices:
       risks:
         - Pushing too early may cost future access.
   - id: stay-silent
-    text: Stay quiet and let the hallway tell you what Elias will not.
+    text: Stay silent and keep the advantage of being underestimated.
     to: e120-silent-ending
     effects:
       - op: increment
@@ -68,6 +66,6 @@ choices:
         - The player preserves access but postpones confrontation.
 ---
 
-# Hallway
+# Portrait Gallery
 
-Example of a standard prose node with local choices.
+Shared pressure scene after the route-specific hallway lead-in.
