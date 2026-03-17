@@ -7,6 +7,8 @@ thriller:
   requiresClues:
     - clue.absent_guest_left_note
     - clue.absent_guest_knew_schedule
+  routeMemory:
+    - flag.followed_guest_note
   endingContract: Following the note keeps the missing guest theory alive and reframes the evening as a trap with an absent author.
 presentation:
   background: bg.hallway

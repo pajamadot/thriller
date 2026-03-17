@@ -202,6 +202,44 @@ function reachableDistances(story) {
   return distances;
 }
 
+function collectVariableUsage(story) {
+  const variableDefinitions = story.entities?.variables || [];
+  const variableReads = new Map(variableDefinitions.map((variable) => [variable.id, new Set()]));
+  const variableWrites = new Map(variableDefinitions.map((variable) => [variable.id, new Set()]));
+
+  for (const node of story.nodes || []) {
+    const thriller = isObject(node.thriller) ? node.thriller : {};
+    for (const variableId of asStringArray(thriller.routeMemory)) {
+      if (!variableReads.has(variableId)) {
+        variableReads.set(variableId, new Set());
+      }
+      variableReads.get(variableId).add(node.id);
+    }
+
+    for (const effect of Array.isArray(node.effects) ? node.effects : []) {
+      if (effect && typeof effect.target === 'string' && effect.target.length > 0) {
+        if (!variableWrites.has(effect.target)) {
+          variableWrites.set(effect.target, new Set());
+        }
+        variableWrites.get(effect.target).add(node.id);
+      }
+    }
+
+    for (const choice of node.choices || []) {
+      for (const effect of Array.isArray(choice.effects) ? choice.effects : []) {
+        if (effect && typeof effect.target === 'string' && effect.target.length > 0) {
+          if (!variableWrites.has(effect.target)) {
+            variableWrites.set(effect.target, new Set());
+          }
+          variableWrites.get(effect.target).add(`${node.id}:${choice.id || '<choice>'}`);
+        }
+      }
+    }
+  }
+
+  return { variableReads, variableWrites };
+}
+
 function buildReachableClueStates(story) {
   const nodeMap = new Map((story.nodes || []).map((node) => [node.id, node]));
   const byNode = new Map();
@@ -259,6 +297,7 @@ function inspectInteractiveThriller(story) {
   const clueReferences = collectClueReferences(story);
   const nodeIds = new Set((story.nodes || []).map((node) => node.id));
   const distances = reachableDistances(story);
+  const { variableReads, variableWrites } = collectVariableUsage(story);
   const majorSuspects = (story.entities?.characters || []).filter((character) => {
     const profile = isObject(character.thrillerProfile) ? character.thrillerProfile : {};
     return profile.suspectWeight === 'major';
@@ -340,6 +379,41 @@ function inspectInteractiveThriller(story) {
 
   if (reachableSuspicionTargets.size > 0 && reachableSuspicionTargets.size < 3) {
     warnings.push('Reachable thriller.suspicionTargets do not yet keep at least three suspects in play.');
+  }
+
+  for (const variable of story.entities?.variables || []) {
+    const reads = variableReads.get(variable.id) || new Set();
+    const writes = variableWrites.get(variable.id) || new Set();
+    const payoffs = asStringArray(variable.payoffs);
+    const designRole = typeof variable.designRole === 'string' ? variable.designRole : 'local';
+
+    for (const payoffNodeId of payoffs) {
+      if (!nodeIds.has(payoffNodeId)) {
+        errors.push(`Variable ${variable.id} references missing payoff node ${payoffNodeId}.`);
+      }
+    }
+
+    if (designRole === 'critical') {
+      if (writes.size === 0) {
+        warnings.push(`Critical variable ${variable.id} is defined but never written by any node or choice effect.`);
+      }
+      if (reads.size < 2) {
+        warnings.push(`Critical variable ${variable.id} is read in fewer than two places.`);
+      }
+      if (payoffs.length < 2) {
+        warnings.push(`Critical variable ${variable.id} declares fewer than two payoff nodes.`);
+      }
+    }
+
+    if (
+      designRole === 'local' &&
+      writes.size > 0 &&
+      reads.size === 0 &&
+      payoffs.length === 0 &&
+      !(typeof variable.rationale === 'string' && variable.rationale.length > 0)
+    ) {
+      warnings.push(`Local variable ${variable.id} is written but has no declared payoff or later read.`);
+    }
   }
 
   for (const reference of clueReferences) {
@@ -458,6 +532,8 @@ function inspectInteractiveThriller(story) {
       majorSuspects: majorSuspects.length,
       reachableSuspicionTargets: reachableSuspicionTargets.size,
       legibleTheorySuspects: reachableTheorySuspects.size,
+      criticalVariables: (story.entities?.variables || []).filter((variable) => variable.designRole === 'critical').length,
+      writtenVariables: [...variableWrites.values()].filter((writes) => writes.size > 0).length,
       fairRequiredNodes: story.nodes.filter((node) => {
         const requiredClues = asStringArray(isObject(node.thriller) ? node.thriller.requiresClues : []);
         if (requiredClues.length === 0) {

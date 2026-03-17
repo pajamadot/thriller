@@ -2,27 +2,57 @@ variables:
   - id: flag.key_found
     type: boolean
     default: false
+    designRole: local
+    rationale: Tracks a one-route access event and is intentionally resolved inside the secret-room branch.
+    payoffs:
+      - n040-secret-room
 
   - id: trust.host
     type: number
     default: 40
+    designRole: local
+    rationale: Tone and social temperature meter for local tradeoffs, not yet a hard gating variable.
 
   - id: flag.followed_host
     type: boolean
     default: false
+    designRole: critical
+    payoffs:
+      - n030-hallway-led
+      - n035-portrait-gallery
+      - n036-nameplate-audit
+      - n037-service-landing
 
   - id: know.host_is_afraid
     type: boolean
     default: false
+    designRole: critical
+    payoffs:
+      - n031-hallway-recovered
+      - n035-portrait-gallery
+      - n036-nameplate-audit
+      - n037-service-landing
 
   - id: flag.banked_theory
     type: boolean
     default: false
+    designRole: critical
+    payoffs:
+      - n038-held-breath
+      - e120-silent-ending
 
   - id: flag.sabine_cornered
     type: boolean
     default: false
+    designRole: critical
+    payoffs:
+      - n039-cross-accusation
+      - e140-housekeeper-ending
 
   - id: flag.followed_guest_note
     type: boolean
     default: false
+    designRole: critical
+    payoffs:
+      - n039-cross-accusation
+      - e150-vanished-guest-ending

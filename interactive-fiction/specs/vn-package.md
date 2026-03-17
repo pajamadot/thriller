@@ -222,6 +222,17 @@ Example:
 { "op": "increment", "target": "trust.host", "value": 10 }
 ```
 
+## Variable Design Metadata
+
+Variable entries may include optional authoring metadata to support file-first audits:
+
+- `designRole`: `critical` or `local`
+- `payoffs`: node IDs where the variable should visibly echo
+- `rationale`: short note explaining why a local variable is intentionally limited
+
+Use this to keep state minimal.
+Not every variable needs long-horizon ripple.
+
 ## Character Presentation
 
 Each cast entry should be explicit:

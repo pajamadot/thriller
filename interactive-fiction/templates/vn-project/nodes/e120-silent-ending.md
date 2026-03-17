@@ -8,6 +8,8 @@ thriller:
     - clue.missing_nameplate
     - clue.projector_inventory_gap
     - clue.guest_card_removed
+  routeMemory:
+    - flag.banked_theory
   endingContract: Restraint preserves the relationship surface long enough for Mara to leave with a causal theory instead of a confession.
 presentation:
   background: bg.hallway

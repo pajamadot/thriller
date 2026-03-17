@@ -25,6 +25,7 @@ node thriller/scripts/validate-vn-json.js thriller/interactive-fiction/templates
 - Explicit IDs and references
 - Clear separation between prose, state, and presentation
 - A modular clue ledger that can be audited without engine coupling
+- Variable design metadata that distinguishes critical ripple state from local texture
 - Easy to diff, review, and import
 
 ## Scaling Up

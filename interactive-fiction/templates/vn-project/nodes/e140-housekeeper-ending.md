@@ -7,6 +7,8 @@ thriller:
   requiresClues:
     - clue.housekeeper_has_gallery_access
     - clue.housekeeper_protects_family
+  routeMemory:
+    - flag.sabine_cornered
   endingContract: Pressing Sabine makes the housekeeper theory feel brutally plausible, even if the full architecture still points beyond her.
 presentation:
   background: bg.hallway
