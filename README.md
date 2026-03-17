@@ -70,6 +70,17 @@
 | Jon Ingold (inkle) | 互动叙事 | 涟漪理论、选择设计 |
 | Emily Short | 互动叙事 | 分支架构理论 |
 | Janet Murray《Hamlet on the Holodeck》| 数字叙事 | 读者代入感理论 |
+| James Frey《How to Write a Damn Good Thriller》| 惊悚编剧 | 反派引擎法（villain-as-plot-engine） |
+| John Truby《The Anatomy of Story》| 22步结构 | 竞争叙事、伪盟友对手 |
+| Craig Mazin (Scriptnotes) | 主题理论 | 反主题架构（anti-theme） |
+| David Corbett《The Compass of Character》| 角色理论 | 四维动机罗盘 |
+| Brandon Sanderson (Writing Excuses) | 叙事技术 | MICE嵌套、Yes-but/No-and |
+| 岛田庄司 / 绫辻行人 | 新本格推理 | 空间谜题设计、图表契约 |
+| Sam Barlow (Her Story) | 非线性叙事 | 垂直钻探、自然发现行为设计 |
+| Failbetter Games (Fallen London) | QBN设计 | Quality-Based Narrative、精简原则 |
+| Xie & Riedl (EACL 2024) | 计算悬念 | 对抗式计划破坏法 |
+| Wagner et al. (2025) | 公平性模型 | 双读者概率验证 |
+| Eger (AIIDE 2020) | 计算推理 | 动态认知逻辑 |
 
 ---
 
@@ -89,6 +100,7 @@
 | `dialogue-interrogation.md` | 潜台词技术、审讯策略矩阵、谎言写作 |
 | `unreliable-narrator.md` | 6种不可靠类型、信任弧线、双重阅读设计 |
 | `setting-atmosphere.md` | 封闭空间设计、氛围写作、日常之异技术 |
+| `knowledge-state.md` | 知识状态追踪、竞争叙事、双读者验证、反派引擎 |
 
 ### 互动叙事参考 (`interactive-fiction/references/`)
 
@@ -101,6 +113,7 @@
 | `reader-agency.md` | 读者角色定位、代入感设计、重玩设计 |
 | `export-formats.md` | Twine/ink/ChoiceScript/JSON 完整语法规范 |
 | `interactive-prose.md` | 互动文本写作、人称选择、节点长度、汇聚节点技巧 |
+| `advanced-if.md` | Accept/Reject/Deflect对话、QBN系统、垂直钻探叙事 |
 
 ---
 
@@ -179,9 +192,10 @@
 
 ## 技术规格
 
-- **文件数**：29 个 Markdown 文件
-- **参考资料**：10 (悬疑创作) + 7 (互动叙事) + 5 (进化系统) = 22 份
-- **版本**：v1.2.0（[变更日志](meta/CHANGELOG.md)）
+- **文件数**：32+ 个 Markdown 文件
+- **参考资料**：11 (悬疑创作) + 8 (互动叙事) + 5 (进化系统) = 24 份
+- **方法论来源**：25+ （经典编剧 + 学术论文 + 行业工具）
+- **版本**：v2.0.0（[变更日志](meta/CHANGELOG.md)）
 - **外部依赖**：零
 - **语言**：中文（可扩展多语言）
 - **许可**：MIT

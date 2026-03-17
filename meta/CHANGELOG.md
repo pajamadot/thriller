@@ -1,5 +1,31 @@
 # 变更日志
 
+## v2.0.0 — 全网研究整合 (2026-03-17)
+
+基于 30+ 学术论文、42 个开源项目、15+ 专业编剧方法论的系统性升级。
+
+### 新增
+- `knowledge-state.md` — 知识状态追踪系统（Dynamic Epistemic Logic + 竞争叙事 + 反派引擎 + 双读者验证）
+- `advanced-if.md` — 高级互动叙事设计（Accept/Reject/Deflect + QBN + 垂直钻探 + Storylet系统）
+- `meta/benchmark-2026-03-research.md` — 全网研究综合报告
+
+### 重大方法论升级
+- **对抗式悬念设计**（Xie & Riedl, EACL 2024）：系统化"逼角"法，迭代摧毁主角的逃脱计划
+- **Yes-but/No-and 调查场景**（Brandon Sanderson）：每个调查行动必须成功带并发症或失败加恶化
+- **MICE 嵌套结构**（Sanderson）：故事线程像括号一样嵌套关闭
+- **反主题架构**（Craig Mazin）：第二幕先强化错误信念再瓦解
+- **角色罗盘**（David Corbett）：Lack/Yearning/Resistance/Desire 四维动机
+- **伪盟友对手**（John Truby）：嫌疑人矩阵必须含"看似盟友实为对手"
+- **反派引擎法**（James Frey）：反派计划 IS 情节骨架
+- **竞争叙事**（John Truby）：侦探与凶手争夺"哪个版本是真相"
+- **空间谜题设计**（绫辻行人/新本格）：建筑即诡计
+- **双读者公平性模型**（Wagner et al. 2025）：天真读者(惊奇) + 侦探读者(原来如此)
+
+### 新增方法论来源
+James Frey, John Truby, Craig Mazin, David Corbett, Brandon Sanderson, 岛田庄司, 绫辻行人, Sam Barlow, Failbetter Games, Xie & Riedl, Wagner et al., Eger
+
+---
+
 ## v1.2.0 — 自我进化系统 (2026-03-17)
 
 ### 新增

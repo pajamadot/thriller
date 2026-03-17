@@ -91,7 +91,7 @@
 ### `/trick` — 核心谜团架构
 
 **触发条件**：`/theme` 完成后（本格/密室/叙述诡计型优先），或 `/characters` 完成后（社会派/心理悬疑型可后置）
-**加载参考**：`references/clue-design.md`, `references/red-herring.md`, `references/twist-design.md`
+**加载参考**：`references/clue-design.md`, `references/red-herring.md`, `references/twist-design.md`, `references/knowledge-state.md`
 
 **输出结构**（生成 `trick-design.md`）：
 
@@ -115,6 +115,17 @@
    - 物理可行性（密室/不在场证明类必须）
    - 心理可行性（动机/行为逻辑）
    - 信息控制可行性（读者视角管理）
+
+五、反派计划骨架（James Frey 反派引擎法）
+   - 反派的完整计划（分步骤）
+   - 每步执行留下的痕迹 → 这些痕迹 = 线索
+   - 侦探如何发现每条痕迹 → 发现过程 = 情节
+   - 反派如何反击 → 反击 = 冲突升级
+
+六、知识状态矩阵（参照 knowledge-state.md）
+   - 角色知识矩阵：每角色每章知道什么
+   - 读者知识层：读者确知/推测/误信/不知
+   - 双读者验证：天真读者(惊奇) + 侦探读者(原来如此)
 ```
 
 **设计原则**（引自 Raymond Chandler & Ellery Queen）：

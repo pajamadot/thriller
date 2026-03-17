@@ -100,7 +100,7 @@
 
 ### `/choices` — 选择点设计
 
-**加载参考**：`references/choice-design.md`
+**加载参考**：`references/choice-design.md`, `references/advanced-if.md`
 
 **为每个决策点输出**（生成 `choices/decision-{NNN}.md`）：
 
