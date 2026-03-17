@@ -1,224 +1,320 @@
-# Thriller — 悬疑小说创作与互动化技能包
+# Thriller — AI-Powered Thriller Screenplay & Interactive Fiction Skill Pack
 
-> 面向 AI 辅助创作的专业悬疑/推理小说剧本创作系统
-> 融合 25+ 经典编剧方法论 + 30+ 学术论文 + 互动叙事设计，从线性故事到分支体验
-> 内置 GEP 进化协议，通过创作实践持续自我迭代
+> Professional mystery/thriller writing system with 25+ screenwriting methodologies, 30+ academic papers, and self-evolving methodology via GEP protocol.
 
----
-
-## 三个技能模块
-
-### 1. 悬疑剧本创作 (`thriller-writing/`)
-
-系统化的悬疑/推理小说创作流程，基于专业编剧方法论：
-
-| 命令 | 功能 | 输出 |
-|------|------|------|
-| `/start` | 项目初始化（类型、篇幅、视角、诡计类型、风格、主题） | `.thriller-state.json` |
-| `/theme` | 主题前提与立意（Egri 前提法） | `theme.md` |
-| `/trick` | 核心谜团架构、线索布局、公平性验证 | `trick-design.md` |
-| `/characters` | 角色系统（侦探、犯人、嫌疑人矩阵、受害者） | `characters.md` |
-| `/structure` | 三幕结构适配、章节大纲、悬念管理 | `structure.md` |
-| `/scene {N}` | 逐章创作（正文 + 线索追踪 + 嫌疑指向） | `chapters/ch{N}.md` |
-| `/audit` | 线索一致性审查、Knox十诫检查 | 审查报告 |
-| `/check {N}` | 六维加权评估（按子类型调整权重） | 评分报告 |
-| `/revise` | 四种改稿模式（结构/角色/线索/文字） | 修改方案 |
-| `/reveal` | 真相揭示场景专项设计 | 揭示方案 |
-| `/export` | 完整作品导出 | `export/` |
-
-**支持 9 种悬疑子类型**：本格推理 · 社会派 · 心理悬疑 · 惊悚 · 密室 · 叙述诡计 · 犯罪程序 · 倒叙推理 · 日常推理
-
-**三种工作流路线**：诡计优先（本格/密室） · 角色优先（社会派/心理） · 结构优先（惊悚/犯罪程序）
-
-**核心方法论亮点**：
-- 知识状态追踪（Dynamic Epistemic Logic）— 精确管理"谁在什么时刻知道什么"
-- 对抗式悬念设计（Xie & Riedl）— 系统化摧毁主角的逃脱计划制造张力
-- 双读者公平性验证（Wagner et al.）— 天真读者(惊奇) + 侦探读者(原来如此)
-- 角色罗盘（David Corbett）— Lack/Yearning/Resistance/Desire 四维动机
-- 反派引擎法（James Frey）— 反派计划 IS 情节骨架
-- Yes-but/No-and 调查场景（Brandon Sanderson）— 每次调查必有代价
-- 短篇模式 — `/start` + `/theme` 可合并，极简嫌疑人矩阵（2-3人）
-
-### 2. 互动悬疑小说 (`interactive-fiction/`)
-
-将悬疑小说转化为带分支选择的互动叙事体验：
-
-| 命令 | 功能 | 输出 |
-|------|------|------|
-| `/init` | 项目设置（来源、分支深度、结局数、平台） | `.interactive-state.json` |
-| `/branches` | 叙事拓扑设计（5种模型选择） | `branch-map.md` |
-| `/choices` | 每个决策点的选项设计与质量检查 | `choices/` |
-| `/character-paths` | 角色命运矩阵、跨路径一致性 | `character-branches.md` |
-| `/state` | 变量设计、条件逻辑、结局触发矩阵 | `state-system.md` |
-| `/node {N}` | 逐节点创作（叙事 + 选择 + 状态变更） | `nodes/` |
-| `/ending {N}` | 结局创作（触发条件 + 正文 + 重玩引导） | `endings/` |
-| `/consistency` | 路径完整性、状态一致性、叙事连贯性审查 | 审查报告 |
-| `/export {格式}` | 格式化导出（Twine/ink/ChoiceScript/JSON/Mermaid） | `export/` |
-
-**5 种分支拓扑模型**：瓶颈型 · 平行调查型 · 时间循环型 · 信任网络型 · 自由探索型
-
-**完整导出规范**：Twine (Harlowe/SugarCube) · ink · ChoiceScript · JSON Schema · Mermaid 流程图
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-v2.1.0-blue.svg)](meta/CHANGELOG.md)
 
 ---
 
-## 方法论来源
+## What is this?
 
-| 来源 | 领域 | 在本系统中的应用 |
-|------|------|------------------|
-| Robert McKee《故事》 | 编剧理论 | 场景即价值转变的最小单位 |
-| Syd Field《电影剧本写作基础》 | 结构理论 | 三幕结构、情节点 |
-| Blake Snyder《救猫咪》 | 节拍理论 | 15节拍验证节奏 |
-| Lajos Egri《戏剧写作的艺术》 | 角色/前提理论 | 主题前提系统、三维角色 |
-| Alfred Hitchcock | 悬念理论 | 悬念vs惊吓、戏剧反讽 |
-| Raymond Chandler | 硬汉派推理 | 场景动力学 |
-| Agatha Christie | 古典推理 | 嫌疑人设计、叙述诡计 |
-| 东野圭吾 | 社会派推理 | 情感驱动的真相、动机设计 |
-| Wayne Booth《小说修辞学》 | 叙事理论 | 不可靠叙述者系统 |
-| Patricia Highsmith | 犯罪心理 | 犯人视角的心理描写 |
-| S.S. Van Dine | 推理规则 | 线索公平性二十则 |
-| Ronald A. Knox | 推理规则 | 推理十诫 |
-| Jon Ingold (inkle) | 互动叙事 | 涟漪理论、选择设计 |
-| Emily Short | 互动叙事 | 分支架构理论 |
-| Janet Murray《Hamlet on the Holodeck》| 数字叙事 | 读者代入感理论 |
-| James Frey《How to Write a Damn Good Thriller》| 惊悚编剧 | 反派引擎法（villain-as-plot-engine） |
-| John Truby《The Anatomy of Story》| 22步结构 | 竞争叙事、伪盟友对手 |
-| Craig Mazin (Scriptnotes) | 主题理论 | 反主题架构（anti-theme） |
-| David Corbett《The Compass of Character》| 角色理论 | 四维动机罗盘 |
-| Brandon Sanderson (Writing Excuses) | 叙事技术 | MICE嵌套、Yes-but/No-and |
-| 岛田庄司 / 绫辻行人 | 新本格推理 | 空间谜题设计、图表契约 |
-| Sam Barlow (Her Story) | 非线性叙事 | 垂直钻探、自然发现行为设计 |
-| Failbetter Games (Fallen London) | QBN设计 | Quality-Based Narrative、精简原则 |
-| Xie & Riedl (EACL 2024) | 计算悬念 | 对抗式计划破坏法 |
-| Wagner et al. (2025) | 公平性模型 | 双读者概率验证 |
-| Eger (AIIDE 2020) | 计算推理 | 动态认知逻辑 |
+A set of Claude Code skills for writing professional-quality mystery/thriller novels and converting them into branching interactive fiction. The system is built on established screenwriting theory (McKee, Hitchcock, Christie, Truby, etc.) augmented by computational narrative research, and it **improves itself** through a built-in evolution framework.
+
+**46 files · 8300+ lines · 24 reference documents · 25+ methodology sources**
 
 ---
 
-## 参考资料
+## Three Modules
 
-### 悬疑创作参考 (`thriller-writing/references/`)
+### 1. Thriller Screenplay Writing (`thriller-writing/`)
 
-| 文件 | 内容 |
-|------|------|
-| `mystery-structure.md` | 悬疑三幕结构、9种子类型变体、信息经济学 |
-| `clue-design.md` | 线索分类、布设技术、Knox十诫、线索密度管理 |
-| `suspense-technique.md` | Hitchcock悬念模型、9种悬念技术、张力曲线 |
-| `character-archetype.md` | 7种侦探原型、犯人四维设计、嫌疑人矩阵 |
-| `red-herring.md` | 红鲱鱼类型、生命周期管理、常见错误 |
-| `twist-design.md` | 反转分类、逆向工程法、揭示场景结构 |
-| `pacing-tension.md` | 四阶段节奏模型、翻页动力、节奏诊断 |
-| `dialogue-interrogation.md` | 潜台词技术、审讯策略矩阵、谎言写作 |
-| `unreliable-narrator.md` | 6种不可靠类型、信任弧线、双重阅读设计 |
-| `setting-atmosphere.md` | 封闭空间设计、氛围写作、日常之异技术 |
-| `knowledge-state.md` | 知识状态追踪、竞争叙事、双读者验证、反派引擎 |
+Systematic mystery/thriller creation from concept to manuscript.
 
-### 互动叙事参考 (`interactive-fiction/references/`)
+| Command | Function | Output |
+|---------|----------|--------|
+| `/start` | Project init (type, length, POV, trick, tone, theme) | `.thriller-state.json` |
+| `/theme` | Thematic premise design (Egri method) | `theme.md` |
+| `/trick` | Core mystery architecture, clue layout, fairness check | `trick-design.md` |
+| `/characters` | Character system (detective, culprit, suspect matrix, victim) | `characters.md` |
+| `/structure` | Three-act adaptation, chapter outline, suspense management | `structure.md` |
+| `/scene {N}` | Chapter writing (prose + clue tracking + suspicion shifts) | `chapters/ch{N}.md` |
+| `/audit` | Clue consistency audit, sub-type-filtered Knox check | Audit report |
+| `/check {N}` | Six-dimension weighted scoring (weights vary by sub-type) | Score report |
+| `/revise` | Four revision modes (structure / character / clues / prose) | Revision plan |
+| `/reveal` | Truth revelation scene design | Revelation plan |
+| `/export` | Complete work export | `export/` |
 
-| 文件 | 内容 |
-|------|------|
-| `branch-architecture.md` | 5种拓扑模型、混合设计、复杂度控制 |
-| `choice-design.md` | 7种选择类型、设计原则、文案写作 |
-| `state-management.md` | 变量设计、条件逻辑、结局触发系统 |
-| `narrative-convergence.md` | 收敛技术、角色一致性、涟漪模型 |
-| `reader-agency.md` | 读者角色定位、代入感设计、重玩设计 |
-| `export-formats.md` | Twine/ink/ChoiceScript/JSON 完整语法规范 |
-| `interactive-prose.md` | 互动文本写作、人称选择、节点长度、汇聚节点技巧 |
-| `advanced-if.md` | Accept/Reject/Deflect对话、QBN系统、垂直钻探叙事 |
+**9 sub-types**: Honkaku (whodunit) · Social school · Psychological · Thriller · Locked-room · Narrative trick · Procedural · Inverted (howcatchem) · Cozy mystery
+
+**3 workflow routes** (order adapts to sub-type):
+- Trick-first: honkaku, locked-room, narrative trick
+- Character-first: social school, psychological
+- Structure-first: thriller, procedural
+
+**Key methodology highlights**:
+- **Knowledge state tracking** (Dynamic Epistemic Logic) — who knows what at every moment
+- **Adversarial suspense design** (Xie & Riedl, EACL 2024) — systematically destroy protagonist's escape plans
+- **Dual-reader fairness verification** (Wagner et al., 2025) — naive reader (surprise) + detective reader (fair play)
+- **Character Compass** (David Corbett) — Lack / Yearning / Resistance / Desire
+- **Villain-as-plot-engine** (James Frey) — villain's plan IS the plot skeleton
+- **Yes-but / No-and investigation scenes** (Brandon Sanderson) — every investigation has a cost
+- **Competing narratives** (John Truby) — detective and killer fight over which version of reality is accepted
+- **Anti-theme architecture** (Craig Mazin) — Act 2 reinforces false belief before dismantling it
+- **MICE nesting** (Brandon Sanderson) — close story threads in reverse order of opening
+- **Short-story mode** — `/start` + `/theme` merge, minimal suspect matrix (2-3 characters)
+
+### 2. Interactive Thriller Fiction (`interactive-fiction/`)
+
+Convert thriller novels into branching interactive narratives.
+
+| Command | Function | Output |
+|---------|----------|--------|
+| `/init` | Project setup (source, branch depth, endings, platform) | `.interactive-state.json` |
+| `/branches` | Narrative topology design (5 models) | `branch-map.md` |
+| `/choices` | Decision point design with quality checks | `choices/` |
+| `/character-paths` | Character fate matrix, cross-path consistency | `character-branches.md` |
+| `/state` | Variable design, conditional logic, ending triggers | `state-system.md` |
+| `/node {N}` | Node writing (narrative + choices + state changes) | `nodes/` |
+| `/ending {N}` | Ending creation (trigger + prose + replay hooks) | `endings/` |
+| `/consistency` | Path integrity, state consistency, narrative coherence audit | Audit report |
+| `/export {format}` | Export to Twine / ink / ChoiceScript / JSON / Mermaid | `export/` |
+
+**5 topology models**: Bottleneck · Parallel investigation · Time loop · Trust network · Open exploration
+
+**Export targets**: Twine (Harlowe / SugarCube) · ink · ChoiceScript · JSON Schema · Mermaid flowcharts
+
+**Advanced techniques**:
+- **Accept / Reject / Deflect** dialogue choices (Jon Ingold / inkle)
+- **Quality-Based Narrative** with parsimony principle (Failbetter Games / Emily Short)
+- **Vertical drilling** narrative (Sam Barlow / Her Story) — depth over breadth
+- **Storylet pool design** for investigation phases
+- **Cross-skill conversion mapping** — thriller-writing outputs feed directly into interactive-fiction inputs
+
+### 3. Self-Evolution System (`meta/`)
+
+The methodology improves itself through structured reflection and external research.
+
+| Command | Function | When |
+|---------|----------|------|
+| `/retro` | Project-level retrospective (process deviations, findings, fixes) | After each project |
+| `/evolve` | Cross-project pattern recognition → hypothesis → methodology update | After 2+ retros |
+| `/benchmark` | Critical integration of external methodologies | When encountering new knowledge |
+| `/autopsy` | Reverse-engineer excellent published works | When analyzing great works |
+| `/blindspot` | Cognitive blind spot scan (5 bias types) | Every 3-5 projects |
+| `/pulse` | Creative ecosystem monitoring (trends, platforms, readers) | Ongoing |
+
+**Three-ring evolution model**:
+```
+Epistemic (are our assumptions still valid?)
+Praxis (what happened during writing?)
+Ecological (what's changing in the outside world?)
+```
+
+**Evolution principles**: Gradual iteration · Preserve failure records (`graveyard.md`) · Dual-track validation (theory + practice) · Complexity budget (refine, don't bloat)
+
+**Knowledge lifecycle**: Experiment → Practice (1-2 projects) → Principle (5+ projects)
+
+**GEP integration**: Local evolution assets in `assets/gep/` (Genes, Capsules, EvolutionEvents) ready to publish to [EvoMap](https://evomap.ai) network when connected.
 
 ---
 
-## 工作流
+## Methodology Sources (25+)
 
-### 线性创作流（按子类型选择路线）
+| Source | Domain | Application |
+|--------|--------|-------------|
+| Robert McKee *Story* | Screenwriting | Scene as minimal unit of value change |
+| Syd Field *Screenplay* | Structure | Three-act structure, plot points |
+| Blake Snyder *Save the Cat* | Beat theory | 15-beat rhythm verification |
+| Lajos Egri *Art of Dramatic Writing* | Premise/character | Thematic premise, 3D characters |
+| Alfred Hitchcock | Suspense theory | Suspense vs surprise, dramatic irony |
+| Agatha Christie | Classical mystery | Suspect design, narrative tricks |
+| Raymond Chandler | Hardboiled | Scene dynamics |
+| John Truby *Anatomy of Story* | 22-step structure | Competing narratives, fake-ally opponent |
+| Craig Mazin (Scriptnotes) | Theme theory | Anti-theme architecture |
+| David Corbett *Compass of Character* | Character theory | Four-dimension motivation compass |
+| James Frey *Damn Good Thriller* | Thriller craft | Villain-as-plot-engine |
+| Brandon Sanderson (Writing Excuses) | Narrative technique | MICE nesting, Yes-but/No-and |
+| Wayne Booth *Rhetoric of Fiction* | Narrative theory | Unreliable narrator system |
+| Patricia Highsmith | Crime psychology | Criminal POV writing |
+| Shimada Soji / Ayatsuji Yukito | Shin-honkaku | Spatial puzzle design, diagram contracts |
+| S.S. Van Dine | Mystery rules | Twenty rules of fair play |
+| Ronald A. Knox | Mystery rules | Ten Commandments of detection |
+| Jon Ingold (inkle) | Interactive narrative | Ripple theory, Accept/Reject/Deflect |
+| Emily Short | Interactive narrative | Quality-Based Narrative, storylets |
+| Sam Barlow (Her Story) | Nonlinear narrative | Vertical drilling, natural discovery design |
+| Failbetter Games | QBN design | Parsimony principle, word limits |
+| Janet Murray *Hamlet on the Holodeck* | Digital narrative | Reader agency theory |
+| Xie & Riedl (EACL 2024) | Computational suspense | Adversarial plan-failure method |
+| Wagner et al. (2025) | Fairness modeling | Dual-reader probabilistic verification |
+| Eger (AIIDE 2020) | Computational reasoning | Dynamic Epistemic Logic |
+
+---
+
+## Reference Documents (24)
+
+### Thriller Writing (`thriller-writing/references/`) — 11 files
+
+| File | Contents |
+|------|----------|
+| `mystery-structure.md` | Three-act structure, 9 sub-type variants, information economics |
+| `clue-design.md` | Clue taxonomy, planting techniques, Knox Decalogue, fair-play spectrum |
+| `suspense-technique.md` | Hitchcock model, 9 suspense techniques, adversarial plan-failure, MICE nesting |
+| `character-archetype.md` | 7 detective archetypes, villain 4D design, Character Compass, fake-ally opponent |
+| `red-herring.md` | Red herring types, lifecycle management, common mistakes |
+| `twist-design.md` | Twist taxonomy, reverse engineering, revelation scene structure |
+| `pacing-tension.md` | Four-stage pacing model, page-turn drivers, rhythm diagnostics |
+| `dialogue-interrogation.md` | Subtext techniques, interrogation strategy matrix, writing lies |
+| `unreliable-narrator.md` | 6 unreliable types, trust arc, dual-reading design |
+| `setting-atmosphere.md` | Closed spaces, atmosphere writing, everyday uncanny |
+| `knowledge-state.md` | Knowledge state tracking, competing narratives, dual-reader verification, villain engine |
+
+### Interactive Fiction (`interactive-fiction/references/`) — 8 files
+
+| File | Contents |
+|------|----------|
+| `branch-architecture.md` | 5 topology models, hybrid design, complexity control |
+| `choice-design.md` | 7 choice types, design principles, copywriting |
+| `state-management.md` | Variable design, conditional logic, ending trigger system |
+| `narrative-convergence.md` | Convergence techniques, character consistency, ripple model |
+| `reader-agency.md` | Reader role positioning, immersion design, replay design |
+| `export-formats.md` | Complete Twine/ink/ChoiceScript/JSON syntax specifications |
+| `interactive-prose.md` | Interactive prose writing, person choice, node length, convergence node techniques |
+| `advanced-if.md` | Accept/Reject/Deflect, QBN, vertical drilling, Storylet design |
+
+### Evolution System (`meta/references/`) — 5 files
+
+| File | Contents |
+|------|----------|
+| `retrospective-method.md` | Three-layer analysis, 5-Why attribution, anti-patterns |
+| `evolution-patterns.md` | Four evolution modes (fill/correct/restructure/metamorphosis) |
+| `blind-spot-detection.md` | 5 cognitive bias types, reverse thinking exercises |
+| `reverse-engineering.md` | Work autopsy method, cross-work comparison |
+| `benchmarking-protocol.md` | External methodology critical integration protocol |
+
+---
+
+## Workflows
+
+### Linear Writing (route by sub-type)
 
 ```
-诡计优先（本格/密室/叙述诡计）：
+Trick-first (honkaku / locked-room / narrative trick):
   /start → /theme → /trick → /characters → /structure → /scene → /revise → /reveal → /export
 
-角色优先（社会派/心理悬疑）：
+Character-first (social school / psychological):
   /start → /theme → /characters → /trick → /structure → /scene → /revise → /reveal → /export
 
-结构优先（惊悚/犯罪程序）：
+Structure-first (thriller / procedural):
   /start → /theme → /structure → /characters → /trick → /scene → /revise → /reveal → /export
 ```
 
-### 互动化流
+### Interactive Fiction
 
 ```
 /init → /branches → /choices → /character-paths → /state
-                                                        ↓
-              /export ← /consistency ← /ending ← /node 1..N
+                                                      ↓
+            /export ← /consistency ← /ending ← /node 1..N
 ```
 
-### 线性→互动转化流
+### Linear → Interactive Conversion
 
 ```
-线性完稿 → /init(来源:已有小说) → 识别决策点 → /branches
-  → /choices → /character-paths → /state → /node 1..N → /ending
-  → /consistency → /export {格式}
+Finished manuscript → /init (source: existing novel) → identify decision points
+  → /branches → /choices → /character-paths → /state
+  → /node 1..N → /ending → /consistency → /export {format}
 ```
 
-**两个技能的产物直接衔接**——详见 `interactive-fiction/SKILL.md` 的"从 thriller-writing 技能的输出转化"一节。
+Outputs from `thriller-writing` feed directly into `interactive-fiction` — see conversion mapping in `interactive-fiction/SKILL.md`.
 
----
-
-## 自我进化系统 (`meta/`)
-
-方法论不是静态的教条，而是一个能自我改进的活系统。
-
-### 三环进化模型
+### Evolution Loop
 
 ```
-认知环（我们知道什么是对的？）← 审视假设和盲点
-实践环（写作中发生了什么？）← 从创作中提取经验
-生态环（外部世界在变什么？）← 跟踪趋势和新知
-```
-
-### 进化命令
-
-| 命令 | 功能 | 触发时机 |
-|------|------|----------|
-| `/retro` | 项目级回顾（流程偏差、产出评价、修正建议） | 每个项目完成后 |
-| `/evolve` | 跨项目模式识别 → 假设形成 → 方法论修改 | 积累 2+ 个复盘后 |
-| `/benchmark` | 外部方法论批判性对标与整合 | 接触新知识时 |
-| `/autopsy` | 优秀作品逆向工程 | 分析优秀作品时 |
-| `/blindspot` | 认知盲区扫描（5种盲区类型检测） | 每 3-5 个项目后 |
-| `/pulse` | 创作生态监测（趋势、平台、读者变化） | 持续 |
-
-### 进化原则
-
-1. **渐进式进化**：每次只改 1-3 个具体点，不做革命式重构
-2. **保留失败记录**：被删除的规则进入 `graveyard.md`，避免重复犯错
-3. **双轨验证**：理论验证 + 实践验证，两条轨道都通过才成为永久修改
-4. **复杂度预算**：方法论应该越来越精炼，而非越来越臃肿
-
-### 知识三状态
-
-```
-实验（刚加入，待验证）→ 实践（1-2 个项目验证）→ 原理（5+ 个项目验证）
+Write a project → /retro → accumulate 2+ retros → /evolve → update methodology
+                                                      ↑
+  /benchmark (new books/papers) ─────────────────────┘
+  /autopsy (great works) ───────────────────────────┘
+  /blindspot (periodic bias scan) ──────────────────┘
 ```
 
 ---
 
-## 技术规格
+## Pilot Project: *Mirror Visitor* (《镜中访客》)
 
-- **文件数**：35+ 个 Markdown + JSON 文件
-- **参考资料**：11 (悬疑创作) + 8 (互动叙事) + 5 (进化系统) = 24 份
-- **方法论来源**：25+ （经典编剧 + 学术论文 + 行业工具）
-- **GEP 资产**：4 Genes · 2 Capsules · 3 EvolutionEvents（本地进化中）
-- **版本**：v2.1.0（[变更日志](meta/CHANGELOG.md)）
-- **外部依赖**：零
-- **语言**：中文（可扩展多语言）
-- **许可**：MIT
+A psychological thriller short story used to test the full workflow.
+
+- **Type**: Psychological suspense, first-person unreliable narrator
+- **Theme**: "We fear not others' malice, but discovering we are the source of it"
+- **Status**: `/start` → `/theme` → `/characters` → `/trick` → `/structure` → `/scene 1` → `/check 1` → `/retro` completed
+- **Ch1 score**: 46/60 (Good) — Suspense 7, Clues 8, Character 8, Pacing 7, Logic 9, Literary 7
+- **Retro findings**: 4 methodology fixes identified and applied in v2.1.0
+
+Files in `projects/mirror-visitor/`.
 
 ---
 
-## 致谢
+## Repository Structure
 
-结构设计参考了 [0xsline/short-drama](https://github.com/0xsline/short-drama) 的技能包架构模式。
+```
+thriller/
+├── thriller-writing/           # Skill 1: Thriller screenplay writing
+│   ├── SKILL.md                # 11 commands, 3 workflow routes
+│   └── references/             # 11 reference documents
+├── interactive-fiction/         # Skill 2: Interactive branching fiction
+│   ├── SKILL.md                # 9 commands, 5 topology models
+│   └── references/             # 8 reference documents
+├── meta/                       # Skill 3: Self-evolution system
+│   ├── SKILL.md                # 6 evolution commands
+│   ├── references/             # 5 evolution reference documents
+│   ├── CHANGELOG.md            # Version history
+│   ├── VERSION.md              # Current: v2.1.0
+│   ├── graveyard.md            # Retired rules archive
+│   └── retro-*.md / benchmark-*.md  # Evolution records
+├── assets/gep/                 # GEP evolution assets (local)
+│   ├── genes.json              # 4 evolution genes
+│   ├── capsules.json           # 2 success capsules
+│   └── events.jsonl            # Evolution event log
+├── memory/                     # Evolution state & session signals
+├── projects/                   # Test projects
+│   └── mirror-visitor/         # Pilot: psychological thriller
+├── LICENSE                     # MIT
+└── README.md
+```
+
+---
+
+## Quick Start
+
+```bash
+# Clone
+git clone https://github.com/pajamadot/thriller.git
+
+# Start a project (in Claude Code with this repo as working directory)
+/start
+
+# Or jump straight into writing with the pilot project
+# Read projects/mirror-visitor/ for an example of the full workflow
+```
+
+No dependencies. Pure markdown methodology — works with any LLM that can read the SKILL.md files.
+
+---
+
+## Tech Specs
+
+| Metric | Value |
+|--------|-------|
+| Files | 46 |
+| Lines | 8300+ |
+| Reference docs | 24 (11 + 8 + 5) |
+| Methodology sources | 25+ |
+| Sub-types supported | 9 |
+| Commands | 26 (11 + 9 + 6) |
+| GEP assets | 4 Genes · 2 Capsules · 3 Events |
+| External dependencies | Zero |
+| Language | Chinese (extensible) |
+| License | MIT |
+| Version | v2.1.0 |
+
+---
+
+## Credits
+
+- Structure inspired by [0xsline/short-drama](https://github.com/0xsline/short-drama)
+- Evolution protocol: [EvoMap GEP](https://evomap.ai) / [autogame-17/evolver](https://github.com/autogame-17/evolver)
 
 ---
 
 ## License
 
-MIT License - 详见 [LICENSE](LICENSE)
+MIT — see [LICENSE](LICENSE)
