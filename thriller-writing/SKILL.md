@@ -141,9 +141,61 @@
 
 ---
 
+### `/premise` — 聚合前提设计
+
+> "在密室里，每个人的到场理由就是承重墙——抽掉任何一根，故事就塌了。"
+
+**触发条件**：
+- 封闭型（密室/暴风雪山庄）：`/theme` 完成后，`/trick` 之前
+- 开放型（社会派/犯罪程序）：`/trick` 完成后，`/characters` 之前（可简化执行）
+- 心理悬疑型：与 `/trick` 合并执行（聚合前提可能是诡计的一部分）
+
+**加载参考**：`references/gathering-premise.md`, `references/setting-atmosphere.md`
+
+**输出结构**（生成 `premise.md`）：
+
+```
+一、聚合事件设计
+   - 事件名称与性质（遗产继承/婚礼/职业义务/困境...）
+   - 事件发起人及其动机（表面目的 + 真实目的）
+   - 时间紧迫性（为什么是现在？）
+   - 封闭性来源（空间封闭的物理/社会原因）
+
+二、角色到场动机清单
+   对每个角色回答三层问题：
+   | 角色 | 独立理由 | 关系理由 | 不来的代价 |
+
+三、一致性矩阵
+   | 角色 | 独立理由 | 关系依赖 | 不来的代价 | 与犯罪的隐藏关联 | 减法测试 |
+
+四、反向验证
+   对每个角色执行四项测试：
+   □ 减法测试：移除此角色后故事是否成立？
+   □ 替换测试：此角色能否被一封信替代？
+   □ 时间测试：此角色能否迟到/早退而不影响情节？
+   □ 拒绝测试：此角色为什么没有拒绝邀请？
+
+五、缺席角色
+   - 谁被邀请了但没来？为什么？
+   - 缺席本身是否构成线索或红鲱鱼？
+
+六、聚合-犯罪因果链
+   聚合事件 → 特定人群在特定空间 → 犯罪机会 → 犯罪发生
+   □ 聚合事件是犯罪的必要条件吗？
+   □ 凶手是否利用了聚合事件的特征来犯罪？
+```
+
+**设计原则**：
+- **到场动机独立于情节需要**：角色来的理由不能是"因为故事需要ta在场"
+- **到场动机可验证**：每个理由都能通过四项反向测试
+- **聚合事件有独立价值**：即使没有犯罪，这个聚会也应该有存在的理由
+- **代价驱动**：最好的到场动机是"不来的代价高于来的不便"
+
+---
+
 ### `/characters` — 角色系统设计
 
-**触发条件**：`/trick` 完成后
+**触发条件**：`/trick` 和 `/premise` 完成后
 **加载参考**：`references/character-archetype.md`
 
 **输出结构**（生成 `characters.md`）：
@@ -435,18 +487,104 @@
 
 ```
 路线 A（本格/密室/叙述诡计——诡计优先）：
-  /start → /theme → /trick → /characters → /structure → /scene 1..N → /revise → /reveal → /export
+  /start → /theme → /premise → /trick → /characters → /structure
+    → [约束饱和检查] → /scene 1..N → /revise → /reveal → /export
 
 路线 B（社会派/心理悬疑——角色优先）：
-  /start → /theme → /characters → /trick → /structure → /scene 1..N → /revise → /reveal → /export
+  /start → /theme → /characters → /trick → /premise(简化) → /structure
+    → [约束饱和检查] → /scene 1..N → /revise → /reveal → /export
 
 路线 C（惊悚/犯罪程序——结构优先）：
-  /start → /theme → /structure → /characters → /trick → /scene 1..N → /revise → /reveal → /export
+  /start → /theme → /structure → /characters → /trick → /premise(简化)
+    → [约束饱和检查] → /scene 1..N → /revise → /reveal → /export
 
 通用规则：
   - /audit 和 /check 可在任何创作阶段随时调用
   - /revise 可在任何阶段反复调用
   - 每个阶段的输出是后续阶段的输入依赖
+  - [约束饱和检查] 在所有设计步骤完成后、第一行正文生成前执行
+  - 约束饱和检查不通过 → 不允许开始 /scene
+  - 封闭型故事（密室/暴风雪山庄）中 /premise 必须在 /trick 之前完成
+```
+
+---
+
+## 步骤执行日志
+
+每个步骤完成时，在 `.thriller-state.json` 中追加该步骤的执行记录，用于复盘时追溯决策链。
+
+### 日志格式
+
+每个步骤执行后，在 `stepLog` 数组中追加一条记录：
+
+```json
+{
+  "stepLog": [
+    {
+      "step": "/theme",
+      "timestamp": "2026-03-18T10:00:00Z",
+      "output_file": "theme.md",
+      "constraints_established": [
+        "主题前提：'信任的代价高于背叛的代价'"
+      ],
+      "constraints_consumed": [],
+      "assumptions_made": [],
+      "key_decisions": [
+        "选择社会派主题方向而非纯心理方向",
+        "主题通过犯罪动机的社会根因表达"
+      ],
+      "open_questions": [
+        "主题是否需要通过副线角色做反面论证？"
+      ]
+    },
+    {
+      "step": "/premise",
+      "timestamp": "2026-03-18T11:00:00Z",
+      "output_file": "premise.md",
+      "constraints_established": [
+        "聚合事件：遗产继承会",
+        "6个角色的到场动机已建立",
+        "封闭性：暴风雪+山路断裂"
+      ],
+      "constraints_consumed": [
+        "来自 /trick: 凶手身份=管家，需要与受害者独处机会"
+      ],
+      "assumptions_made": [
+        "假设角色C的律师身份在 /characters 中深化"
+      ],
+      "key_decisions": [
+        "聚合事件发起人=受害者本人（增加反讽）",
+        "角色D的到场动机=被勒索（不来就曝光秘密）"
+      ],
+      "open_questions": []
+    }
+  ]
+}
+```
+
+### 日志字段说明
+
+| 字段 | 作用 | 复盘价值 |
+|------|------|---------|
+| `constraints_established` | 本步骤建立了哪些约束 | 对照约束契约的 ✓ 清单，检查是否完整 |
+| `constraints_consumed` | 本步骤使用了上游哪些约束 | 追踪约束传递链，检测断裂 |
+| `assumptions_made` | 本步骤做了哪些假设 | 对照约束契约的 ⚠ 清单，识别真空 |
+| `key_decisions` | 关键设计决策及理由 | 补丁时回溯：当初为什么这么决定？ |
+| `open_questions` | 未解决的问题 | 下游步骤的注意事项 |
+
+### 约束饱和检查自动化
+
+在所有设计步骤完成后，遍历 `stepLog`：
+
+```
+1. 收集所有 assumptions_made → 未覆盖假设清单
+2. 收集所有 constraints_established → 已建立约束清单
+3. 对每个假设：检查是否被某个已建立约束覆盖
+4. 未覆盖的假设 = 约束真空 → 必须在生成前解决
+5. 输出约束饱和报告：
+   - 饱和率 = 已覆盖假设 / 全部假设
+   - 真空清单（每条附带：谁假设了它、应由谁建立）
+   - 通过/不通过判定
 ```
 
 ### `/revise` — 修改与打磨
