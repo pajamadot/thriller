@@ -4,6 +4,12 @@
 > Each technique is parameterized, indexed by genre/emotion/scene type, and cross-referenced to idiom FSMs
 > Populates the `/autopsy-visual` protocol defined in evaluation.md
 
+> **交叉引用**:
+> - shot-logic.md — 每个提取的技法映射到哪些 Idiom FSM
+> - genre-libraries.md — 技法按类型索引
+> - evaluation.md — CRAFT 维度评分引用本文的技法应用
+> - visual-metaphor.md — 某些技法本质上是隐喻的镜头实现
+
 ---
 
 ## Table of Contents
@@ -142,6 +148,7 @@
 #### Extracted Technique
 
 **Name**: T01 -- Fragmentation Violence
+**Idiom映射**: 此技法提出了新 Idiom (FRAGMENTATION-ASSAULT)，同时反转了 CHASE idiom 的加速逻辑——以碎片化取代速度作为感知武器。见 shot-logic.md。
 **Pattern**: ESTABLISH(calm, 2-4 shots, normal duration) -> INTRUSION(1 shot, shock) -> FRAGMENT(N shots, duration < 0.5s, no continuity, never showing the actual violence) -> DECELERATE(3-5 shots, duration increasing) -> SYMBOL(1-2 shots, metaphoric closure)
 **Parameters**:
 - `N_fragments`: 30-70 (more = more overwhelming)
@@ -209,6 +216,7 @@ This is a single continuous shot with internal movements. I break it into "sub-s
 #### Extracted Technique
 
 **Name**: T02 -- Environmental Exposition Pan
+**Idiom映射**: 此技法提出了新 Idiom (ENVIRONMENTAL-EXPOSITION)，将 ESTABLISH idiom 扩展为 MOVEMENT-DRIVEN 单镜头模式。见 shot-logic.md。
 **Pattern**: SINGLE-TAKE(PAN/TILT through environment -> character -> character's objects -> character's identity -> return to environment). Each resting point delivers one exposition unit. The return to the starting frame closes the loop.
 **Parameters**:
 - `n_exposition_units`: 5-12 (each pan-stop delivers one fact)
@@ -282,6 +290,7 @@ This is a single continuous shot with internal movements. I break it into "sub-s
 #### Extracted Technique
 
 **Name**: T03 -- Information Overload Reveal
+**Idiom映射**: 此技法扩展了 REVEAL-PROGRESSIVE idiom 的 HIGH-DENSITY 变体，同时提出了新 Idiom (THEMATIC-MONTAGE) 用于片头序列。见 shot-logic.md。
 **Pattern**: ESTABLISH(exterior, cold) -> APPROACH(corridor, steady follow, increasing grime) -> THRESHOLD(door opens, first glimpse, slow push) -> SCAN(methodical CU/INSERT cycle, each shot contains 3+ visual details) -> REACTION-PAIR(professional + novice, contrasted) -> HIDDEN-CLUE(partially obscured, found by methodical character) -> STEP-BACK(MS, character processing)
 **Parameters**:
 - `info_density_per_shot`: 3-6 (vs normal 1-2). Each frame is packed with visual information
@@ -340,6 +349,7 @@ This is a single continuous shot with internal movements. I break it into "sub-s
 #### Extracted Technique
 
 **Name**: T04 -- Duration-as-Tension (Extended Shot-Reverse-Shot)
+**Idiom映射**: 此技法扩展了 SHOT-REVERSE-SHOT idiom 的 EXTENDED 变体 (avg_duration 8-20s)，同时为 visual-rhythm.md 提出了 DELIBERATE-UNIFORM 节奏模式。
 **Pattern**: ESTABLISH(room, MS, 1 shot) -> SRS-EXTENDED(MCU/CU alternation, each shot 8-20s, minimal movement) -> MICRO-ESCALATION(gradual CU push from MCU, almost imperceptible) -> POWER-REVERSAL(one character takes control via direct address/challenge) -> REESTABLISH(MS two-shot showing new spatial dynamic)
 **Parameters**:
 - `avg_shot_duration`: 8-20s (vs standard SRS 3-5s)
@@ -393,6 +403,7 @@ This is a single continuous shot. I break it into phases defined by the action.
 #### Extracted Technique
 
 **Name**: T05 -- Exhaustion Long Take (Side-Scroll Action)
+**Idiom映射**: 此技法提出了新 Idiom (LONG-TAKE-ACTION)，具有独立的内部阶段 FSM，不同于现有的 CHASE idiom。见 shot-logic.md。
 **Pattern**: SINGLE-TAKE(PROFILE framing, lateral tracking only) with internal phases: CONFRONTATION-ESTABLISH -> PUSH-FORWARD -> PUSH-BACK -> PAUSE(exhaustion visible) -> PUSH-FORWARD-AGAIN(diminished) -> ARRIVAL. Camera movement direction mirrors protagonist's progress.
 **Parameters**:
 - `framing`: strictly PROFILE (side-on). No frontal, no three-quarter. The audience is positioned as a theater viewer.
@@ -453,6 +464,7 @@ This is a single continuous shot. I break it into phases defined by the action.
 #### Extracted Technique
 
 **Name**: T06 -- Architectural Stalking (Following Through Geometric Space)
+**Idiom映射**: 此技法提出了新 Idiom (ARCHITECTURAL-STALKING)，并要求 shot-logic.md 增加 `spatial_comprehension_goal: LOW` 参数。本质上是 M12 (走廊=不可逃避) 隐喻的镜头实现。
 **Pattern**: FOLLOW(Steadicam behind character, geometric space, repetitive architecture) -> REPETITION(turns revealing identical spaces) -> DISRUPTION(sudden static shot breaking the following pattern -- anomaly in the space) -> FLASH(optional rapid inserts of horror/memory) -> RESUME-FOLLOW(return to following, normalcy restored, but the audience is now afraid of every corner)
 **Parameters**:
 - `camera_position`: BEHIND character, SLIGHTLY LOW (Kubrick consistently positions camera at child-height even when following adults in the maze)
@@ -515,6 +527,7 @@ This is a single continuous shot. I break it into phases defined by the action.
 #### Extracted Technique
 
 **Name**: T07 -- Vertical Class Descent (Architectural Social Metaphor)
+**Idiom映射**: 此技法提出了新 Idiom (VERTICAL-METAPHOR)，将 TRANSITION idiom 扩展为 NARRATIVE 权重变体。本质上是 M09 (楼梯=权力转移) 和 M01 (权力=高位) 隐喻的镜头实现。
 **Pattern**: DESCENT-MONTAGE(repeated staircase shots, each steeper/longer/wetter, angle consistently HIGH looking down) intercut with CONTRAST-STATIC(comfortable interior, same weather experienced positively). Environmental degradation mirrors social position.
 **Parameters**:
 - `vertical_direction`: DOWN (descent = decline) or UP (ascent = aspiration). Parasite uses DOWN.
@@ -578,6 +591,7 @@ This is a single continuous shot. I break it into phases defined by the action.
 #### Extracted Technique
 
 **Name**: T08 -- Environmental Dread (Wide-Shot Tension Through Negative Action)
+**Idiom映射**: 此技法提出了新 Idiom (NEGATIVE-SPACE-DREAD)，将 ESTABLISH idiom 扩展为 STRETCHED 变体，并为 visual-rhythm.md 提出了 EXPANSION-DREAD 节奏模式。
 **Pattern**: AERIAL-ESTABLISH(convoy in landscape, 2-3 shots) -> INTERIOR-REACTION(protagonist processing environment) -> ENVIRONMENTAL-SCAN(alternating wide exterior / interior reaction, each shot adding one threat element, long holds) -> SILENCE-HOLD(the longest shot: maximum exposure, maximum vulnerability, no action) -> SUDDEN-VIOLENCE(3-5 rapid shots, breaking the rhythm contract) -> AERIAL-DEPARTURE(return to wide, normalcy restored, violence absorbed)
 **Parameters**:
 - `pre_violence_duration`: 60-80% of total sequence (the dread IS the scene, not the violence)
@@ -647,6 +661,7 @@ This is a single continuous shot. I break it into phases defined by the action.
 #### Extracted Technique
 
 **Name**: T09 -- Repetition with Variation (Temporal Loop)
+**Idiom映射**: 此技法提出了新 Idiom (VARIATION-LOOP)，要求 shot-logic.md 增加 `idiom_topology: LOOP` 参数——这是框架中首个非线性拓扑的 idiom。
 **Pattern**: ENCOUNTER-V1(location A, characters pass, minimal interaction, distinctive visual marker) -> TIME-SKIP -> ENCOUNTER-V2(SAME location, SAME angle, SAME music, but ONE variable changed: warmer interaction) -> TIME-SKIP -> ENCOUNTER-V3(SAME everything, but another variable changed: more connection) -> [N iterations]. Each iteration is a near-identical shot sequence with ONE thing different.
 **Parameters**:
 - `n_iterations`: 3-6 (3 minimum for pattern recognition, 6 maximum before repetition becomes tedious)
@@ -718,6 +733,7 @@ This is a single continuous shot. I break it into phases defined by the action.
 #### Extracted Technique
 
 **Name**: T10 -- Mundane Lethality (Micro-Escalation Dialogue)
+**Idiom映射**: 此技法扩展了 SHOT-REVERSE-SHOT idiom 的 ASYMMETRIC 变体 (size_offset + duration_ratio 编码权力差异)。见 shot-logic.md。
 **Pattern**: ESTABLISH(mundane setting, 1-2 shots) -> SRS-ASYMMETRIC(character A in CU with longer holds, character B in MCU with shorter holds) -> MICRO-ESCALATION(each exchange subtly shifts from normal to threatening, escalation is in subtext not text) -> OBJECT-INTRODUCTION(a prop crystallizes the threat -- coin, knife, phone, document) -> CLIMAX-HOLD(longest single shot on threatening character) -> RELEASE(mundane action -- leaving, putting something away -- but the audience knows death was present)
 **Parameters**:
 - `setting_mundanity`: HIGH (gas station, diner, laundromat -- the more ordinary, the more disturbing)
@@ -761,6 +777,7 @@ This is a single continuous shot. I break it into phases defined by the action.
 | 3 | ECU | BIRD | STATIC | 60s | Objects underwater: a syringe, a religious icon, coins, a gun. The camera simply looks down at them. No narration. |
 
 **Technique Extracted**: M01-T -- Contemplative Duration
+- **Idiom映射**: 此技法为 visual-rhythm.md 提出了 CONTEMPLATIVE 节奏模式，暂停所有时长上限规则。不映射到现有 Idiom——超越叙事性框架。
 - **Pattern**: SINGLE-TAKE(extreme duration, minimal movement, subject fills frame) -> the shot outlasts the viewer's narrative expectations -> the viewer stops waiting for the cut -> a new mode of perception activates (meditative, contemplative)
 - **Parameters**: `duration`: >60s per shot. `movement`: <5% frame change. `subject`: faces or landscapes. `transition_cue`: environmental (color change, sound change) NOT editorial (cut).
 - **Emotional Effect**: Transcendence. The viewer surrenders narrative expectation and enters a state of pure observation. Time itself becomes the subject.
@@ -799,6 +816,7 @@ This is a single continuous shot. I break it into phases defined by the action.
 | 8 | Mole | LS | 1.5s | Ship rolling over |
 
 **Technique Extracted**: M02-T -- Triple Timeline Weave
+- **Idiom映射**: 此技法扩展了 MONTAGE (Parallel) idiom 至 N-timeline 结构，要求 montage-theory.md 增加 convergence_point 参数。
 - **Pattern**: Establish three independent timelines with different temporal scales -> intercut them so they CONVERGE at the climax even though they cover different durations -> each timeline has its own rhythm (land=chaotic, sea=steady, air=precise) -> cross-cutting accelerates as convergence approaches -> at the climax point, all three timelines meet in the same moment
 - **Parameters**: `n_timelines`: 2-4. `temporal_scale_ratio`: timelines must cover different durations (1 week / 1 day / 1 hour). `convergence_point`: the moment all timelines share. `per_timeline_ASL`: each timeline has distinct rhythm. `cross_cut_frequency`: increases as convergence approaches (from every 30s to every 2-3s).
 - **Emotional Effect**: The different temporal scales create a layered tension structure. The audience knows these timelines will converge but not exactly when. Each timeline ratchets tension independently. The convergence moment is overwhelming because three streams of tension release simultaneously.
@@ -826,6 +844,7 @@ This is a single continuous shot. I break it into phases defined by the action.
 | Violence | ~15s | 0.5-1.5s | Rapid cutting, fragmentation (echoes T01) | Explosive gunfight lasting seconds after 20+ minutes of tension |
 
 **Technique Extracted**: M03-T -- Sustained Social Tension (The Long Fuse)
+- **Idiom映射**: 此技法扩展了 SHOT-REVERSE-SHOT idiom 的累积变体，要求 shot-logic.md 增加 `n_channel_mode: CUMULATIVE` 参数。暴力释放段落复用 T01 (FRAGMENTATION-ASSAULT)。
 - **Pattern**: Establish social scene with hidden threat -> gradually extend shot durations as suspicion builds -> introduce micro-clues through INSERT shots -> reach revelation via a single small detail (the gesture, the wrong word, the tell) -> shift to standoff with under-surface shots (literally showing what's hidden) -> explosive release (violence) lasting <5% of the scene's duration
 - **Parameters**: `buildup_duration`: 80-95% of total scene time. `release_duration`: 5-20% of total. `ASL_progression`: starts at 5-7s, peaks at 10-15s during maximum tension, drops to <2s for violence. `hidden_weapon`: literal (under-table guns) and figurative (knowledge, suspicion). `revelation_trigger`: ONE small detail that is trivially small but narratively catastrophic. `post_revelation_duration`: kept SHORT -- once the truth is known, violence follows quickly.
 - **Emotional Effect**: The extreme duration ratio (20 min tension : 15 sec violence) makes the audience internalize the characters' experience of waiting. Every pleasantry is loaded. The single wrong gesture retroactively charges every previous moment with danger.
@@ -854,6 +873,7 @@ This is a single continuous shot. I break it into phases defined by the action.
 | 7 | LS | EYE (from void) | STATIC | 5s | The "screen" above -- Missy visible, speaking, but sound is muffled. Chris cannot reach it. |
 
 **Technique Extracted**: M04-T -- Visual Metaphor as Narrative Reality
+- **Idiom映射**: 此技法提出了新 Idiom (REALITY-BREACH)，要求 shot-grammar.md 增加 `reality_mode: METAPHORICAL` 参数。本质上是将 visual-metaphor.md 的隐喻系统从"暗喻"升级为"实体化隐喻空间"。
 - **Pattern**: REALITY(mundane setting, grounded camera, naturalistic) -> TRIGGER(a specific sensory cue -- sound, word, gesture) -> BREACH(VFX-driven transition from reality to metaphor space, usually involving falling/sinking/floating) -> METAPHOR-SPACE(the abstract concept made physically navigable -- the void, the prison, the mirror world) -> PERSPECTIVE-SHIFT(the character now watches reality from within the metaphor, literalizing their powerlessness)
 - **Parameters**: `metaphor_physicality`: the abstract concept must be rendered as a physical space the character inhabits. `reality_window`: a visible connection to the real world (the "screen" above Chris). `sensory_trigger`: a specific repeatable stimulus that activates the transition (the tea cup sound for Chris). `return_mechanism`: how the character exits the metaphor space.
 - **Emotional Effect**: By giving an abstract experience (marginalization, silencing, loss of agency) a physical architecture, the audience can FEEL what the character experiences. The "sunken place" is more powerful than any dialogue about oppression because it makes the audience physically experience it through spatial disorientation and scale.
@@ -1021,3 +1041,26 @@ This file (`technique-library.md`) is the codified output of Band 9. It is:
 2. Add the 9 new idiom FSMs with formal state/transition definitions
 3. Run `/autopsy-visual` on non-Western films to test universality
 4. Test technique parameterization by generating storyboards that invoke specific techniques and scoring them
+
+---
+
+## Cross-Index Table: Technique → Genre Libraries → Visual Metaphors → Evaluation Dimensions
+
+> 综合索引表：将每个技法映射到类型库、视觉隐喻和评分维度，便于快速查找。
+
+| Technique | Genre Libraries (genre-libraries.md) | Visual Metaphors (visual-metaphor.md) | Evaluation Dimensions (evaluation.md) |
+|-----------|--------------------------------------|---------------------------------------|---------------------------------------|
+| **T01 Fragmentation Violence** | Thriller/Suspense, Horror, Crime | M15 碎裂=关系破裂 (碎片化剪辑=身体/心理完整性碎裂); M20 手持=混乱 (碎片化是混乱的极端形式) | CRAFT (剪辑精度), RHYTHM (碎片化节奏的1/f偏离度), FEELING (恐怖感的来源分析) |
+| **T02 Environmental Exposition** | Drama, Art Film, Crime | M02 孤立=暴露 (环境扫描暴露角色处境); M06 窗=真相 (通过环境读取角色真相); M17 光源=权威 (光线引导观众扫描路径) | CRAFT (单镜头内信息密度控制), CLARITY (无对白下的信息传递效率), STORY (视觉叙事完整度) |
+| **T03 Information Overload** | Thriller/Suspense, Crime | M07 阴影=隐藏自我 (犯罪现场=犯罪者心理的外化); M08 笼=困境 (信息过载=认知困境) | CRAFT (INFO_DENSITY per shot), CLARITY (高密度下的可读性), FEELING (压迫感/不适感) |
+| **T04 Duration-as-Tension** | Thriller/Suspense, Crime, Drama | M25 紧构图=幽闭 (锁定CU+长时长=双重幽闭); M01 权力=高位 (duration asymmetry编码权力) | RHYTHM (DELIBERATE-UNIFORM模式的识别), CRAFT (微推进的精度), FEELING (不安感的累积曲线) |
+| **T05 Exhaustion Long Take** | Action, Drama | M08 笼=困境 (走廊=物理笼); M12 走廊=不可逃避 (侧滚视角的走廊战斗) | CRAFT (单镜头内部阶段管理), RHYTHM (无切场景的内部节奏), FEELING (疲惫感的物理传递) |
+| **T06 Architectural Stalking** | Horror, Thriller/Suspense | M12 走廊=不可逃避 (Steadicam走廊=命运的物理形态); M19 对称=控制 (几何空间=超自然控制); M07 阴影=隐藏自我 (跟拍=幽灵视角) | CRAFT (Steadicam精度), RHYTHM (重复-打断模式), FEELING (建筑恐怖感), WORLD (空间不可知性) |
+| **T07 Vertical Class Descent** | Drama, Thriller/Suspense | M09 楼梯=权力转移 (核心隐喻); M01 权力=高位 (垂直=阶级); M23 雨=净化/悲伤 (同一场雨的阶级体验差异) | CRAFT (蒙太奇节奏与阶级递降的同步性), CLARITY (空间隐喻的可读性), FEELING (阶级愤怒), STORY (无评论的社会批评) |
+| **T08 Environmental Dread** | Thriller/Suspense, War, Action | M02 孤立=暴露 (广角=最大暴露); M21 沉默=恐惧 (近乎无声的紧张); M22 雾/烟=不确定 (环境中的威胁不确定性) | RHYTHM (EXPANSION-DREAD模式), CRAFT (负空间的精确控制), FEELING (预暴力恐惧), CLARITY (威胁信息的累积传递) |
+| **T09 Repetition with Variation** | Drama, Art Film | M27 螺旋=执念 (循环结构=执念的时间形态); M04 镜像=分裂 (重复中的变化=自我与镜像的偏移); M18 景深=时间 (同一空间不同时间=景深叠加) | CRAFT (固定/变量元素的精确控制), RHYTHM (VARIATION-LOOP节奏), FEELING (仪式感与渴望的积累), STORY (通过重复传递关系发展) |
+| **T10 Mundane Lethality** | Thriller/Suspense, Crime | M01 权力=高位 (CU/MCU asymmetry=权力编码); M25 紧构图=幽闭 (持续CU=无逃避); M21 沉默=恐惧 (对话表面平淡但潜文本致命) | CRAFT (SRS asymmetry精度), RHYTHM (微递增的识别), FEELING (日常恐怖), CLARITY (潜文本 vs 表面文本的分离度) |
+| **M01-T Contemplative Duration** | Art Film | M24 夜=潜意识 (超长镜头进入非叙事感知模式); M11 水=情感 (Zone中的水面=沉浸式情感) | RHYTHM (CONTEMPLATIVE模式——暂停常规评分), FEELING (超越叙事的感知转换), CRAFT (极简中的精度) |
+| **M02-T Triple Timeline Weave** | War, Thriller/Suspense | M10 时钟=压迫 (三个时间尺度=三层时间压力); M18 景深=时间 (时间线交叉=时间景深) | RHYTHM (per-timeline ASL独立评分), CRAFT (交叉剪辑频率的控制), STORY (汇聚点的叙事冲击力), CLARITY (时间线可辨识度) |
+| **M03-T Sustained Social Tension** | Thriller/Suspense, War | M03 屏障=秘密 (社交面具=屏障); M08 笼=困境 (酒馆=死亡陷阱); M25 紧构图=幽闭 (持续CU在封闭空间) | RHYTHM (ASL progression评分), CRAFT (累积潜文本的密度), FEELING (20:1 ratio的张力-释放比), STORY (单一细节引爆的叙事效率) |
+| **M04-T Visual Metaphor as Reality** | Horror, Thriller/Suspense | M04 镜像=分裂 (现实/隐喻空间的分裂); M28 门槛=转变 (从物理空间到隐喻空间的门槛); M08 笼=困境 (sunken place=终极困境) | CRAFT (VFX转场的无缝度), FEELING (抽象概念的物理化体验), WORLD (隐喻空间的内部逻辑一致性), STORY (隐喻与叙事的耦合度) |
