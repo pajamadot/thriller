@@ -15,6 +15,7 @@
 | `/visual-audit` | 视觉语法审计 |
 | `/score` | 六维度加权评分 |
 | `/autopsy-visual` | 导演解剖（逆向工程） |
+| `/visualize` | 分镜→图像提示词（SD/DALL-E/MJ/fal） |
 | `/style` | 风格设定 |
 
 ---

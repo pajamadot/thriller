@@ -37,6 +37,7 @@
 | `/visual-audit` | 视觉语法审计（连贯性、轴线、匹配） | 分镜序列 | 问题报告 + 修复建议 |
 | `/score` | 六维度加权评分（逻辑/叙事/视觉/节奏/声音/创造） | 分镜序列 | 评分报告 + 改进建议 |
 | `/autopsy-visual` | 导演解剖法（逆向工程电影镜头逻辑） | 电影+场景 | 策略提取 + 方法论盲点 |
+| `/visualize` | 分镜图像提示词生成（SD/DALL-E/MJ/fal） | 分镜序列 | 图像提示词列表 |
 | `/style` | 视觉风格设定（参考导演/类型/色调） | 风格意图 | 风格手册 |
 
 ---
@@ -584,6 +585,44 @@ CSV 格式：可导入 Shot Designer / StudioBinder
   - 每个问题的修复建议
   - 修复后的分镜对比
 ```
+
+---
+
+## `/visualize` 命令详解
+
+将分镜序列转换为 AI 图像生成提示词。
+
+```
+/visualize [镜头范围]
+
+输出模式:
+  --format sd     Stable Diffusion 格式（prompt + negative + 参数）
+  --format dalle  DALL-E 3 格式（自然语言描述）
+  --format mj     Midjourney 格式（--ar --s --q --v）
+  --format fal    fal.ai 格式（可直接用于 Story Platform generation worker）
+
+范围控制:
+  --scene <全场景>    每个镜头生成一条提示词
+  --keyframes         只为重力≥3的关键帧生成
+  --shot <N>          只为第N个镜头生成
+
+一致性:
+  --consistent        保持角色描述和环境描述跨镜头一致
+  --character-ref <角色ID>  使用角色参考图保持面部一致
+
+提示词结构（6段式）:
+  [镜头类型] [主体描述] [动作/姿态] [环境/背景] [光线/色彩/氛围] [风格/技术]
+
+转换规则:
+  景别 → 主体在画面中的占比（CU=面部填满，LS=全身+环境）
+  角度 → 视角描述（LOW=仰视英雄感，HIGH=俯视脆弱感）
+  色温 T_color() → 色彩关键词（3200K=warm golden，7500K=cool blue）
+  深度分层 → 景深描述（浅焦=bokeh，深焦=everything sharp）
+  隐喻 M01-M28 → 象征元素的可见呈现
+  类型库 → 氛围词和负面提示词
+```
+
+详见 `references/image-prompt-gen.md`。
 
 ---
 
