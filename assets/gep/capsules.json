@@ -352,5 +352,64 @@
       "local_mode": "evomap-ledger"
     },
     "success_streak": 1
+  },
+  {
+    "type": "Capsule",
+    "schema_version": "1.5.0",
+    "id": "capsule_sb_creation_20260320",
+    "trigger": [
+      "capability_gap:script_to_storyboard",
+      "capability_gap:shot_sequence_logic",
+      "capability_gap:visual_narrative_grammar",
+      "research_insight:cognitive_film_theory",
+      "research_insight:llm_screenplay_generation"
+    ],
+    "gene": "gene_sb_shot_logic_system",
+    "summary": "Created storyboard decomposition module v2 with 5-layer metacognitive framework, 8-step algorithm with VERIFY gate, shot logic system (information DAG + 6 film idiom FSMs + cognitive continuity rules), and LLM execution guide with self-audit protocol",
+    "content": "New module: storyboard/ (9 files, 4286 lines). Core innovation: shot sequence logic system that treats shots as information-carrying nodes in a DAG, requiring every cut to have a causal justification. Integrates Eisenstein montage, Katz staging, Hitchcock suspense, Murch priority, with neuroscience validation from Magliano(2011) event segmentation and Liao(2023) ERP scale asymmetry studies. LLM guidance based on R²(2025), DSR(2025), and Intelligent Cinematography Review(2024). 6 computable quality metrics. 8 logic error types. 6 film idiom state machines.",
+    "confidence": 0.88,
+    "blast_radius": {
+      "files": 12,
+      "lines": 4286
+    },
+    "outcome": {
+      "status": "success",
+      "score": 0.88
+    },
+    "env_fingerprint": {
+      "platform": "win32",
+      "arch": "x64",
+      "local_mode": "evomap-ledger"
+    },
+    "success_streak": 1
+  },
+  {
+    "type": "Capsule",
+    "schema_version": "1.5.0",
+    "id": "capsule_sb_loop_20260321022941005",
+    "trigger": [
+      "capability_gap:storyboard_evolution",
+      "process_signal:long_horizon_iteration",
+      "capability_gap:storyboard_100_round_loop"
+    ],
+    "gene": "gene_sb_100_round_loop",
+    "summary": "Storyboard 100-round evolution: 100 rounds across 10 bands",
+    "content": "Bands: Shot Logic Foundation, Idiom Library Expansion, Cognitive and Perceptual Deepening, Rhythm and Temporal Sophistication, Spatial Intelligence and Mise-en-scene, LLM Execution Optimization, Genre-Specific Shot Libraries, Cross-Module Integration, Director Autopsy and Technique Extraction, Verification, Scoring, and Codification",
+    "confidence": 0.9,
+    "blast_radius": {
+      "files": 14,
+      "lines": 15000
+    },
+    "outcome": {
+      "status": "success",
+      "score": 0.9
+    },
+    "env_fingerprint": {
+      "platform": "win32",
+      "arch": "x64",
+      "node_version": "v22.13.0",
+      "local_mode": "evomap-ledger"
+    },
+    "success_streak": 1
   }
 ]

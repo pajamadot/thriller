@@ -318,5 +318,166 @@
     "validation": [
       "node thriller/scripts/doctor-interactive-thriller.js thriller/interactive-fiction/templates/vn-project"
     ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_sb_shot_logic_system",
+    "summary": "Build and refine the shot sequence logic system: cut reasons, information DAG, film idiom FSMs, cognitive continuity rules",
+    "category": "innovate",
+    "signals_match": [
+      "capability_gap:shot_sequence_logic",
+      "capability_gap:visual_narrative_grammar",
+      "quality_signal:shot_causality",
+      "research_insight:cognitive_film_theory"
+    ],
+    "preconditions": [
+      "storyboard/SKILL.md exists with basic shot taxonomy"
+    ],
+    "strategy": [
+      "Identify logical gaps in shot-to-shot reasoning",
+      "Formalize cut justification rules (information/reaction/emphasis)",
+      "Build information dependency DAG model for shot sequences",
+      "Encode film idioms as finite state machines with decision rules",
+      "Integrate cognitive neuroscience findings (Magliano, Liao) as validation constraints",
+      "Create error dictionary for common logic violations"
+    ],
+    "constraints": {
+      "max_files": 6,
+      "forbidden_paths": [
+        ".git",
+        "node_modules",
+        "projects"
+      ]
+    },
+    "validation": [
+      "storyboard/references/shot-logic.md exists and contains REQUIRES/PROVIDES/RAISES model"
+    ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_sb_llm_execution_guide",
+    "summary": "Create and refine LLM-specific guidance for storyboard decomposition based on academic research on LLM screenplay generation",
+    "category": "optimize",
+    "signals_match": [
+      "capability_gap:llm_storyboard_quality",
+      "research_insight:llm_screenplay_generation",
+      "quality_signal:decomposition_quality"
+    ],
+    "preconditions": [
+      "storyboard decomposition algorithm exists"
+    ],
+    "strategy": [
+      "Analyze LLM weaknesses from R², DSR, and survey papers",
+      "Define forced chain-of-thought protocols for each decomposition step",
+      "Create self-audit protocol with computable quality metrics",
+      "Implement decompose-then-generate strategy with intermediate representations",
+      "Define LLM-specific traps and prevention measures"
+    ],
+    "constraints": {
+      "max_files": 4,
+      "forbidden_paths": [
+        ".git",
+        "node_modules",
+        "projects"
+      ]
+    },
+    "validation": [
+      "storyboard/references/llm-guidance.md exists and contains self-audit protocol"
+    ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_sb_evaluation_scoring",
+    "summary": "Build storyboard quality evaluation system with scoring rubrics and director autopsy framework",
+    "category": "optimize",
+    "signals_match": [
+      "capability_gap:storyboard_evaluation",
+      "capability_gap:visual_autopsy",
+      "quality_signal:storyboard_scoring"
+    ],
+    "preconditions": [
+      "storyboard decomposition algorithm with logic verification exists"
+    ],
+    "strategy": [
+      "Define multi-dimension scoring rubric for storyboard quality",
+      "Build /autopsy-visual command for reverse-engineering film shot choices",
+      "Create weighted evaluation that adapts to genre (thriller vs action vs drama)",
+      "Integrate computable metrics with human-judgment dimensions"
+    ],
+    "constraints": {
+      "max_files": 6,
+      "forbidden_paths": [
+        ".git",
+        "node_modules",
+        "projects"
+      ]
+    },
+    "validation": [
+      "storyboard/references/evaluation.md exists"
+    ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_sb_cross_module_bridge",
+    "summary": "Strengthen integration bridges between storyboard module and thriller-writing, interactive-fiction, and Story Platform MCP",
+    "category": "optimize",
+    "signals_match": [
+      "capability_gap:cross_module_integration",
+      "import_signal:vn_asset_planning",
+      "import_signal:mcp_node_generation"
+    ],
+    "preconditions": [
+      "storyboard module is stable with logic verification"
+    ],
+    "strategy": [
+      "Map storyboard outputs to VN node directives (character positions, backgrounds, audio)",
+      "Map storyboard outputs to MCP tool calls (node creation, asset requests)",
+      "Create conversion protocols between storyboard JSON and VN package format",
+      "Define how clue-design from thriller-writing maps to fair-play shot design"
+    ],
+    "constraints": {
+      "max_files": 4,
+      "forbidden_paths": [
+        ".git",
+        "node_modules"
+      ]
+    },
+    "validation": [
+      "storyboard/SKILL.md contains cross-module integration section"
+    ]
+  },
+  {
+    "type": "Gene",
+    "schema_version": "1.5.0",
+    "id": "gene_sb_100_round_loop",
+    "summary": "Run a file-only 100-round storyboard evolution loop across 10 thematic bands",
+    "category": "optimize",
+    "signals_match": [
+      "process_signal:long_horizon_iteration",
+      "capability_gap:storyboard_evolution",
+      "capability_gap:checkpointed_storyboard_iteration"
+    ],
+    "preconditions": [
+      "the repository can run local node scripts"
+    ],
+    "strategy": [
+      "Expand a 10-band plan into 100 concrete rounds",
+      "Generate round briefs, checkpoints, and run state under meta/runs",
+      "Keep generated run artifacts local and git-ignored"
+    ],
+    "constraints": {
+      "max_files": 8,
+      "forbidden_paths": [
+        ".git",
+        "node_modules"
+      ]
+    },
+    "validation": [
+      "node thriller/scripts/lib/storyboard-plan.js loads without error"
+    ]
   }
 ]

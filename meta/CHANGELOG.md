@@ -1,5 +1,90 @@
 # 变更日志
 
+## v5.0.0 — 分镜100轮进化完成 (2026-03-20)
+
+### 100轮进化结果: 4,800行 → 17,576行
+
+| 指标 | 进化前 | 进化后 |
+|------|--------|--------|
+| 总行数 | 4,800 | 17,576 |
+| 参考文件 | 9 | 17 |
+| Idiom FSM | 6 | 18 |
+| 认知科学源 | 2 | 10+ |
+| 质量指标 | 6 | 12 |
+| 类型库 | 0 | 6 |
+| 导演解剖 | 0 | 10+ |
+| 提示词模板 | 0 | 5 |
+| 视觉隐喻 | 0 | 28 |
+| 跨模块桥 | 概念级 | 3个完整映射 |
+
+### 10个Band完成
+- Band 1 (r001-r010): 镜头逻辑基础 — 形式化谓词, 多通道DAG, 第4切理由
+- Band 2 (r011-r020): Idiom扩展 — 18个FSM, 决策树, 复合记法
+- Band 3 (r021-r030): 认知深化 — cognitive-perception.md(1522行, 10+源)
+- Band 4 (r031-r040): 节奏精化 — 时长函数D(), 时间记号, 组合代数
+- Band 5 (r041-r050): 空间智能 — visual-metaphor.md(28条M01-M28), 色温/景深规则
+- Band 6 (r051-r060): LLM优化 — prompt-templates.md(5模板), 输出验证器, 上下文预算
+- Band 7 (r061-r070): 类型库 — genre-libraries.md(6类型+混合规则+检测启发)
+- Band 8 (r071-r080): 跨模块集成 — integration-maps.md(3座桥, 10+字段映射)
+- Band 9 (r081-r090): 导演解剖 — technique-library.md(10+解剖, 技法提取)
+- Band 10 (r091-r100): 验证与编纂 — 最终v5.0规格锁定
+
+### 新增6个参考文件
+- `cognitive-perception.md` — 认知知觉规则(注意力/认知负荷/情感启动/凝视预测/Kuleshov)
+- `visual-metaphor.md` — 视觉隐喻词典(28个编号条目M01-M28)
+- `prompt-templates.md` — LLM提示词模板(5个完整可用模板+输出验证器)
+- `genre-libraries.md` — 类型镜头库(6类型+Delta Overlay+混合规则)
+- `integration-maps.md` — 跨模块集成映射(3座桥+端到端管线)
+- `technique-library.md` — 导演技法库(10+部电影解剖+参数化技法)
+
+### 重大技术演进
+- **Duration Function**: D(shot) = D_base(size) × G(gravity) × B(beat_type) × S(style)
+- **Rhythm Composition Algebra**: CONCAT, NEST, INVERT, SCALE, ACCENT, INTERLEAVE
+- **Time Signatures**: 6种场景类型记号(4/4, 3/4, 6/8, free, var, rubato)
+- **Cognitive Load Limits**: ECU≤2, CU≤3, MCU≤4, MS≤5, LS≤8 信息单元/镜头
+- **Genre Delta Overlay**: primary(70%) + secondary(30%) 混合公式
+- **12项可计算质量指标**: 原6项 + ASL + r(1) + D_MAE + phrase_CV + climax_align + cog_load
+
+### GEP进化资产
+- 新增Gene: gene_sb_100_round_loop
+- 100轮进化事件记录到 events.jsonl
+- 进化计划基础设施: storyboard/specs/storyboard-plan/ (manifest + 10 slots + 10 bands)
+- 运行器脚本: scripts/lib/storyboard-plan.js + scripts/record-storyboard-evomap.js
+
+---
+
+## v4.0.0 — 分镜拆解模块 (2026-03-20)
+
+### 新增模块：`storyboard/`（10文件，4600+行）
+- `SKILL.md` — 10个命令, 5层元认知框架, 8步分解算法
+- `QUICKREF.md` — 速查卡
+- `references/shot-grammar.md` — 景别/角度/运动完全分类, 连贯性编辑规则
+- `references/montage-theory.md` — Eisenstein五级蒙太奇, 转场完全手册, Murch优先级
+- `references/visual-rhythm.md` — 镜头时长体系, 6种节奏模式, 张力弧线模板
+- `references/composition-staging.md` — Katz A-I-L调度, Hall人际距离学, 深度分层, 色彩/光线叙事
+- `references/shot-logic.md` — **核心创新**: 镜头逻辑系统(信息DAG, 6个Idiom FSM, 认知连贯性法则, 8种逻辑错误)
+- `references/llm-guidance.md` — LLM执行指南(5个已知陷阱, 强制思维链, 5步自审计, 6项质量指标)
+- `references/decomposition-algorithm.md` — 8步算法(含VERIFY逻辑验证门禁)
+- `references/evaluation.md` — 六维度加权评分 + 导演解剖法
+- `specs/sb-evomap.md` — EvoMap进化追踪规范
+
+### 核心创新
+- **镜头逻辑系统**: 每个切必须有因果理由(信息/反应/强调), 信息依赖图(DAG), 6种Film Idiom状态机
+- **认知验证**: 基于 Magliano(2011) 事件分割 + Liao(2023) ERP scale asymmetry 的神经科学规则
+- **LLM执行优化**: 基于 R²(2025), DSR(2025), Intelligent Cinematography Review(2024) 的分步生成策略
+- **VERIFY门禁**: 8步算法中的关键步骤, 确保镜头序列具有因果逻辑而非仅"看起来专业"
+- **6项可计算质量指标**: 信息效率, 切理由覆盖率, 依赖完整度, 节奏方差, Idiom覆盖率, 景别分布熵
+
+### GEP 进化资产
+- 4个新Gene: `gene_sb_shot_logic_system`, `gene_sb_llm_execution_guide`, `gene_sb_evaluation_scoring`, `gene_sb_cross_module_bridge`
+- 1个Capsule: 模块创建记录
+- 1个EvolutionEvent: v2创建事件
+
+### 方法论来源新增(12个)
+Eisenstein, Katz, Lumet, Murch, Bordwell, Hall, Kurosawa, StudioBinder, R²(2025), DSR(2025), Magliano(2011), Liao(2023)
+
+---
+
 ## v2.1.0 — Retro 修正 + GEP 本地进化 (2026-03-17)
 
 ### 修正（来自 /retro mirror-visitor ch1 测试）

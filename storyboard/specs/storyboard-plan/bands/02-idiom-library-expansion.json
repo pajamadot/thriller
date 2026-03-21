@@ -1,0 +1,25 @@
+{
+  "bandId": "sb_band_02",
+  "title": "Idiom Library Expansion",
+  "roundStart": 11,
+  "roundEnd": 20,
+  "objective": "Formalize at least 8 additional film idioms beyond the initial 6 as state machines with entry conditions, state transitions, exit conditions, and variant rules. Create an idiom decision tree.",
+  "focusPlanes": ["Idiom Coverage", "Logic Depth"],
+  "storyQuestions": [
+    "What idioms does Mirror Visitor ch1 require that are not yet formalized (Confession, Phone Call, Memory Intrusion, Internal Monologue)?",
+    "Can every custom idiom be decomposed into a variant of an existing one or genuinely needs a new FSM?",
+    "What is the minimum set of idioms needed to cover 90% of thriller scenes?",
+    "How should compound idioms (one nested inside another) be represented?"
+  ],
+  "defaultTargetFiles": [
+    "storyboard/references/shot-logic.md",
+    "storyboard/SKILL.md",
+    "storyboard/QUICKREF.md"
+  ],
+  "baseAcceptanceChecks": [
+    "At least 14 total idiom FSMs documented (6 existing + 8 new)",
+    "Each new idiom has entry condition, state diagram, variant list, exit condition, counter-example",
+    "An idiom decision tree exists for selecting the right idiom",
+    "Compound idiom notation is defined"
+  ]
+}

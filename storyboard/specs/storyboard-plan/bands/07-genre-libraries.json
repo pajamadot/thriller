@@ -1,0 +1,25 @@
+{
+  "bandId": "sb_band_07",
+  "title": "Genre-Specific Shot Libraries",
+  "roundStart": 61,
+  "roundEnd": 70,
+  "objective": "Build genre-specific shot pattern libraries for thriller sub-genres and non-thriller genres. Each library provides idiom modifications, rhythm signatures, evaluation weight adjustments, and representative shot sequences.",
+  "focusPlanes": ["Idiom Coverage", "Evaluation"],
+  "storyQuestions": [
+    "How does a psychological thriller's shot grammar differ from a procedural's?",
+    "Can genre-specific patterns be expressed as delta overlays on the base system?",
+    "What are the genre-defining shots (3-5 patterns that immediately signal a genre)?",
+    "How should genre hybridization work (noir + procedural)?"
+  ],
+  "defaultTargetFiles": [
+    "storyboard/references/genre-libraries.md",
+    "storyboard/references/evaluation.md",
+    "storyboard/SKILL.md"
+  ],
+  "baseAcceptanceChecks": [
+    "6 genre libraries each with idiom mods, rhythm signature, evaluation weights, 3 example sequences",
+    "Genre delta overlay format defined",
+    "3 genre-defining shot patterns per genre",
+    "Genre hybridization rules documented"
+  ]
+}

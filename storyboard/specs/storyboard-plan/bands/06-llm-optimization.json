@@ -1,0 +1,25 @@
+{
+  "bandId": "sb_band_06",
+  "title": "LLM Execution Optimization",
+  "roundStart": 51,
+  "roundEnd": 60,
+  "objective": "Transform the LLM guidance into a calibrated execution framework. Create prompt templates, chain-of-thought scaffolds, output validators, and quality calibration benchmarks.",
+  "focusPlanes": ["LLM Effectiveness", "Evaluation"],
+  "storyQuestions": [
+    "What prompt structure produces the highest information efficiency scores?",
+    "How much context window does each decomposition step need?",
+    "Can we define a minimum viable storyboard quality bar?",
+    "What self-correction loops are most effective — re-running VERIFY or re-generating from BEAT?"
+  ],
+  "defaultTargetFiles": [
+    "storyboard/references/llm-guidance.md",
+    "storyboard/references/decomposition-algorithm.md",
+    "storyboard/references/prompt-templates.md"
+  ],
+  "baseAcceptanceChecks": [
+    "3+ prompt templates for different decomposition modes",
+    "Output validator spec that checks 6 computable metrics from JSON",
+    "Calibration benchmark: 3 test scenes with metric targets",
+    "Context window budget table per decomposition step"
+  ]
+}

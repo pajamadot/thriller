@@ -1,0 +1,25 @@
+{
+  "bandId": "sb_band_01",
+  "title": "Shot Logic Foundation",
+  "roundStart": 1,
+  "roundEnd": 10,
+  "objective": "Tighten the cut-reason system, expand the information DAG model to handle branching dependencies, multiple information channels, and temporal constraints. Make every rule in shot-logic.md falsifiable and computable.",
+  "focusPlanes": ["Logic Depth", "Evaluation"],
+  "storyQuestions": [
+    "Can the 3 cut-reasons (information/reaction/emphasis) explain every cut in Mirror Visitor ch1, or do we need a 4th?",
+    "Does the DAG model handle simultaneous PROVIDES (a single shot providing info on two channels)?",
+    "When two shots both satisfy a REQUIRES, how does the DAG distinguish canonical provider vs redundant?",
+    "Can the VERIFY gate be expressed as computable predicates that an LLM can execute without ambiguity?"
+  ],
+  "defaultTargetFiles": [
+    "storyboard/references/shot-logic.md",
+    "storyboard/references/decomposition-algorithm.md",
+    "storyboard/references/evaluation.md"
+  ],
+  "baseAcceptanceChecks": [
+    "Every cut-reason rule has a predicate form (IF condition THEN reason)",
+    "The DAG model handles multi-channel PROVIDES",
+    "The VERIFY gate has a numbered predicate checklist",
+    "At least one new cut-reason edge case documented with resolution"
+  ]
+}

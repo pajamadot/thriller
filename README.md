@@ -1,6 +1,6 @@
 # Thriller — AI-Powered Thriller Screenplay & Interactive Fiction Skill Pack
 
-> Professional mystery/thriller writing system with 25+ screenwriting methodologies, 30+ academic papers, and self-evolving methodology via GEP protocol.
+> Professional mystery/thriller writing system with 25+ screenwriting methodologies, 30+ academic papers, cinematic storyboard decomposition, and self-evolving methodology via GEP protocol.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-v2.1.0-blue.svg)](meta/CHANGELOG.md)
@@ -15,7 +15,7 @@ A set of Claude Code skills for writing professional-quality mystery/thriller no
 
 ---
 
-## Three Modules
+## Four Modules
 
 ### 1. Thriller Screenplay Writing (`thriller-writing/`)
 
@@ -81,7 +81,36 @@ Convert thriller novels into branching interactive narratives.
 - **Storylet pool design** for investigation phases
 - **Cross-skill conversion mapping** — thriller-writing outputs feed directly into interactive-fiction inputs
 
-### 3. Self-Evolution System (`meta/`)
+### 3. Storyboard Decomposition (`storyboard/`)
+
+Transform narrative text into professional shot-by-shot storyboard sequences using cinematic language.
+
+| Command | Function | Output |
+|---------|----------|--------|
+| `/decompose` | Scene-level storyboard decomposition (core command) | Shot sequence table |
+| `/shot N` | Fine-tune individual shot (size, angle, movement, composition) | Shot design card |
+| `/rhythm` | Rhythm analysis and optimization (scene/chapter level) | Rhythm diagnosis + fixes |
+| `/blocking` | Staging design (character positions + camera paths) | Floor plan + trajectories |
+| `/montage` | Montage design (inter-shot relationships + transitions) | Montage annotations |
+| `/board` | Storyboard export (structured output) | Markdown / JSON / CSV |
+| `/visual-audit` | Visual grammar audit (continuity, axis, matching) | Issue report + fixes |
+| `/style` | Visual style preset (reference director/genre/palette) | Style manual |
+
+**5-layer analysis model**: Narrative (beats) > Visual Grammar (shots) > Mise-en-scene (staging) > Montage (editing) > Sound (audio design)
+
+**7-step decomposition algorithm**: PARSE > BEAT > BLOCK > SHOOT > CONNECT > RHYTHM > ANNOTATE
+
+**Key methodology sources**:
+- **Eisenstein five-level montage** — metric, rhythmic, tonal, overtonal, intellectual
+- **Katz A-I-L staging model** — Apex, Inline, L-shape spatial patterns
+- **Hitchcock visual suspense** — shot size = narrative importance, audience complicity
+- **Murch editing priority** — emotion > story > rhythm > eye trace > 2D > 3D
+- **Hall proxemics** — intimate/personal/social/public distance zones
+- **Kurosawa internal motion** — move within frame before moving camera
+
+**Thriller-specific techniques**: Fair-play clue planting via shot design, suspense rhythm patterns (Hitchcock/chase/psychological), truth revelation montage sequences
+
+### 4. Self-Evolution System (`meta/`)
 
 The methodology improves itself through structured reflection and external research.
 
@@ -138,10 +167,18 @@ Ecological (what's changing in the outside world?)
 | Xie & Riedl (EACL 2024) | Computational suspense | Adversarial plan-failure method |
 | Wagner et al. (2025) | Fairness modeling | Dual-reader probabilistic verification |
 | Eger (AIIDE 2020) | Computational reasoning | Dynamic Epistemic Logic |
+| Sergei Eisenstein *Montage Theory* | Editing theory | Five-level montage system, collision principle |
+| Steven Katz *Shot by Shot* | Storyboard design | A-I-L staging, shot-by-shot visualization |
+| Sidney Lumet *Making Movies* | Directing practice | Dramatic intent of shot design |
+| Walter Murch *In the Blink of an Eye* | Editing theory | Emotion-first editing priority (51/23/10/7/5/4) |
+| David Bordwell *Film Art* | Film studies | Formal analysis framework |
+| Edward T. Hall *Hidden Dimension* | Proxemics | Intimate/personal/social/public distance zones |
+| Akira Kurosawa | Visual storytelling | Internal motion priority, environment as narrative |
+| StudioBinder | Modern practice | 50+ shot/angle/movement taxonomy |
 
 ---
 
-## Reference Documents (24)
+## Reference Documents (29)
 
 ### Thriller Writing (`thriller-writing/references/`) — 11 files
 
@@ -171,6 +208,18 @@ Ecological (what's changing in the outside world?)
 | `export-formats.md` | Complete Twine/ink/ChoiceScript/JSON syntax specifications |
 | `interactive-prose.md` | Interactive prose writing, person choice, node length, convergence node techniques |
 | `advanced-if.md` | Accept/Reject/Deflect, QBN, vertical drilling, Storylet design |
+
+### Storyboard Decomposition (`storyboard/references/`) — 7 files
+
+| File | Contents |
+|------|----------|
+| `shot-grammar.md` | Complete shot size/angle/movement taxonomy, transition rules, continuity editing |
+| `montage-theory.md` | Eisenstein five-level montage, transition handbook, Murch editing priority, Kuleshov effect |
+| `visual-rhythm.md` | Shot duration system, 6 rhythm patterns, tension arc templates, rhythm diagnostics |
+| `composition-staging.md` | Katz A-I-L staging, Hall proxemics, depth layering, color/light narrative, visual metaphor |
+| `shot-logic.md` | Shot sequence logic system: 3 cut reasons, information DAG, 6 film idiom FSMs, cognitive continuity (Magliano/Liao), 8 logic errors, viewpoint system |
+| `llm-guidance.md` | LLM execution guide: 5 known traps, forced chain-of-thought protocol, 5-step self-audit, decompose-then-generate strategy, 6 quality metrics |
+| `decomposition-algorithm.md` | 8-step algorithm with VERIFY gate: PARSE→BEAT→BLOCK→SHOOT→VERIFY→CONNECT→RHYTHM→ANNOTATE+AUDIT |
 
 ### Evolution System (`meta/references/`) — 5 files
 
@@ -217,6 +266,16 @@ Finished manuscript → /init (source: existing novel) → identify decision poi
 
 Outputs from `thriller-writing` feed directly into `interactive-fiction` — see conversion mapping in `interactive-fiction/SKILL.md`.
 
+### Storyboard Decomposition
+
+```
+/scene N (from thriller-writing) → /decompose → /shot → /rhythm → /montage
+                                                                      ↓
+                                  /board ← /visual-audit ← /blocking
+```
+
+Storyboard outputs feed into `interactive-fiction` (VN asset planning) and Story Platform MCP (node/asset generation).
+
 ### Evolution Loop
 
 ```
@@ -256,7 +315,11 @@ thriller/
 │   ├── SKILL.md                # 9 commands, 5 topology models
 │   ├── QUICKREF.md             # Quick reference card
 │   └── references/             # 10 reference documents
-├── meta/                       # Skill 3: Self-evolution system
+├── storyboard/                 # Skill 3: Storyboard decomposition
+│   ├── SKILL.md                # 8 commands, 5-layer model, 7-step algorithm
+│   ├── QUICKREF.md             # Quick reference card
+│   └── references/             # 5 reference documents
+├── meta/                       # Skill 4: Self-evolution system
 │   ├── SKILL.md                # 6 evolution commands
 │   ├── references/             # 5 evolution reference documents
 │   ├── CHANGELOG.md            # Version history
@@ -297,14 +360,14 @@ No dependencies. Pure markdown methodology — works with any LLM that can read 
 
 | Metric | Value |
 |--------|-------|
-| Files | 64 |
-| Lines | 10000+ |
-| Reference docs | 32 (17 + 10 + 5) |
-| Methodology sources | 25+ |
+| Files | 73 |
+| Lines | 17000+ |
+| Reference docs | 39 (17 + 10 + 7 + 5) |
+| Methodology sources | 37+ |
 | Sub-types supported | 9 |
-| Commands | 26 (11 + 9 + 6) |
+| Commands | 34 (11 + 9 + 8 + 6) |
 | Project templates | 6 sub-type presets |
-| Quick reference cards | 2 (thriller + IF) |
+| Quick reference cards | 3 (thriller + IF + storyboard) |
 | GEP assets | 4 Genes · 2 Capsules · 3 Events |
 | Evolution rounds | 30 completed |
 | External dependencies | Zero |

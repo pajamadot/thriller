@@ -1,0 +1,25 @@
+{
+  "bandId": "sb_band_05",
+  "title": "Spatial Intelligence and Mise-en-scene",
+  "roundStart": 41,
+  "roundEnd": 50,
+  "objective": "Formalize color, light, depth, and metaphor systems as decision rules. Create a spatial grammar mapping scene semantics to composition choices. Build a visual metaphor dictionary.",
+  "focusPlanes": ["Idiom Coverage", "Cognitive Fidelity"],
+  "storyQuestions": [
+    "Can color temperature be modeled as a continuous function of narrative threat level?",
+    "How should depth-of-field interact with information density?",
+    "Can we build a visual metaphor dictionary mapping narrative concepts to composition patterns?",
+    "What are the mise-en-scene signatures for different thriller sub-genres?"
+  ],
+  "defaultTargetFiles": [
+    "storyboard/references/composition-staging.md",
+    "storyboard/references/shot-grammar.md",
+    "storyboard/references/visual-metaphor.md"
+  ],
+  "baseAcceptanceChecks": [
+    "Color/light decision rules formalized (not just descriptions)",
+    "Depth-of-field choice linked to information density model",
+    "Visual metaphor dictionary with 20+ entries",
+    "At least 3 mise-en-scene templates for thriller sub-genres"
+  ]
+}

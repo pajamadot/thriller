@@ -1,0 +1,205 @@
+[
+  {
+    "slot": 1,
+    "label": "Audit",
+    "hypothesisStem": "If the current weakness in this dimension is described precisely, later rounds can target the real failure instead of a surface symptom.",
+    "mutationMoves": [
+      "Name the current failure mode in one sentence referencing specific lines/sections in target files",
+      "List the rules, patterns, or gaps causing the failure",
+      "Quantify the gap: how many cases does the current system handle vs how many it should",
+      "Translate the weakness into a concrete quality metric degradation"
+    ],
+    "acceptanceAdditions": [
+      "The weakness is framed as a falsifiable claim",
+      "The audit references specific section headers in target files"
+    ],
+    "deliverables": [
+      "A named failure mode with evidence from target files",
+      "A gap quantification table (have vs need)"
+    ],
+    "targetFiles": []
+  },
+  {
+    "slot": 2,
+    "label": "Research",
+    "hypothesisStem": "If authoritative sources are identified for this dimension, the formalization in slot 3 will have solid theoretical grounding.",
+    "mutationMoves": [
+      "Identify 3-5 authoritative sources (academic papers, practitioner books, film analysis)",
+      "Extract the key finding or framework from each source in 2-3 sentences",
+      "Map each finding to a specific rule or pattern that could be added",
+      "Note contradictions between sources and resolve with a principled position"
+    ],
+    "acceptanceAdditions": [
+      "Each source has a citation and one-sentence relevance statement",
+      "At least one source is from cognitive science or perception research"
+    ],
+    "deliverables": [
+      "Annotated source list with extracted findings",
+      "A source-to-rule mapping table"
+    ],
+    "targetFiles": []
+  },
+  {
+    "slot": 3,
+    "label": "Formalize",
+    "hypothesisStem": "If the research findings are converted to precise rules, LLMs can execute them without ambiguity.",
+    "mutationMoves": [
+      "Convert each research finding into an IF/THEN decision rule",
+      "Define the rule's scope (when it applies and when it does not)",
+      "Write the rule in the existing format/notation of the target file",
+      "Add a counter-example showing what violation of the rule looks like"
+    ],
+    "acceptanceAdditions": [
+      "Every new rule has predicate form, scope, and counter-example",
+      "Rules do not contradict existing rules or contradictions are resolved"
+    ],
+    "deliverables": [
+      "New rules written in target file format",
+      "A rule consistency check against existing rules"
+    ],
+    "targetFiles": []
+  },
+  {
+    "slot": 4,
+    "label": "Expand",
+    "hypothesisStem": "If the new rules are expanded with examples, variants, and edge cases, the methodology becomes robust against real-world complexity.",
+    "mutationMoves": [
+      "Add 2-3 worked examples per new rule showing correct application",
+      "Document variant forms of each rule (strong form vs weak form)",
+      "Identify edge cases where the rule breaks down and add exception handling",
+      "Cross-link to related rules in other reference files"
+    ],
+    "acceptanceAdditions": [
+      "Each rule has at least 2 worked examples",
+      "Edge cases documented with resolution strategy"
+    ],
+    "deliverables": [
+      "Expanded rule entries with examples, variants, edge cases",
+      "Cross-reference index to related rules"
+    ],
+    "targetFiles": []
+  },
+  {
+    "slot": 5,
+    "label": "Apply",
+    "hypothesisStem": "If the new rules produce better results on Mirror Visitor ch1 than the previous version, the formalization is validated.",
+    "mutationMoves": [
+      "Apply the new/modified rules to Mirror Visitor ch1 scene",
+      "Generate a storyboard fragment using the updated methodology",
+      "Compare the output against the previous version on quality metrics",
+      "Note where the new rules improved the output and where they made no difference"
+    ],
+    "acceptanceAdditions": [
+      "The test storyboard covers at least 7 shots",
+      "At least one quality metric improved or baseline established"
+    ],
+    "deliverables": [
+      "A test storyboard fragment for Mirror Visitor ch1",
+      "A before/after metric comparison table"
+    ],
+    "targetFiles": ["projects/mirror-visitor/chapters/ch001.md"]
+  },
+  {
+    "slot": 6,
+    "label": "Refine",
+    "hypothesisStem": "If the rules are adjusted based on application results, false positives and false negatives decrease.",
+    "mutationMoves": [
+      "Analyze test results for false positives and false negatives",
+      "Adjust rule thresholds, scope boundaries, or exception lists",
+      "Re-run the failing cases to confirm the fix",
+      "Update the rule documentation with the adjustment rationale"
+    ],
+    "acceptanceAdditions": [
+      "False positive rate on the test scene < 20%",
+      "Adjustments are documented with before/after comparison"
+    ],
+    "deliverables": [
+      "Refined rule set with adjustment rationale",
+      "Updated metric targets if the original targets were unrealistic"
+    ],
+    "targetFiles": []
+  },
+  {
+    "slot": 7,
+    "label": "Integrate",
+    "hypothesisStem": "If the new rules connect cleanly to adjacent dimensions, the methodology avoids internal contradictions and coverage gaps.",
+    "mutationMoves": [
+      "Trace how the new rules affect adjacent dimensions",
+      "Update cross-references in affected files",
+      "Check for rule conflicts between dimensions and resolve them",
+      "Add integration notes to the QUICKREF.md"
+    ],
+    "acceptanceAdditions": [
+      "No unresolved cross-dimension conflicts",
+      "QUICKREF.md reflects new additions"
+    ],
+    "deliverables": [
+      "Updated cross-references in all affected files",
+      "Integration conflict resolution log"
+    ],
+    "targetFiles": ["storyboard/QUICKREF.md"]
+  },
+  {
+    "slot": 8,
+    "label": "Evaluate",
+    "hypothesisStem": "If the accumulated changes produce measurable improvement on quality metrics, the band objective is being achieved.",
+    "mutationMoves": [
+      "Run the full evaluation on the test storyboard using refined rules",
+      "Compare scores against the band's baseline",
+      "Identify which metrics improved, stayed flat, or regressed",
+      "Compute the overall band improvement delta"
+    ],
+    "acceptanceAdditions": [
+      "At least 3 of 6 metrics improved or none regressed",
+      "Overall weighted score improved by at least 2 points"
+    ],
+    "deliverables": [
+      "Full evaluation report with metric comparison table",
+      "Band progress assessment (on-track / at-risk / blocked)"
+    ],
+    "targetFiles": ["storyboard/references/evaluation.md"]
+  },
+  {
+    "slot": 9,
+    "label": "Stress-test",
+    "hypothesisStem": "If the methodology survives adversarial attack, it is robust enough for production use.",
+    "mutationMoves": [
+      "Design 2-3 adversarial test cases that should break the new rules",
+      "Run the methodology on these adversarial cases",
+      "Classify breakages as acceptable edge cases, fixable bugs, or fundamental limitations",
+      "Fix fixable bugs and document limitations"
+    ],
+    "acceptanceAdditions": [
+      "At least 2 adversarial test cases attempted",
+      "No undocumented fundamental limitations"
+    ],
+    "deliverables": [
+      "Adversarial test case descriptions and results",
+      "Bug fix list and limitation catalog"
+    ],
+    "targetFiles": []
+  },
+  {
+    "slot": 10,
+    "label": "Codify",
+    "hypothesisStem": "If the band's gains are written into canonical reference files and the evomap is updated, the improvement is permanent and visible to future rounds.",
+    "mutationMoves": [
+      "Write all surviving rules, patterns, and examples into canonical target files",
+      "Update SKILL.md with any new commands, parameters, or workflow changes",
+      "Update QUICKREF.md with the condensed versions",
+      "Update sb-evomap.md with the version increment and change log"
+    ],
+    "acceptanceAdditions": [
+      "All target files have no broken cross-references",
+      "sb-evomap.md version incremented",
+      "The band's acceptance checks all pass"
+    ],
+    "deliverables": [
+      "Updated reference files with final edits",
+      "Updated QUICKREF.md",
+      "Updated sb-evomap.md with version entry",
+      "Band completion checkpoint note"
+    ],
+    "targetFiles": ["storyboard/SKILL.md", "storyboard/QUICKREF.md", "storyboard/specs/sb-evomap.md"]
+  }
+]

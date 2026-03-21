@@ -1,0 +1,32 @@
+{
+  "planId": "storyboard-100-round-evolution",
+  "title": "Storyboard Decomposition 100-Round Evolution",
+  "version": "1.0.0",
+  "totalRounds": 100,
+  "bandsCount": 10,
+  "slotsPerBand": 10,
+  "targetModule": "storyboard/",
+  "testScene": "projects/mirror-visitor/chapters/ch001.md",
+  "evolutionDimensions": [
+    "Logic Depth",
+    "Cognitive Fidelity",
+    "LLM Effectiveness",
+    "Idiom Coverage",
+    "Integration",
+    "Evaluation"
+  ],
+  "defaultVerificationCommands": [
+    "wc -l storyboard/**/*.md storyboard/*.md",
+    "grep -c '状态机:' storyboard/references/shot-logic.md",
+    "grep -c 'REQUIRES\\|PROVIDES\\|RAISES' storyboard/references/shot-logic.md"
+  ],
+  "qualityMetrics": [
+    "information_efficiency > 0.8",
+    "cut_justification_coverage = 1.0",
+    "dependency_completeness = 1.0",
+    "rhythm_variance 1.5-4.0s",
+    "idiom_coverage 0.6-0.9",
+    "shot_size_entropy > 2.0 bits"
+  ],
+  "created": "2026-03-20T00:00:00Z"
+}

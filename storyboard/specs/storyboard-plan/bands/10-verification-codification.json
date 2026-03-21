@@ -1,0 +1,27 @@
+{
+  "bandId": "sb_band_10",
+  "title": "Verification, Scoring, and Codification",
+  "roundStart": 91,
+  "roundEnd": 100,
+  "objective": "Finalize the evaluation system, build a self-test suite, create regression benchmarks, and codify the evolved methodology into its final v3.0 form.",
+  "focusPlanes": ["Evaluation", "LLM Effectiveness", "Integration"],
+  "storyQuestions": [
+    "Can the 6 metrics be extended with cognitive load index, genre fidelity score, integration completeness?",
+    "What is the minimum test suite size that catches 95% of quality regressions?",
+    "Can the scoring system self-calibrate based on accumulated autopsy data?",
+    "Is the final methodology stable under adversarial attack?"
+  ],
+  "defaultTargetFiles": [
+    "storyboard/references/evaluation.md",
+    "storyboard/SKILL.md",
+    "storyboard/QUICKREF.md",
+    "storyboard/specs/sb-evomap.md"
+  ],
+  "baseAcceptanceChecks": [
+    "9+ computable quality metrics (original 6 + at least 3 new)",
+    "Regression test suite with 5+ test scenes and golden storyboards",
+    "Scoring validated against autopsy data (correlation > 0.7)",
+    "SKILL.md and QUICKREF.md updated to reflect all v3.0 changes",
+    "sb-evomap.md updated to v3.0 with complete version history"
+  ]
+}

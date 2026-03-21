@@ -1,0 +1,25 @@
+{
+  "bandId": "sb_band_09",
+  "title": "Director Autopsy and Technique Extraction",
+  "roundStart": 81,
+  "roundEnd": 90,
+  "objective": "Populate the director autopsy system with at least 10 analyzed film sequences. Extract reusable technique patterns, identify framework blind spots, and feed discoveries back into the methodology.",
+  "focusPlanes": ["Idiom Coverage", "Cognitive Fidelity", "Evaluation"],
+  "storyQuestions": [
+    "What techniques from Hitchcock, Fincher, Park Chan-wook cannot be explained by current idiom FSMs?",
+    "For each unexplained technique, is the gap in idioms, cognitive rules, or evaluation?",
+    "Can extracted techniques be parameterized (e.g. Fincher reveal = reveal idiom with INFO_DENSITY > 3)?",
+    "How many autopsy sessions before the methodology stabilizes?"
+  ],
+  "defaultTargetFiles": [
+    "storyboard/references/evaluation.md",
+    "storyboard/references/technique-library.md",
+    "storyboard/references/shot-logic.md"
+  ],
+  "baseAcceptanceChecks": [
+    "10 film sequences analyzed with full autopsy protocol",
+    "At least 5 new reusable technique patterns extracted and parameterized",
+    "Framework blind spots cataloged with proposed fixes",
+    "Technique library indexed by genre, emotion, and scene type"
+  ]
+}

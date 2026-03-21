@@ -1,0 +1,25 @@
+{
+  "bandId": "sb_band_03",
+  "title": "Cognitive and Perceptual Deepening",
+  "roundStart": 21,
+  "roundEnd": 30,
+  "objective": "Expand the neuroscience foundation from 2 primary sources to 8+. Add perception rules for attention, gaze prediction, cognitive load, and emotional priming. Convert findings into testable predictions.",
+  "focusPlanes": ["Cognitive Fidelity", "Logic Depth"],
+  "storyQuestions": [
+    "What does attentional spotlight research predict about INSERT shot placement?",
+    "Is there a Miller's 7+/-2 equivalent for visual info units per shot?",
+    "What does emotion priming research predict about minimum setup duration before a contrast-cut?",
+    "Can we formalize the Kuleshov effect as a predictive rule?"
+  ],
+  "defaultTargetFiles": [
+    "storyboard/references/shot-logic.md",
+    "storyboard/references/composition-staging.md",
+    "storyboard/references/cognitive-perception.md"
+  ],
+  "baseAcceptanceChecks": [
+    "8+ cited neuroscience/perception sources with specific findings",
+    "Each finding converted to a decision rule with IF/THEN form",
+    "At least 3 testable predictions made against Mirror Visitor ch1",
+    "Cognitive load limit formalized (max info units per shot by size)"
+  ]
+}

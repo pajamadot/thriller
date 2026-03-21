@@ -1,0 +1,25 @@
+{
+  "bandId": "sb_band_04",
+  "title": "Rhythm and Temporal Sophistication",
+  "roundStart": 31,
+  "roundEnd": 40,
+  "objective": "Elevate the rhythm system from descriptive patterns to a mathematical formalism. Introduce time signatures, duration calculus, tempo maps, and phrase-level rhythm analysis.",
+  "focusPlanes": ["Evaluation", "Logic Depth"],
+  "storyQuestions": [
+    "Can we define time signatures for scene types (interrogation=4/4 syncopation, chase=accelerando 6/8)?",
+    "What function best describes the relationship between narrative gravity and shot duration?",
+    "Can rhythm patterns be composed (Breathe + Burst + Fermata)?",
+    "How should we model rhythmic memory (audience expectation from previous 5-10 shots)?"
+  ],
+  "defaultTargetFiles": [
+    "storyboard/references/visual-rhythm.md",
+    "storyboard/references/decomposition-algorithm.md",
+    "storyboard/references/evaluation.md"
+  ],
+  "baseAcceptanceChecks": [
+    "Time signature notation defined with at least 6 genre-specific signatures",
+    "Duration function f(gravity, beat_type, shot_size) formalized",
+    "Rhythm composition algebra with at least 3 operators",
+    "Rhythm diagnostic uses mathematical thresholds"
+  ]
+}
