@@ -596,6 +596,8 @@ CSV 格式：可导入 Shot Designer / StudioBinder
 /visualize [镜头范围]
 
 输出模式:
+  --format nb2    Nano Banana 2 格式（自然语言创意简报，默认推荐）
+  --format gemini Gemini API / Vertex AI（同nb2提示词，API参数）
   --format sd     Stable Diffusion 格式（prompt + negative + 参数）
   --format dalle  DALL-E 3 格式（自然语言描述）
   --format mj     Midjourney 格式（--ar --s --q --v）

@@ -327,6 +327,8 @@ M19 对称=控制:
 输出: 编号列表，每条包含 prompt + negative + 参数
 
 格式适配:
+  nb2  → Nano Banana 2 格式（自然语言创意简报，默认推荐）
+  gemini → Gemini API / Vertex AI（同 nb2 提示词，不同API参数）
   sd   → Stable Diffusion 格式（prompt, negative_prompt, steps, cfg, sampler）
   dalle → DALL-E 格式（prompt, size, quality, style）
   mj   → Midjourney 格式（prompt --ar --s --q）
@@ -358,11 +360,82 @@ M19 对称=控制:
 
 ## 七、格式适配器
 
+### Nano Banana 2 / Gemini（推荐，2026主流）
+
+Nano Banana 2 (Google Gemini 3.1 Flash Image) 是当前最主流的图像生成模型。
+与 SD/MJ 的关键词堆砌不同，NB2 使用**自然语言创意简报**风格。
+
+**提示词风格差异**:
+```
+SD/MJ风格（关键词堆砌，不推荐）:
+  "close-up portrait, Chinese woman, side lighting, bokeh, 35mm, f/1.4, cinematic"
+
+NB2风格（自然语言简报，推荐）:
+  "A cinematic close-up of a Chinese woman therapist in her thirties,
+   captured in the warm afternoon light of her office. The light falls
+   from the side window, leaving half her face in shadow — suggesting
+   she carries a secret. Her expression is one of controlled professional
+   composure barely containing shock. The background blurs into soft
+   shapes of bookshelves and diplomas. The overall mood is elegant but
+   deeply unsettling, like something is about to break."
+```
+
+**NB2 提示词最佳实践**:
+```
+1. 像写创意总监的指示，不像给搜索引擎的关键词
+2. 描述意图和情感，不仅是视觉元素
+   ✗ "warm lighting, amber tones"
+   ✓ "The warm amber light feels like the last moment of safety before everything changes"
+3. 利用NB2的世界知识——可以引用真实地点、文化细节
+   "A therapy office in a modern Chinese city, the kind with IKEA furniture
+    and diplomas from both Chinese and Western universities on the wall"
+4. 角色一致性：NB2可同时维持最多5个角色的一致外观
+   在系列提示词中保持角色描述一致即可
+5. 文字渲染：NB2可以在画面中生成清晰文字
+   "A notebook page with the handwritten name '周明哲' circled in red"
+6. 用自然语言编辑已生成的图像
+   "Make the shadows deeper and the color palette colder"
+```
+
+**Gemini API 格式**:
+```python
+# Google AI Studio / Vertex AI
+from google import genai
+
+client = genai.Client()
+response = client.models.generate_images(
+    model='gemini-2.0-flash-preview-image-generation',
+    prompt='[自然语言创意简报]',
+    config=genai.types.GenerateImagesConfig(
+        number_of_images=1,
+        aspect_ratio='16:9',
+        output_mime_type='image/png',
+    )
+)
+```
+
+**NB2 分镜提示词模板**:
+```
+镜头{N}——{节拍类型}：{节拍内容概要}
+
+[创意简报描述，包含:]
+- 画面构图和主体位置（从景别/角度转换）
+- 人物的情感状态和意图（从节拍上下文推断）
+- 光线和色彩的情感含义（从T_color和类型库转换）
+- 环境的叙事功能（从深度分层和隐喻转换）
+- 整体情绪/氛围（一句话总结这个镜头要传达什么感受）
+
+画面比例：16:9 宽银幕
+风格参考：电影剧照，{类型}风格
+```
+
+---
+
 ### Stable Diffusion / ComfyUI
 
 ```json
 {
-  "prompt": "[正面提示词]",
+  "prompt": "[正面提示词——关键词+短语堆砌]",
   "negative_prompt": "text, watermark, signature, blurry, deformed, ugly, bad anatomy, extra limbs, low quality, jpeg artifacts",
   "width": 1344,
   "height": 768,
@@ -377,7 +450,7 @@ M19 对称=控制:
 
 ```json
 {
-  "prompt": "[完整描述性提示词，DALL-E偏好自然语言]",
+  "prompt": "[自然语言描述，类似NB2但更简洁]",
   "size": "1792x1024",
   "quality": "hd",
   "style": "natural"
@@ -462,63 +535,104 @@ art_house:
 
 ## 十、示例：Mirror Visitor ch1 关键帧提示词
 
+每个镜头提供两种格式：NB2（推荐）和 SD（兼容）。
+
 ### Shot 1 — 建立：公寓外景
 
+**NB2 (Nano Banana 2)**:
 ```
-Prompt: extreme wide shot, urban Chinese apartment building at night,
-single warm window light on upper floor contrasting with dark facade,
-wet streets reflecting distant neon signs, cold blue moonlight,
-scattered rain, lonely isolated atmosphere,
-cinematic photography, desaturated teal with single amber accent,
-anamorphic lens, film grain, 2.39:1 widescreen
+A cinematic establishing shot of an anonymous apartment building in a
+modern Chinese city at night. The building is dark and ordinary, except
+for one window on an upper floor that glows with warm amber light — the
+only sign of life. The streets below are wet from recent rain, creating
+faint reflections of distant neon signs. The mood is one of profound
+urban loneliness — this is a person who lives alone and the city doesn't
+notice. Cool blue moonlight dominates, with that single warm window as
+the only counterpoint. Widescreen 2.39:1, shot as if from a film by
+David Fincher — precise, cold, and quietly ominous.
+```
 
+**SD (Stable Diffusion)**:
+```
+Prompt: extreme wide shot, urban apartment building at night,
+single warm lit window, wet rain-slicked streets, neon reflections,
+cold blue moonlight, lonely atmosphere, desaturated teal and amber,
+cinematic photography, anamorphic lens, film grain, 2.39:1
 Negative: daylight, crowds, busy street, text, watermark, bright colors
 ```
 
 ### Shot 4 — 揭示：帽衫
 
+**NB2**:
 ```
-Prompt: detail shot, grey casual hoodie hanging on wooden coat hook,
-next to dark formal women's coat, stark contrast between casual
-and professional garments, warm hallway interior light casting
-soft shadows, shallow depth of field with hoodie in sharp focus,
-coat hook and wall slightly blurred, slightly desaturated color palette,
-cinematic still life, subtle unease, something doesn't belong,
-35mm film photography, Kodak Portra 400, 16:9
+A detail shot of something that doesn't belong. A grey casual hoodie
+hangs on a coat hook in a hallway, right next to a woman's dark formal
+coat. The contrast between the two garments tells a story — the coat
+belongs here, the hoodie does not. Who left it? The warm hallway light
+casts gentle shadows, and the hoodie is in sharp focus while the
+background blurs softly. The image feels like a clue in a mystery — an
+everyday object that has become evidence. The overall tone is quietly
+unsettling, like discovering a stranger's belongings in your own home.
+Cinematic still life, 16:9.
+```
 
+**SD**:
+```
+Prompt: detail shot, grey hoodie on coat hook, next to dark formal coat,
+warm hallway light, shallow depth of field, hoodie in sharp focus,
+slightly desaturated, cinematic still life, subtle unease, 16:9
 Negative: bright, cheerful, colorful, text, person visible, watermark
 ```
 
 ### Shot 6 — 核心揭示：林小曼的话
 
+**NB2**:
 ```
-Prompt: close-up portrait, young Chinese woman mid-twenties,
-light makeup unusual for her, dark circles visible under foundation,
-expression of deep fear mixed with desperate hope,
-eyes looking directly at camera (at her therapist),
-side lighting from office window, warm afternoon light,
-half face transitioning from warm to cool shadow,
-blurred therapy office background with bookshelf,
-shallow depth of field f/1.4, cinematic, emotional intensity,
-film grain, warm amber transitioning to cool blue undertone, 16:9
+A close-up portrait of Lin Xiaoman, a Chinese woman in her mid-twenties,
+sitting in a therapist's office. She has put on makeup today — unusual
+for her — but the foundation can't hide the dark circles under her eyes.
+She is looking directly at us (her therapist) with an expression that
+mixes deep fear with desperate hope — the look of someone who needs to
+be believed. The afternoon light from the office window falls from the
+side, leaving one half of her face in warm light and the other beginning
+to shift toward cooler shadow. Behind her, the office blurs into soft
+shapes — bookshelves, a diploma. This is the moment she says the words
+that will change everything. The camera is close enough to see her lip
+tremble. Cinematic, emotional, shot like a psychological thriller — the
+kind of frame where you lean forward in your seat. 16:9.
+```
 
-Negative: happy, smiling, bright even lighting, studio portrait,
-text, watermark, perfect skin
+**SD**:
+```
+Prompt: close-up portrait, young Chinese woman, light makeup, dark circles,
+fearful hopeful expression, side lighting, warm-to-cool face transition,
+blurred therapy office, shallow depth of field f/1.4, cinematic, 16:9
+Negative: happy, smiling, bright even lighting, studio portrait, text
 ```
 
 ### Shot 7 — 反应：叶知秋的震动
 
+**NB2**:
 ```
-Prompt: extreme close-up, Chinese woman early thirties,
-professional short hair, eyes widening with controlled shock,
-micro-expression of professional composure cracking,
-pupils dilating, jaw muscles tightening,
-dramatic side lighting emphasizing facial contours,
-very shallow depth of field, only eyes and bridge of nose sharp,
-dark background completely blurred,
-cinematic, psychological thriller atmosphere,
-cool desaturated tones, film grain, slight lens distortion, 16:9
+An extreme close-up of Ye Zhiqiu, a Chinese woman in her early thirties
+with short professional hair. We are so close we can only see her eyes,
+nose bridge, and the tension in her jaw. Something has just been said
+that has shaken her to her core — but she is a professional, a therapist,
+and she cannot show it. What we see is the micro-second before composure
+reasserts itself: her eyes have widened just slightly, her pupils are
+dilating, and the muscles along her jaw are tightening. The light comes
+from the side, emphasizing every contour of this internal earthquake.
+The background has dissolved into pure darkness. This is the face of
+someone who has just realized that her worst professional nightmare may
+be real. The mood is one of controlled devastation — psychological
+thriller at its most intimate. Cool desaturated tones. 16:9.
+```
 
-Negative: smiling, relaxed, bright lighting, full body,
-wide shot, text, watermark
+**SD**:
+```
+Prompt: extreme close-up, Chinese woman, thirties, professional short hair,
+controlled shock expression, widened eyes, jaw tightening, side lighting,
+very shallow depth of field, dark blurred background, cool desaturated,
+cinematic psychological thriller, film grain, 16:9
+Negative: smiling, relaxed, bright lighting, full body, wide shot, text
 ```
