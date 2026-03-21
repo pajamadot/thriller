@@ -35,10 +35,11 @@
 | `/montage` | 蒙太奇设计（跨镜头关系+转场） | 分镜序列 | 蒙太奇标注 + 转场设计 |
 | `/board` | 分镜板生成（结构化输出） | 分镜序列 | 分镜板格式（Markdown / JSON） |
 | `/visual-audit` | 视觉语法审计（连贯性、轴线、匹配） | 分镜序列 | 问题报告 + 修复建议 |
-| `/score` | 六维度加权评分（逻辑/叙事/视觉/节奏/声音/创造） | 分镜序列 | 评分报告 + 改进建议 |
+| `/score` | 六维度加权评分 + 12项量化指标 | 分镜序列 | 评分报告 + 改进建议 |
 | `/autopsy-visual` | 导演解剖法（逆向工程电影镜头逻辑） | 电影+场景 | 策略提取 + 方法论盲点 |
 | `/visualize` | 分镜图像提示词生成（SD/DALL-E/MJ/fal） | 分镜序列 | 图像提示词列表 |
 | `/style` | 视觉风格设定（参考导演/类型/色调） | 风格意图 | 风格手册 |
+| `/self-audit` | 独立质量自审计（12项指标 + 修复） | 分镜序列 | 审计报告 + 自动修复 |
 
 ---
 
@@ -805,32 +806,89 @@ Hitchcock式悬念（观众知道角色不知道）：
 | StudioBinder | 现代实践 | 50+景别/角度/运动分类 |
 | Boords | 分镜工具 | 现代分镜板流程 |
 | Blake Snyder《Save the Cat》 | 节拍理论 | 节拍表与节奏规划 |
+| Posner (1980) | 认知心理学 | 注意力聚光灯模型 — 视觉焦点引导 |
+| Sweller (1988) | 认知科学 | 认知负荷理论 — 景别信息单元上限 |
+| Cutting et al. (2010) | 计算电影学 | 1/f镜头时长分布 — 节奏自然性验证 |
+| Smith & Henderson (2008) | 视觉认知 | 注意力同步 — 观众视线汇聚规律 |
+| LeDoux (1996) | 神经科学 | 情感加工双通路 — 情感启动时间约束 |
+| Hasson et al. (2008) | 神经电影学 | 观众脑活动同步 — 镜头效果验证基准 |
+| Shimamura (2013) | 心理电影学 | 注意/情感/意义三层模型 |
+| Berlyne (1971) | 美学心理学 | 唤醒理论 — 张力曲线的生理基础 |
+| Arnheim (1974) | 视觉感知 | 视觉思维 — 构图力场与平衡 |
+| Lakoff & Johnson (1980) | 认知语言学 | 概念隐喻理论 — 视觉隐喻M01-M28的理论根基 |
+| Zettl (2013) | 应用媒体美学 | 光/色/空间/运动/声音五维分析框架 |
+| Elliot & Maier (2014) | 色彩心理学 | 色彩对认知与行为的影响 — 色温映射 |
+| Arijon (1976) | 电影语法 | 《Grammar of Film Language》 — 视觉连贯性铁律 |
+| Thompson (2003) | 叙事技巧 | 《Storytelling in Film and Television》 — 跨媒介叙事结构 |
+| Salt (2009) | 电影风格 | 《Film Style and Technology》 — 景别/时长统计基准 |
 
 ---
 
 ## 快速开始
 
+### 完整工作流（推荐顺序）
+
 ```bash
-# 1. 对一个场景进行分镜拆解
+# 1. 设定视觉风格（一次性）
+/style --reference psychological   # 或 hitchcock / noir / fincher / custom
+
+# 2. 分镜拆解（核心 — 8步全流程）
 /decompose
 # → 粘贴场景文本或指定章节路径
 
-# 2. 精调某个关键镜头
+# 3. 精调关键镜头
 /shot 4 --adjust "需要更强的揭示感"
-
-# 3. 检查整场的节奏
-/rhythm
 
 # 4. 设计角色走位
 /blocking --characters "叶知秋, 林小曼"
 
-# 5. 导出分镜板
-/board --format json
+# 5. 蒙太奇与转场
+/montage --type tonal
+
+# 6. 节奏分析与修复
+/rhythm
+
+# 7. 视觉语法审计（连贯性检查）
+/visual-audit
+
+# 8. 质量自审计（12项量化指标）
+/self-audit
+
+# 9. 六维度评分
+/score
+
+# 10. 生成图像提示词
+/visualize --format sdl            # SDL中间表征（模型无关）
+/visualize --format sd             # 转换为Stable Diffusion格式
+/visualize --format mj             # 转换为Midjourney格式
+
+# 11. 导出分镜板
+/board --format json               # 结构化JSON（可导入编辑器）
+
+# 12. 导演解剖（学习参考）
+/autopsy-visual "《七宗罪》开场调查场景"
+```
+
+### 最小工作流（快速出图）
+
+```bash
+/style --reference psychological   # 设风格
+/decompose                         # 粘贴场景 → 分镜序列
+/visualize --format sdl            # 生成SDL图像提示词
+/score                             # 评估质量
 ```
 
 ---
 
-**版本**: v1.0.0
+**版本**: v5.0.0
+**文件数**: 18 (16 reference + SKILL + QUICKREF)
+**总行数**: 18,600+
+**Idiom FSM**: 18
+**认知科学源**: 10+
+**质量指标**: 12
+**类型库**: 6
+**导演解剖**: 10+
+**视觉隐喻**: 28
 **语言**: 中文（可扩展）
 **依赖**: 无（纯 Markdown 方法论）
 **许可**: MIT

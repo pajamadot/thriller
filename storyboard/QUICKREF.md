@@ -1,22 +1,23 @@
-# 分镜拆解速查卡
+# 分镜拆解速查卡 v5.0
 
 ---
 
-## 命令
+## 命令（12）
 
 | 命令 | 功能 |
 |------|------|
-| `/decompose` | 场景→分镜序列（核心） |
+| `/decompose` | 场景→分镜序列（核心，8步全流程） |
 | `/shot N` | 精调第N个镜头 |
 | `/rhythm` | 节奏分析+诊断 |
 | `/blocking` | 角色走位+调度 |
 | `/montage` | 蒙太奇+转场设计 |
 | `/board` | 导出分镜板（MD/JSON/CSV）|
 | `/visual-audit` | 视觉语法审计 |
-| `/score` | 六维度加权评分 |
+| `/score` | 六维度加权评分 + 12项量化指标 |
 | `/autopsy-visual` | 导演解剖（逆向工程） |
 | `/visualize` | 分镜→图像提示词（SD/DALL-E/MJ/fal） |
-| `/style` | 风格设定 |
+| `/style` | 风格设定（导演/类型/色调） |
+| `/self-audit` | 独立质量自审计（12指标 + 自动修复） |
 
 ---
 
@@ -240,12 +241,23 @@ L型(直角): ■→↓■  (日常/自然)
 全知泄露: 摄影机知道太多 → 检查视角一致性
 ```
 
-## 质量指标（自审计）
+---
+
+## 质量指标 — 12项（自审计）
 
 ```
-信息效率 > 0.8    切理由覆盖 = 1.0
-依赖完整 = 1.0    节奏方差σ 1.5-4.0s
-Idiom覆盖 0.6-0.9  景别熵 > 2.0 bits
+ Q01 信息效率     > 0.8      非重复信息单元/总镜头
+ Q02 切理由覆盖   = 1.0      有切理由的镜头/总镜头
+ Q03 依赖完整     = 1.0      REQUIRES被满足/总镜头
+ Q04 节奏方差σ    1.5-4.0s   镜头时长标准差
+ Q05 Idiom覆盖    0.6-0.9    属于idiom的镜头/总镜头
+ Q06 景别熵       > 2.0 bits Shannon熵(景别分布)
+ Q07 ASL          3.5-6.0s   平均镜头时长(悬疑类型)
+ Q08 r(1)自相关   0.3-0.7    lag-1自相关系数(1/f)
+ Q09 1/f指数α     0.8-1.2    频谱斜率(N>15时)
+ Q10 D_MAE        < 1.0s     时长函数偏差
+ Q11 短语CV       < 0.3      短语长度变异系数
+ Q12 高潮对齐     = true     最高重力↔BPM极值
 ```
 
 ---
@@ -254,7 +266,7 @@ Idiom覆盖 0.6-0.9  景别熵 > 2.0 bits
 
 **线索镜头**: LS中隐藏，揭示时CU/INSERT
 **悬念节奏**: CU-INSERT-CU-INSERT-ECU（递增停留）
-**揭示蒙太奇**: ECU快闪(0.5s×N) → 静止CU(长)
+**揭示蒙太奇**: ECU快闪(0.5s*N) → 静止CU(长)
 **Hitchcock式**: 观众看到角色看不到的 → INSERT威胁源
 
 ---
@@ -274,6 +286,38 @@ SIL: 时长(s)      沉默
 
 ---
 
+## SDL 架构速查（/visualize）
+
+**资产引用（双符号）**:
+```
+@ = 人物:   @叶知秋  @林小曼.恐惧  @叶知秋.全身
+# = 非人物: #咨询室  #帽衫  #叶知秋公寓.夜
+```
+
+**架构**: 分镜 → SDL(模型无关) → Adapter → 任意模型
+**格式**: sdl(默认) | nb2 | sd | dalle | mj | fal
+
+**SDL schema (JSON)**:
+```
+{
+  framing:     景别+角度 → 画面裁切描述
+  subject:     主体+姿态+表情 (解析@引用)
+  environment: 场景+道具+时段 (解析#引用)
+  lighting:    光源+色温+对比度
+  mood:        情绪关键词+氛围
+  symbolism:   视觉隐喻M01-M28 (如有)
+}
+  ↓ Adapter层(薄转换)
+  nb2 → 自然语言简报
+  sd  → 关键词 + negative prompt
+  mj  → 关键词 + --ar --s --参数
+  换模型只需换adapter，SDL不变
+```
+
+**解析链**: 有URL→附参考图 | 有描述→展开文字 | 都无→警告+建议生成
+
+---
+
 ## LLM 执行优化
 
 **提示词模板** (prompt-templates.md):
@@ -282,14 +326,14 @@ Template 1: /decompose → 全流程8步分解
 Template 2: /shot N    → 单镜头精调+一致性验证
 Template 3: /rhythm    → 节奏分析+ASCII可视化+处方
 Template 4: /visual-audit → 独立VERIFY(P01-P20谓词)
-Template 5: /score     → 六维度加权评分
+Template 5: /score     → 六维度加权评分+12项量化指标
 ```
 
 **输出验证** (JSON):
 ```
 Schema: V01-V15 (字段类型+enum)
 Logic:  L01-L07 (因果+DAG+方向)
-Quality: Q01-Q06 (6项可计算指标)
+Quality: Q01-Q12 (12项可计算指标)
 ```
 
 **自修正协议**:
@@ -322,26 +366,23 @@ ANNOTATE:1000-2000     (序列+参考)
 
 ---
 
-## 图像提示词 /visualize
+## 参考文件索引（16 files）
 
-**资产引用（双符号）**:
-```
-@ = 人物:   @叶知秋  @林小曼.恐惧  @叶知秋.全身
-# = 非人物: #咨询室  #帽衫  #叶知秋公寓.夜
-```
-
-**架构**: 分镜 → SDL(模型无关) → Adapter → 任意模型
-**格式**: sdl(默认) | nb2 | sd | dalle | mj | fal
-
-**SDL = 画面内容描述（what）, Adapter = 模型翻译（how）**
-```
-SDL (JSON):
-  framing + subject + environment + lighting + mood + symbolism
-  ↓
-  nb2 adapter → 自然语言简报
-  sd adapter  → 关键词 + negative
-  mj adapter  → 关键词 + --参数
-  换模型只需换adapter，SDL不变
-```
-
-**解析链**: 有URL→附参考图 | 有描述→展开文字 | 都无→警告+建议生成
+| 文件 | 内容 |
+|------|------|
+| `references/shot-logic.md` | 20个形式化谓词(P00-P20)、信息DAG、Idiom FSM状态机 |
+| `references/shot-grammar.md` | 景别/角度/运动完整分类与叙事映射 |
+| `references/cognitive-perception.md` | 神经科学验证的认知规律(scale-in/out、启动时间、负荷) |
+| `references/composition-staging.md` | 构图法则、深度分层、A-I-L调度 |
+| `references/visual-rhythm.md` | 节奏数学模型(1/f、Time Signature、Tempo Map) |
+| `references/montage-theory.md` | Eisenstein五级蒙太奇、转场设计、碰撞原理 |
+| `references/visual-metaphor.md` | 28种视觉隐喻(M01-M28)及其镜头实现 |
+| `references/evaluation.md` | 六维度评分体系、导演解剖法、评分范例 |
+| `references/genre-libraries.md` | 6种类型(悬疑/动作/文艺/恐怖/科幻/爱情)的专项策略 |
+| `references/llm-guidance.md` | LLM执行协议、5大陷阱、Q01-Q12指标定义 |
+| `references/prompt-templates.md` | 5个命令的完整提示词模板 |
+| `references/decomposition-algorithm.md` | 8步分解算法的形式化规范 |
+| `references/technique-library.md` | 10+导演解剖(Hitchcock/Fincher/Bong等) |
+| `references/image-prompt-gen.md` | /visualize的SDL架构、适配器规范、色温映射 |
+| `references/integration-maps.md` | 与thriller-writing/interactive-fiction的字段映射 |
+| `specs/sb-evomap.md` | 演化追踪(基因、能力信号、演化时间线) |

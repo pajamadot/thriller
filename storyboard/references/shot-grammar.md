@@ -156,6 +156,66 @@ EWS   ELS   VLS   LS    MLS   FS    MS    MCS   MCU   CU    BCU   ECU
     └── 内心冲突 → 特写（只有脸）
 ```
 
+### 景别与认知负荷限制
+
+> **交叉引用**: cognitive-perception.md §三 — 每景别最大信息单元数
+
+每个景别的画面空间决定了观众能同时处理的信息量上限。
+违反这些限制会导致信息过载（Sweller, 1988）。
+
+```
+景别   → 最大信息单元   认知负荷特征
+ECU   → 1-2 个         单焦点锁定，注视预测精度 ~95%
+CU    → 2-3 个         面部三角扫描(眼→嘴→眼)，精度 ~85%
+MCU   → 2-4 个         面部+手部，精度 ~70%
+MS    → 3-5 个         姿态+持有物+环境概况，精度 ~60%
+FS    → 3-5 个         全身+环境，需较长时长
+MLS/LS → 5-8 个        多角色+空间布局，精度 ~40-50%
+ELS   → 环境级(叙事信息≤3) 自由浏览模式，精度 ~25-35%
+
+IF info_units > max_for_size → OVERLOAD
+  修复: 拆分为多个镜头 OR 延长时长 OR 改用更宽景别
+```
+
+### 景别与注意力聚光灯
+
+> **交叉引用**: cognitive-perception.md §二 — Posner (1980) 注意力聚光灯
+
+```
+景别越窄 → 注意力同步度越高 → 观众看同一个点
+景别越宽 → 注意力同步度越低 → 观众自由浏览
+
+应用矩阵:
+  需要精确控制注意力（关键信息/情感高潮）→ CU/ECU (高同步)
+  需要隐藏线索（Fair-play 线索植入）→ LS/ELS (低同步)
+  需要隐形切（编辑盲）→ 切在CU面部时 (SYNC-1, Smith 2008)
+  需要冲击切（打断观众）→ 从LS/ELS(低同步)切到CU(高同步)
+```
+
+### 景别与视觉隐喻的映射
+
+> **交叉引用**: visual-metaphor.md — 每个隐喻有其最佳景别
+
+```
+隐喻                    → 最佳景别        → 原因
+M01: POWER IS UP        → MLS/FS         → 需看到完整的垂直位置关系
+M02: ISOLATION          → ELS/LS         → 角色占画面 <15%，负空间为主
+M03: BARRIER IS SECRET  → MS/MCU         → 前景遮挡物需清晰可见
+M04: MIRROR IS DUALITY  → CU (split)     → 面部+反射需同时清晰(split diopter)
+M05: DOOR IS CHOICE     → FS/MLS         → 角色+门的空间关系需完整
+M06: WINDOW IS TRUTH    → MS (角色+窗)   → 角色与外部世界的关系
+M07: SHADOW IS HIDDEN   → CU (侧光)     → 面部光影分割需细腻可见
+M08: CAGE IS TRAPPED    → MS (框中框)    → 门框/窗框限制画面
+M09: CLOCK IS MORTALITY → INSERT/ECU     → 时间物件的细节
+M10: STAIRS IS JOURNEY  → LS/MLS (跟拍) → 垂直运动需完整可见
+M11: WATER IS EMOTION   → ECU/CU (水面) → 水纹细节承载情感
+M12: FOOD IS COMMUNION  → MS (共食)     → 人物+食物的关系
+
+注意: 在错误景别使用隐喻会削弱效果——
+  例如在 ECU 中使用 M02(孤立) → 无效(ECU已经只有面部，无负空间表达空间)
+  例如在 ELS 中使用 M07(阴影) → 微弱(面部光影在ELS中不可见)
+```
+
 ---
 
 ## 二、角度体系（Camera Angle）
@@ -279,17 +339,21 @@ EWS   ELS   VLS   LS    MLS   FS    MS    MCS   MCU   CU    BCU   ECU
 
 ### 运动语义速查
 
-| 运动 | 情感语义 | 最佳搭配 |
-|------|---------|---------|
-| 静止 | 观察、等待、压力、客观 | 审讯、对峙、凝视 |
-| 推近 | 发现、聚焦、接近真相 | 揭示、顿悟、下定决心 |
-| 拉远 | 疏远、揭示全貌、释放 | 结局、真相大白、孤独 |
-| 横移 | 跟随、平行、引导视线 | 行走、追踪、环境展示 |
-| 升起 | 解放、超越、离开 | 结局、死亡、升华 |
-| 下降 | 进入、压迫、聚焦 | 开场、进入封闭空间 |
-| 环绕 | 审视、困惑、多维 | 审讯、内心冲突、犹豫 |
-| 手持 | 不稳定、真实、焦虑 | 追逐、恐慌、纪实 |
-| 稳定器 | 流畅、超自然、幽灵 | 跟踪、闪灵式走廊 |
+> **交叉引用**: visual-rhythm.md §八 — 摄影机运动影响 Duration Function 的计算。
+> 运动中的镜头需要额外时间(T_movement)，叠加到 D_base 之上。
+> 运动镜头的 D(shot) 通常比同景别静止镜头长 50-200%。
+
+| 运动 | 情感语义 | 最佳搭配 | 时长影响 |
+|------|---------|---------|---------|
+| 静止 | 观察、等待、压力、客观 | 审讯、对峙、凝视 | D_base × 1.0 |
+| 推近 | 发现、聚焦、接近真相 | 揭示、顿悟、下定决心 | D_base × 1.5-2.0 |
+| 拉远 | 疏远、揭示全貌、释放 | 结局、真相大白、孤独 | D_base × 1.5-2.0 |
+| 横移 | 跟随、平行、引导视线 | 行走、追踪、环境展示 | D_base × 1.5-3.0 |
+| 升起 | 解放、超越、离开 | 结局、死亡、升华 | D_base × 2.0-3.0 |
+| 下降 | 进入、压迫、聚焦 | 开场、进入封闭空间 | D_base × 2.0-3.0 |
+| 环绕 | 审视、困惑、多维 | 审讯、内心冲突、犹豫 | D_base × 2.5-4.0 |
+| 手持 | 不稳定、真实、焦虑 | 追逐、恐慌、纪实 | D_base × 0.8-1.2 |
+| 稳定器 | 流畅、超自然、幽灵 | 跟踪、闪灵式走廊 | D_base × 2.0-5.0 |
 
 ### Dolly Zoom（眩晕变焦）
 
@@ -410,21 +474,49 @@ Hitchcock 在《Vertigo》中首创的技法：
 
 ## 五、景别转换规则
 
+### 景别不对称的神经科学基础
+
+> **交叉引用**: cognitive-perception.md §一 Source 9 — Liao et al. (2023) ERP验证
+
+```
+核心发现 (Liao 2023):
+  Scale-in (宽→窄, 如 LS→CU): N300 波幅降低 30-45%
+    → 观众几乎不注意这个切 ("编辑盲")
+    → 认知解释: 聚焦是自然的注意力行为，不需要额外处理
+    → 与 Magliano (2011) 的"连续性剪辑抑制事件边界"一致
+
+  Scale-out (窄→宽, 如 CU→LS): N300 波幅增加 40-60%
+    → 观众明确感知到切，注册为"事件边界"
+    → 认知解释: 扩大视野需要重新扫描和定位，触发重新构建
+    → 与事件分割理论在神经层面一致
+
+  纯角度变化 (同景别不同角度): N300 无显著变化
+    → 角度切 比 景别切 认知成本更低
+
+实践意义:
+  需要隐形切 → 使用 Scale-in (宽→窄)
+  需要观众感知"新段落/新事件" → 使用 Scale-out (窄→宽)
+  需要节约认知资源 → 使用角度变化代替景别变化
+  效应窗口: 切后 250-400ms 最强
+```
+
 ### 允许的跳级
 
 ```
 平滑过渡（无需额外元素）:
   ELS → LS → FS → MS → MCU → CU → ECU
   每次跳一级是最安全的
+  注意: 向窄方向跳级 (Scale-in) 比向宽方向 (Scale-out) 认知成本低 (Liao 2023)
 
 可接受的跳级（需要理由）:
-  ELS → MS : 跳过建立，直接进入（快节奏）
-  MS → ECU : 突然聚焦（惊吓/发现）
-  CU → ELS : 释放+建立（大呼吸）
+  ELS → MS : 跳过建立，直接进入（快节奏）[Scale-in, 低成本]
+  MS → ECU : 突然聚焦（惊吓/发现）[Scale-in 两级, 中成本]
+  CU → ELS : 释放+建立（大呼吸）[Scale-out 多级, 高成本但有意为之]
 
 禁忌跳级（除非有意制造不适）:
-  ECU → ELS : 极端跳级，观众定向丧失
-  ELS → ECU : 观众无法定位ECU的空间位置
+  ECU → ELS : 极端Scale-out → N300激增 → 观众定向丧失 → 认知崩溃
+  ELS → ECU : 极端Scale-in → 空间锚点丢失 → 观众不知ECU的空间位置
+  连续 Scale-out 跳级×3 : 连续扩大 → 累积认知负荷过高 → 观众脱离
 ```
 
 ### 连贯性编辑的铁律
@@ -451,4 +543,216 @@ Hitchcock 在《Vertigo》中首创的技法：
 5. 银幕方向
    角色向右走 → 跨镜头保持向右
    突然反向 → 暗示故事方向改变
+```
+
+---
+
+## 六、景别决策算法（Shot Size Decision Algorithm）
+
+> 整合叙事重力(gravity)、节拍类型(beat_type)、认知负荷、类型偏好的
+> 景别选择流程图。可在 `/decompose` 的 SHOOT 步骤中作为决策支持使用。
+
+### 完整决策流程
+
+```
+输入: beat_type, gravity, info_units, genre, active_metaphors, prev_shot_size
+
+Step 1: GRAVITY FILTER — 重力决定景别范围
+  ┌─────────────────────────────────────────────────┐
+  │ gravity = 1 (过渡) → 景别范围: ELS, LS, MS      │
+  │ gravity = 2 (辅助) → 景别范围: LS, MS, MCU      │
+  │ gravity = 3 (重要) → 景别范围: MS, MCU, CU      │
+  │ gravity = 4 (场景转折) → 景别范围: CU, ECU, INSERT│
+  │ gravity = 5 (故事转折) → 景别范围: ECU, CU       │
+  └─────────────────────────────────────────────────┘
+
+Step 2: BEAT TYPE REFINEMENT — 节拍类型进一步缩窄
+  ┌──────────────────────────────────────────────────┐
+  │ beat = action    → 偏好 FS/MS (看到动作)          │
+  │ beat = reaction  → 偏好 CU/MCU (看到面部)         │
+  │ beat = reveal    → 偏好 ECU/INSERT (聚焦真相)     │
+  │ beat = tension   → 偏好 CU/MS (可长镜头)          │
+  │ beat = release   → 偏好 LS/ELS (释放空间)         │
+  │ beat = dialogue  → 偏好 MCU/MS (对话标准)         │
+  │ beat = transition→ 偏好 ELS/LS (空间重建)         │
+  │ beat = setup     → 偏好 MS/LS (建立信息)          │
+  │ beat = payoff    → 偏好 CU/ECU (兑现时刻)         │
+  └──────────────────────────────────────────────────┘
+
+  → 取 Step 1 范围与 Step 2 偏好的交集
+  → 如交集为空, 优先 Step 1 (gravity 是结构性约束)
+
+Step 3: COGNITIVE LOAD CHECK — 信息量验证
+  ┌──────────────────────────────────────────────────┐
+  │ IF info_units > max_for_candidate_size           │
+  │ THEN 扩大景别 (给更多信息空间)                     │
+  │ OR 拆分为多个镜头                                  │
+  │                                                  │
+  │ IF info_units < min_useful_for_size (画面太空)     │
+  │ THEN 缩窄景别 (聚焦有用信息)                       │
+  │ 来源: cognitive-perception.md §三                  │
+  └──────────────────────────────────────────────────┘
+
+Step 4: METAPHOR CHECK — 隐喻需求
+  ┌──────────────────────────────────────────────────┐
+  │ IF active_metaphors 不为空                        │
+  │ THEN 检查隐喻-景别映射表 (本文件 §一)              │
+  │ IF 候选景别与隐喻最佳景别冲突                      │
+  │ THEN 优先隐喻景别 (如果 gravity 允许)              │
+  │ 来源: visual-metaphor.md                          │
+  └──────────────────────────────────────────────────┘
+
+Step 5: TRANSITION COST CHECK — 与前一镜头的跳级成本
+  ┌──────────────────────────────────────────────────┐
+  │ delta = |size_index(candidate) - size_index(prev)|│
+  │                                                  │
+  │ IF delta = 0 → 同景别: 需30度角度变化 (30度法则)   │
+  │ IF delta = 1 → 一级跳: 最安全                     │
+  │ IF delta = 2 → 两级跳: 需叙事理由                 │
+  │ IF delta ≥ 3 → 三级跳+: 检查是否Scale-in          │
+  │   Scale-in: 可接受(Liao 2023: 低N300)             │
+  │   Scale-out: 高成本, 需强叙事理由(事件边界意图)    │
+  │ 来源: Liao et al. (2023), cognitive-perception §一│
+  └──────────────────────────────────────────────────┘
+
+Step 6: GENRE MODIFIER — 类型偏好微调
+  ┌──────────────────────────────────────────────────┐
+  │ psych_thriller: CU使用率 +10%, 延迟建立镜头       │
+  │ noir: 低角度偏好, 侧光前置条件                     │
+  │ procedural: 正面CU (Demme), INSERT频率 +20%      │
+  │ horror_adj: 负空间优先, 背景保持可见               │
+  │ k_thriller: 垂直构图偏好, 对称→破对称             │
+  │ art_auteur: 宽景别偏好, 尽量不切换                 │
+  │ 来源: genre-libraries.md                          │
+  └──────────────────────────────────────────────────┘
+
+输出: final_shot_size (经过6步验证的最终景别选择)
+```
+
+### 决策示例
+
+```
+输入: beat=reaction, gravity=5, info_units=2, genre=psych_thriller,
+      metaphors=[M04:mirror], prev_size=CU
+
+Step 1: gravity=5 → 范围: ECU, CU
+Step 2: beat=reaction → 偏好: CU, MCU → 交集: CU
+Step 3: info_units=2 ≤ CU.max(3) → OK
+Step 4: M04最佳景别=CU → 一致 ✓
+Step 5: prev=CU, candidate=CU → delta=0 → 需30度角度变化
+Step 6: psych_thriller CU +10% → 确认 CU
+
+输出: CU (with 30° angle change from prev, split diopter for mirror metaphor)
+```
+
+---
+
+## 七、复合镜头（Compound Shots）
+
+> 在单个镜头内改变景别、角度或运动的镜头。不是通过剪辑切换，
+> 而是通过摄影机运动在一个连续take中完成多个景别/角度。
+
+### 定义
+
+```
+复合镜头 = 起始状态 → [运动/变化] → 结束状态
+
+表示法: 起始景别 → 结束景别 + 运动类型
+  MS→CU push    (推近: 从中景推到特写)
+  CU→LS pull    (拉远: 从特写拉到远景)
+  LS→MS follow  (跟随: 跟拍角色从远到中)
+  ELS→MS crane  (升降: 鹤臂从大远降到中景)
+  MS→CU→MS arc  (环绕: 围绕角色运动，景别先缩后放)
+```
+
+### 复合镜头语义
+
+| 复合类型 | 运动 | 情感语义 | 叙事功能 | 时长影响 |
+|---------|------|---------|---------|---------|
+| MS→CU push | DOLLY IN | 逼近真相/情感加深/发现 | 引导观众聚焦 | D × 1.5-2.0 |
+| CU→LS pull | DOLLY OUT | 释放/揭示全貌/孤独感扩大 | 上下文揭示 | D × 1.5-2.0 |
+| LS→MS follow | TRACK | 进入/参与/跟随角色意志 | 空间导航 | D × 2.0-3.0 |
+| MS→CU→MS arc | ARC | 审视/犹豫/多角度理解 | 内心冲突外化 | D × 2.5-4.0 |
+| ELS→MS crane | CRANE DOWN | 从宏观到微观/命运到个人 | 史诗→个人 | D × 2.0-3.0 |
+| MS→ELS crane | CRANE UP | 从个人到宏观/升华/离去 | 个人→命运 | D × 2.0-3.0 |
+| LS→CU snap | SNAP ZOOM | 突然聚焦/惊吓/发现 | 紧急发现 | D × 0.8 (快) |
+
+### Duration Function 对复合镜头的修正
+
+> **交叉引用**: visual-rhythm.md §八 — D(shot) = D_base × G × B × S
+
+```
+复合镜头不使用单一景别的 D_base。替代公式:
+
+D_compound(shot) = D_base(start_size) × 0.5 + D_base(end_size) × 0.5
+                   + T_movement(speed, distance)
+                   × G(gravity) × B(beat_type) × S(style)
+
+其中:
+  T_movement = 摄影机运动所需时间
+    push/pull: 距离 / 速度 ≈ 1.5-3.0s
+    follow: 角色步行距离 / 步行速度 ≈ 2.0-5.0s
+    crane: 垂直距离 / 鹤臂速度 ≈ 2.0-4.0s
+    arc: 圆弧角度 / 旋转速度 ≈ 3.0-8.0s
+    snap_zoom: ~0.5s (几乎瞬间)
+
+示例:
+  MS→CU push, g=4, beat=reveal, style=hitchcock
+  D = (3.0×0.5 + 3.0×0.5 + 2.0) × 1.30 × 1.50 × 1.20
+  = 5.0 × 2.34
+  = 11.7s → 约12秒的推近揭示镜头 (Hitchcock式)
+```
+
+### 复合镜头使用规则
+
+```
+1. 频率控制:
+   每个场景最多 2-3 个复合镜头
+   复合镜头不应连续出现（之间至少隔2个静态镜头）
+   原因: 复合镜头认知成本高——运动中景别变化需要观众同时处理空间+信息
+
+2. 方向一致性:
+   push 和 pull 在同一场景中不应交替使用超过2次
+   频繁的推-拉-推-拉 → 观众晕眩感
+   例外: 故意制造晕眩（药物/精神崩溃场景）
+
+3. Scale-in/out 不对称同样适用:
+   push (Scale-in方向) 比 pull (Scale-out方向) 认知成本低 (Liao 2023)
+   → push可以更快/更激进
+   → pull 需要更慢，给观众时间重新定位
+
+4. 复合镜头的信息管理:
+   起始景别承载的信息在运动中被"交出"
+   结束景别获得的信息在运动完成后被"接收"
+   运动过程中不应引入新的关键信息 (观众在追踪运动，无暇处理新信息)
+   → 关键信息放在运动前(起始)或运动后(结束)，不在运动中
+
+5. 何时使用复合镜头而非切:
+   需要保持空间连续性 → 复合镜头 (不打断空间)
+   需要时间连续性 → 复合镜头 (不跳时间)
+   需要情感连续性 → 复合镜头 (不打断情绪弧)
+   需要突然的信息/情感转变 → 切 (断裂=冲击)
+   需要节奏变化 → 切 (切本身是节奏事件)
+```
+
+### 悬疑中的经典复合镜头
+
+```
+"接近真相" Push:
+  MS(角色走向线索) → DOLLY IN → CU(角色面部，表情变化) → INSERT(线索物件)
+  注: 最后的INSERT是切，不是复合的一部分——push建立张力，切释放信息
+
+"世界崩塌" Pull:
+  ECU(角色眼睛，刚得知真相) → DOLLY OUT → LS(角色独自在空间中)
+  语义: 从极端内心拉到极端孤立 = 真相的重量在物理空间中展开
+
+"审视" Arc:
+  CU(角色面部正面) → ARC(180°环绕) → CU(角色面部背面/侧面)
+  语义: 观众从"看到的面"转到"隐藏的面" = 多面性揭示
+  心理悬疑特别适用: 不可靠叙事者的视觉表达
+
+"不可逃避" Steadicam Follow:
+  MS(角色走过走廊) → STEADICAM FOLLOW → 不切，持续跟踪 → 角色到达目的地
+  语义: 摄影机像幽灵一样跟随 = 命运/威胁/监视的具身化
+  经典参考: 《闪灵》Danny 骑三轮车穿越酒店走廊
 ```
