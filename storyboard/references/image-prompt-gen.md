@@ -25,7 +25,107 @@
 
 ---
 
-## 二、提示词结构模板
+## 二、@引用系统（Asset Reference）
+
+提示词中使用 `@` 前缀引用项目中的角色和场景资产。
+当提示词被送入上下文系统时，`@引用` 会被自动解析为实际的资产URL。
+
+### 语法
+
+```
+@角色名          → 解析为角色的参考图URL（立绘/头像）
+@角色名.表情      → 解析为角色特定表情的参考图
+@场景名          → 解析为场景背景参考图URL
+@物件名          → 解析为物件参考图URL
+```
+
+### 示例
+
+```
+提示词中的写法:
+  "A close-up of @叶知秋 sitting in @咨询室, looking at @林小曼
+   with an expression of controlled shock..."
+
+自动解析后:
+  "A close-up of [角色参考: https://assets.../ye-zhiqiu-portrait.png]
+   sitting in [场景参考: https://assets.../consulting-room-bg.png],
+   looking at [角色参考: https://assets.../lin-xiaoman-portrait.png]
+   with an expression of controlled shock..."
+```
+
+### 与图像生成API的集成
+
+```
+NB2/Gemini (支持参考图):
+  prompt: "A close-up of @叶知秋 in @咨询室..."
+  → API调用时, @叶知秋 解析为 reference_image_url
+  → 保持角色一致性（NB2支持最多5角色同时引用）
+
+fal.ai / Story Platform:
+  prompt 中的 @引用 → generation.create_image {
+    prompt: "...",
+    reference_images: [
+      { url: "https://assets.../ye-zhiqiu.png", role: "subject" },
+      { url: "https://assets.../consulting-room.png", role: "background" }
+    ]
+  }
+
+Stable Diffusion / ComfyUI (IP-Adapter):
+  @角色名 → IP-Adapter 参考图输入
+  @场景名 → ControlNet 参考图输入
+
+DALL-E (不支持参考图):
+  @引用 → 展开为该角色/场景的文字描述（从角色档案提取）
+```
+
+### @引用的数据源
+
+```
+从项目文件自动提取:
+  @角色名 → projects/{project}/characters.md 中的角色描述
+           + 角色的 portrait_asset_id（如果已生成立绘）
+  @场景名 → projects/{project}/structure.md 中的场景描述
+           + story_node 的 background_asset_id（如果已生成背景）
+
+从 Story Platform API 提取（在线模式）:
+  @角色名 → GET /characters/{id} → portrait_asset_id → signed URL
+  @场景名 → GET /locations/{id} → background_asset_id → signed URL
+
+本地模式（无API）:
+  @引用 → 展开为文字描述（从 characters.md 提取外貌描述段落）
+```
+
+### 在分镜表中使用@引用
+
+```markdown
+| # | 节拍 | 景别 | 构图要点 | 提示词@引用 |
+|---|------|------|---------|-----------|
+| 1 | 建立 | ELS | 公寓外景 | @叶知秋公寓 |
+| 3 | 行动 | MCU | 进门挂衣 | @叶知秋 进门 |
+| 4 | 揭示 | INSERT | 帽衫特写 | @帽衫 挂在衣钩上 |
+| 6 | 揭示 | CU | 关键台词 | @林小曼 恐惧+希望 |
+| 7 | 反应 | ECU | 震动 | @叶知秋.震惊 侧光 |
+```
+
+### /visualize 输出中的@引用
+
+```
+/visualize --format nb2 --resolve-refs
+
+输出两个版本:
+  1. 带@引用的模板版（可编辑、可移植）
+  2. 已解析的完整版（@引用替换为描述或URL）
+
+如果角色有参考图:
+  → 提示词附带 reference_images 数组
+如果角色没有参考图:
+  → @引用展开为文字描述
+  → 同时输出建议: "建议先为 @叶知秋 生成参考立绘"
+```
+
+---
+
+## 三、提示词结构模板
 
 ### 通用结构（6段式）
 
@@ -539,17 +639,16 @@ art_house:
 
 ### Shot 1 — 建立：公寓外景
 
-**NB2 (Nano Banana 2)**:
+**NB2 (Nano Banana 2)** — 带@引用:
 ```
-A cinematic establishing shot of an anonymous apartment building in a
-modern Chinese city at night. The building is dark and ordinary, except
-for one window on an upper floor that glows with warm amber light — the
-only sign of life. The streets below are wet from recent rain, creating
-faint reflections of distant neon signs. The mood is one of profound
-urban loneliness — this is a person who lives alone and the city doesn't
-notice. Cool blue moonlight dominates, with that single warm window as
-the only counterpoint. Widescreen 2.39:1, shot as if from a film by
-David Fincher — precise, cold, and quietly ominous.
+A cinematic establishing shot of @叶知秋公寓 at night. The building is
+dark and ordinary, except for one window on an upper floor that glows
+with warm amber light — the only sign of life. The streets below are wet
+from recent rain, creating faint reflections of distant neon signs. The
+mood is one of profound urban loneliness — this is a person who lives
+alone and the city doesn't notice. Cool blue moonlight dominates, with
+that single warm window as the only counterpoint. Widescreen 2.39:1,
+shot as if from a film by David Fincher — precise, cold, quietly ominous.
 ```
 
 **SD (Stable Diffusion)**:
@@ -588,8 +687,7 @@ Negative: bright, cheerful, colorful, text, person visible, watermark
 
 **NB2**:
 ```
-A close-up portrait of Lin Xiaoman, a Chinese woman in her mid-twenties,
-sitting in a therapist's office. She has put on makeup today — unusual
+A close-up portrait of @林小曼, sitting in @咨询室. She has put on makeup today — unusual
 for her — but the foundation can't hide the dark circles under her eyes.
 She is looking directly at us (her therapist) with an expression that
 mixes deep fear with desperate hope — the look of someone who needs to
@@ -614,8 +712,7 @@ Negative: happy, smiling, bright even lighting, studio portrait, text
 
 **NB2**:
 ```
-An extreme close-up of Ye Zhiqiu, a Chinese woman in her early thirties
-with short professional hair. We are so close we can only see her eyes,
+An extreme close-up of @叶知秋. We are so close we can only see her eyes,
 nose bridge, and the tension in her jaw. Something has just been said
 that has shaken her to her core — but she is a professional, a therapist,
 and she cannot show it. What we see is the micro-second before composure
