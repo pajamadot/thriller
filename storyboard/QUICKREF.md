@@ -330,13 +330,18 @@ ANNOTATE:1000-2000     (序列+参考)
 # = 非人物: #咨询室  #帽衫  #叶知秋公寓.夜
 ```
 
-**格式**: nb2(推荐) | gemini | sd | dalle | mj | fal
+**架构**: 分镜 → SDL(模型无关) → Adapter → 任意模型
+**格式**: sdl(默认) | nb2 | sd | dalle | mj | fal
 
-**NB2提示词 = 创意简报（不是关键词堆砌）**:
+**SDL = 画面内容描述（what）, Adapter = 模型翻译（how）**
 ```
-"A close-up of @叶知秋 in #咨询室. She's just heard
- something that shakes her composure. Side light leaves
- half her face in shadow — she carries a secret..."
+SDL (JSON):
+  framing + subject + environment + lighting + mood + symbolism
+  ↓
+  nb2 adapter → 自然语言简报
+  sd adapter  → 关键词 + negative
+  mj adapter  → 关键词 + --参数
+  换模型只需换adapter，SDL不变
 ```
 
 **解析链**: 有URL→附参考图 | 有描述→展开文字 | 都无→警告+建议生成

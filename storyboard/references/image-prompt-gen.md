@@ -1,26 +1,64 @@
 # 分镜图像提示词生成系统
 
-> 将分镜技术参数转化为 AI 图像生成提示词（Stable Diffusion / DALL-E / Midjourney / fal.ai）
-> 每个镜头 → 一张分镜面板图 → 一条结构化提示词
+> 模型无关的场景描述语言(SDL) + 薄层适配器 → 任意图像生成模型
+> 分镜参数 → SDL中间表征 → 适配器 → NB2 / SD / DALL-E / MJ / fal.ai / 未来模型
 
 ---
 
-## 一、核心问题
+## 一、架构：模型无关设计
 
-分镜表描述的是**电影语言**（景别、角度、运动、声音），
-但图像生成AI理解的是**视觉描述语言**（构图、光线、色彩、主体、风格）。
+### 核心原则
+
+提示词描述的是**画面内容**，不是**模型指令**。
+换模型不应该需要重写提示词，只需要换适配器。
 
 ```
-转换映射:
+分镜参数 ─→ SDL (Scene Description Language) ─→ Adapter ─→ 模型格式
+  (电影语言)      (模型无关的画面描述)            (薄层转换)   (API参数)
 
-  景别 (CU/MS/LS...)     → 主体在画面中的占比 + 可见身体部位
-  角度 (HIGH/LOW/DUTCH...)→ 视角描述 + 透视变形
-  构图 (三分法/引导线...) → 主体位置 + 背景布局
-  色温 T_color()          → 色彩关键词 + 光源描述
-  深度 (FG/MG/BG)        → 景深描述 + 前后景模糊度
-  隐喻 (M01-M28)         → 象征元素的视觉呈现
-  运动 (PUSH/TRACK...)   → 运动模糊方向 + 动态构图暗示
-  声音                    → 不转换（图像无法表达，但影响氛围词）
+       ┌─→ NB2 Adapter  → Nano Banana 2 / Gemini API
+       │
+SDL ───┼─→ SD Adapter   → Stable Diffusion / ComfyUI
+       │
+       ├─→ DALLE Adapter → DALL-E 3 / 4
+       │
+       ├─→ MJ Adapter   → Midjourney
+       │
+       ├─→ fal Adapter   → fal.ai (Story Platform)
+       │
+       └─→ Future Adapter → 未来任何模型
+```
+
+### SDL 与模型格式的关系
+
+```
+SDL = 标准化的画面描述（what）
+Adapter = 模型特定的指令翻译（how）
+
+SDL 不关心:
+  ✗ 关键词还是自然语言（那是适配器的事）
+  ✗ 负面提示词（有的模型需要，有的不需要）
+  ✗ 技术参数（steps, cfg, sampler）
+  ✗ 参考图的传递方式（API参数还是URL）
+
+SDL 只关心:
+  ✓ 画面里有什么（主体、环境、物件）
+  ✓ 画面怎么构图（景别、角度、深度）
+  ✓ 画面什么情绪（光线、色彩、氛围）
+  ✓ 引用什么资产（@人物、#非人物）
+```
+
+### 从分镜参数到SDL的转换
+
+```
+景别 (CU/MS/LS...)     → sdl.framing（主体占比 + 可见身体范围）
+角度 (HIGH/LOW/DUTCH...)→ sdl.perspective（视角 + 透视变形）
+构图 (三分法/引导线...) → sdl.composition（主体位置 + 背景布局）
+色温 T_color()          → sdl.palette（色彩 + 光源）
+深度 (FG/MG/BG)        → sdl.depth（景深 + 焦点 + 前后景）
+隐喻 (M01-M28)         → sdl.symbolism（象征元素的可见呈现）
+运动 (PUSH/TRACK...)   → sdl.motion（运动模糊 + 动态构图暗示）
+声音                    → sdl.mood（氛围——声音影响情绪描述但不直接转化）
 ```
 
 ---
@@ -202,12 +240,113 @@ Fallback 链:
 
 ---
 
-## 三、提示词结构模板
+## 三、SDL Schema（模型无关的中间表征）
 
-### 通用结构（6段式）
+每个镜头生成一个 SDL 对象。SDL 描述画面内容，不包含任何模型特定指令。
+
+### SDL JSON Schema
+
+```json
+{
+  "shot_id": 4,
+  "sdl_version": "1.0",
+
+  "framing": {
+    "size": "CU",
+    "size_description": "face filling the frame, head and shoulders visible",
+    "angle": "EYE",
+    "angle_description": "straight on, eye level, neutral power"
+  },
+
+  "subject": {
+    "characters": [
+      {
+        "ref": "@林小曼",
+        "variant": "恐惧",
+        "description": "young Chinese woman, mid-twenties, light makeup, dark circles under eyes",
+        "expression": "deep fear mixed with desperate hope",
+        "body": "sitting on sofa, hands twisting coat sleeve",
+        "facing": "toward camera (toward therapist)"
+      }
+    ],
+    "props": [
+      { "ref": "#外套袖子", "description": "dark coat sleeve being twisted nervously" }
+    ]
+  },
+
+  "environment": {
+    "location_ref": "#咨询室",
+    "description": "modern therapy office, bookshelves, diplomas on wall",
+    "time": "afternoon",
+    "weather": null,
+    "foreground": null,
+    "midground": "subject sitting on therapy sofa",
+    "background": "blurred bookshelves and window, soft shapes"
+  },
+
+  "depth": {
+    "focus": "shallow",
+    "aperture_equiv": "f/1.4",
+    "focus_subject": "@林小曼 face",
+    "blur_background": true,
+    "blur_foreground": false
+  },
+
+  "lighting": {
+    "color_temp_k": 4800,
+    "threat_level": 0.3,
+    "key_ratio": "3:1",
+    "direction": "side (from window, left)",
+    "quality": "soft natural, afternoon",
+    "special": "warm-to-cool transition across face"
+  },
+
+  "palette": {
+    "dominant": "warm amber transitioning to cool shadow",
+    "saturation": 0.7,
+    "contrast": "medium"
+  },
+
+  "mood": {
+    "primary": "fearful vulnerability with desperate hope",
+    "secondary": "clinical safety being violated by external threat",
+    "genre_atmosphere": "psychological thriller, unsettling calm"
+  },
+
+  "motion": {
+    "camera_movement": "STATIC",
+    "subject_movement": "minimal (hands twisting)",
+    "motion_blur": false
+  },
+
+  "symbolism": {
+    "metaphors_active": ["M08:cage (framed by office space)"],
+    "visual_motifs": ["makeup as mask", "dark circles as truth leaking through"]
+  },
+
+  "aspect_ratio": "16:9",
+
+  "asset_references": {
+    "characters": [
+      { "ref": "@林小曼", "variant": "恐惧", "resolved_url": null }
+    ],
+    "assets": [
+      { "ref": "#咨询室", "variant": "afternoon", "resolved_url": null },
+      { "ref": "#外套袖子", "variant": null, "resolved_url": null }
+    ]
+  }
+}
+```
+
+### SDL 的 6 个语义段
 
 ```
-[1. 镜头/画面类型] [2. 主体描述] [3. 动作/姿态] [4. 环境/背景] [5. 光线/色彩/氛围] [6. 风格/技术参数]
+1. framing    — 景别+角度 → 画面的"物理窗口"
+2. subject    — 人物+物件 → 画面里有什么
+3. environment — 场景+深度 → 画面的空间
+4. lighting   — 光线+色彩 → 画面的情绪光影
+5. mood       — 氛围+类型 → 画面的情感意图
+6. symbolism  — 隐喻+母题 → 画面的潜文本
 ```
 
 ### 各段详解
@@ -535,284 +674,379 @@ M19 对称=控制:
 
 ---
 
-## 七、格式适配器
+## 七、适配器层（SDL → 模型格式）
 
-### Nano Banana 2 / Gemini（推荐，2026主流）
+适配器是**薄层转换**——它不改变内容，只改变表达方式。
+添加新模型只需写一个新适配器，SDL和分镜逻辑完全不受影响。
 
-Nano Banana 2 (Google Gemini 3.1 Flash Image) 是当前最主流的图像生成模型。
-与 SD/MJ 的关键词堆砌不同，NB2 使用**自然语言创意简报**风格。
+### 适配器接口
 
-**提示词风格差异**:
 ```
-SD/MJ风格（关键词堆砌，不推荐）:
-  "close-up portrait, Chinese woman, side lighting, bokeh, 35mm, f/1.4, cinematic"
+function adapt(sdl: SDL, config: AdapterConfig): ModelPayload
 
-NB2风格（自然语言简报，推荐）:
-  "A cinematic close-up of a Chinese woman therapist in her thirties,
-   captured in the warm afternoon light of her office. The light falls
-   from the side window, leaving half her face in shadow — suggesting
-   she carries a secret. Her expression is one of controlled professional
-   composure barely containing shock. The background blurs into soft
-   shapes of bookshelves and diplomas. The overall mood is elegant but
-   deeply unsettling, like something is about to break."
+输入: SDL对象 + 适配器配置（模型参数、API密钥等）
+输出: 模型特定的API payload
+
+每个适配器必须处理:
+  1. prompt生成: SDL → 该模型理解的提示词格式
+  2. 引用解析: @/# → 该模型的参考图传递方式
+  3. 参数映射: SDL.aspect_ratio → 模型的尺寸参数
+  4. 排除项: 该模型不需要的SDL字段直接忽略
 ```
 
-**NB2 提示词最佳实践**:
-```
-1. 像写创意总监的指示，不像给搜索引擎的关键词
-2. 描述意图和情感，不仅是视觉元素
-   ✗ "warm lighting, amber tones"
-   ✓ "The warm amber light feels like the last moment of safety before everything changes"
-3. 利用NB2的世界知识——可以引用真实地点、文化细节
-   "A therapy office in a modern Chinese city, the kind with IKEA furniture
-    and diplomas from both Chinese and Western universities on the wall"
-4. 角色一致性：NB2可同时维持最多5个角色的一致外观
-   用 @角色名 引用 → 解析为 reference_image → 保持面部一致
-5. 文字渲染：NB2可以在画面中生成清晰文字
-   "A notebook page with the handwritten name '周明哲' circled in red"
-6. 用自然语言编辑已生成的图像
-   "Make the shadows deeper and the color palette colder"
-7. 双符号引用: @ 人物 / # 非人物
-   "@叶知秋 in #咨询室 noticing #帽衫"
-   → @ 解析为角色参考图（面部一致性）
-   → # 解析为场景/物件参考图或文字描述
-```
+### Adapter: Nano Banana 2 / Gemini
 
-**Gemini API 格式**:
-```python
-# Google AI Studio / Vertex AI
-from google import genai
+```
+策略: SDL → 自然语言创意简报
 
-client = genai.Client()
-response = client.models.generate_images(
-    model='gemini-2.0-flash-preview-image-generation',
-    prompt='[自然语言创意简报]',
-    config=genai.types.GenerateImagesConfig(
-        number_of_images=1,
-        aspect_ratio='16:9',
-        output_mime_type='image/png',
-    )
-)
+转换方式:
+  将SDL的6个语义段拼接为一段流畅的自然语言描述。
+  NB2理解意图和情感，所以 mood 和 symbolism 应展开为叙事性描述。
+
+引用处理:
+  @ → reference_image (NB2支持最多5人同时)
+  # → 融入prompt文字描述 (NB2的世界知识足够理解场景)
+       如有参考图 → 附加为额外reference
+
+特殊能力:
+  - 文字渲染: SDL中如果有文字元素 → 直接写入prompt
+  - 会话编辑: 生成后可用自然语言修改 "make the shadows deeper"
+
+API payload:
+  {
+    model: "gemini-2.0-flash-preview-image-generation",
+    prompt: "[自然语言简报]",
+    config: { aspect_ratio: sdl.aspect_ratio, output_mime_type: "image/png" },
+    reference_images: [resolved @refs]
+  }
 ```
 
-**NB2 分镜提示词模板**:
+### Adapter: Stable Diffusion / ComfyUI
+
 ```
-镜头{N}——{节拍类型}：{节拍内容概要}
+策略: SDL → 关键词+短语堆砌
 
-[创意简报描述，包含:]
-- 画面构图和主体位置（从景别/角度转换）
-- 人物的情感状态和意图（从节拍上下文推断）
-- 光线和色彩的情感含义（从T_color和类型库转换）
-- 环境的叙事功能（从深度分层和隐喻转换）
-- 整体情绪/氛围（一句话总结这个镜头要传达什么感受）
+转换方式:
+  将SDL的每个字段转为关键词短语，逗号连接。
+  mood/symbolism 转为氛围关键词而非叙事描述。
+  必须生成 negative_prompt。
 
-画面比例：16:9 宽银幕
-风格参考：电影剧照，{类型}风格
+引用处理:
+  @ → IP-Adapter 参考图输入 (面部一致性)
+  # → ControlNet 参考图 或 img2img 参考
+
+必须附加: negative_prompt (从SDL.mood反推排除词)
+
+API payload:
+  {
+    prompt: "[关键词, 关键词, 关键词]",
+    negative_prompt: "[排除词]",
+    width/height: 从 sdl.aspect_ratio 计算,
+    steps: 30, cfg_scale: 7.5, sampler: "DPM++ 2M Karras"
+  }
+```
+
+### Adapter: DALL-E
+
+```
+策略: SDL → 简洁自然语言 (比NB2更直接)
+
+转换方式:
+  类似NB2但更简洁——DALL-E不需要情感铺垫。
+  直接描述画面内容。
+
+引用处理:
+  @/# → 全部展开为文字描述 (DALL-E不支持参考图)
+
+API payload:
+  { prompt: "[描述]", size: "1792x1024", quality: "hd", style: "natural" }
+```
+
+### Adapter: Midjourney
+
+```
+策略: SDL → 关键词+短语 + MJ参数
+
+转换方式:
+  类似SD但更偏艺术指导风格。
+  MJ理解构图指令 (如 "shot from below", "bird's eye view")。
+
+引用处理:
+  @/# → --cref (角色参考) / --sref (风格参考)
+
+格式: [提示词] --ar 16:9 --s 250 --q 2 --v 6.1
+```
+
+### Adapter: fal.ai (Story Platform)
+
+```
+策略: SDL → fal.ai API格式
+
+转换方式:
+  prompt用自然语言 (类似NB2)。
+  引用通过 reference_images 数组传递。
+
+引用处理:
+  @/# → reference_images[]: { url, role: "subject"|"background" }
+  URL通过 Story Platform asset-os 签名URL解析。
+
+API payload:
+  {
+    prompt: "[自然语言]",
+    negative_prompt: "[排除词]",
+    image_size: "landscape_16_9",
+    num_inference_steps: 28,
+    guidance_scale: 7.5,
+    reference_images: [resolved refs]
+  }
+```
+
+### 添加新模型的适配器
+
+```
+当出现新的图像生成模型时:
+
+1. 确定模型的提示词风格:
+   自然语言？关键词？结构化？
+
+2. 确定参考图传递方式:
+   API参数？URL嵌入？不支持？
+
+3. 确定是否需要排除词:
+   需要negative_prompt？还是模型自行处理？
+
+4. 写适配器:
+   function adaptToNewModel(sdl):
+     prompt = 按模型风格组合SDL字段
+     refs = 按模型方式传递@/#引用
+     params = 模型特定的技术参数
+     return { prompt, refs, params }
+
+5. 注册到 /visualize --format <新模型名>
+
+SDL完全不需要修改。分镜逻辑完全不需要修改。
 ```
 
 ---
 
-### Stable Diffusion / ComfyUI
+## 八、排除描述库
 
-```json
-{
-  "prompt": "[正面提示词——关键词+短语堆砌]",
-  "negative_prompt": "text, watermark, signature, blurry, deformed, ugly, bad anatomy, extra limbs, low quality, jpeg artifacts",
-  "width": 1344,
-  "height": 768,
-  "steps": 30,
-  "cfg_scale": 7.5,
-  "sampler": "DPM++ 2M Karras",
-  "model": "realvisxl_v4"
-}
-```
+排除描述是**某些适配器需要的附加信息**（SD需要negative_prompt，NB2/DALL-E通常不需要）。
+存储在SDL中作为可选字段，适配器按需使用。
 
-### DALL-E 3
-
-```json
-{
-  "prompt": "[自然语言描述，类似NB2但更简洁]",
-  "size": "1792x1024",
-  "quality": "hd",
-  "style": "natural"
-}
-```
-
-### Midjourney
-
-```
-[提示词] --ar 16:9 --s 250 --q 2 --v 6.1
-```
-
-### fal.ai (Story Platform 集成)
-
-```json
-{
-  "prompt": "[正面提示词]",
-  "negative_prompt": "[负面提示词]",
-  "image_size": "landscape_16_9",
-  "num_inference_steps": 28,
-  "guidance_scale": 7.5,
-  "model": "fal-ai/flux-pro/v1.1"
-}
-```
-
----
-
-## 八、负面提示词库
-
-### 通用负面
+### 通用排除
 
 ```
 text, watermark, signature, logo,
-blurry, out of focus (unless intentional bokeh),
+blurry, out of focus (unless sdl.depth.focus == "shallow"),
 deformed, ugly, bad anatomy, extra fingers, extra limbs,
 low quality, jpeg artifacts, pixelated,
-cartoon, anime, illustration (unless storyboard sketch mode),
+cartoon, anime, illustration (unless style == "storyboard_sketch"),
 oversaturated, HDR look (unless specified)
 ```
 
-### 类型专用负面
+### 类型专用排除（从 genre-libraries.md 自动提取）
 
 ```
-psychological_thriller:
-  + "happy, bright, cheerful, colorful, vibrant"
-
-noir:
-  + "daylight, bright colors, modern, clean, sterile"
-
-procedural:
-  + "dramatic lighting, artistic, stylized, fantasy"
-
-horror:
-  + "safe, cozy, warm, inviting, friendly"
-
-k_thriller:
-  + "messy, chaotic, random, unstructured"
-
-art_house:
-  + "generic, stock photo, commercial, polished, perfect"
+psychological_thriller: + "happy, bright, cheerful, colorful, vibrant"
+noir:                   + "daylight, bright colors, modern, clean, sterile"
+procedural:             + "dramatic lighting, artistic, stylized, fantasy"
+horror:                 + "safe, cozy, warm, inviting, friendly"
+k_thriller:             + "messy, chaotic, random, unstructured"
+art_house:              + "generic, stock photo, commercial, polished, perfect"
 ```
 
 ---
 
-## 九、与 Story Platform 的集成
+## 九、引用解析器（Resolver）
+
+引用解析是独立于适配器的。@/# 如何变成实际的URL/描述，取决于使用什么 resolver。
+
+### Resolver 接口
 
 ```
-/visualize --format fal → 输出可直接用于 generation worker
+interface AssetResolver {
+  resolveCharacter(ref: "@角色名", variant?: string):
+    → { url: string | null, description: string }
+  resolveAsset(ref: "#场景或物件名", variant?: string):
+    → { url: string | null, description: string }
+}
+```
 
-映射:
-  prompt → generation.create_image { prompt }
-  negative → generation.create_image { negative_prompt }
-  角色参考 → generation.create_image { reference_image_url: character.portrait }
+### 内置 Resolver 实现
 
-批量工作流:
-  /decompose → /board --format json → /visualize --format fal
-  → 为每个镜头生成 fal.ai API 调用
-  → 生成的图像自动关联到 story_node.background_asset_id
+```
+1. LocalFileResolver（本地模式，默认）
+   @角色名 → 读取 projects/{project}/characters.md → 提取外貌描述
+   #场景名 → 读取 projects/{project}/structure.md → 提取场景描述
+   返回 description（文字展开），url 为 null
+
+2. StoryPlatformResolver（Story Platform 在线模式，示例）
+   @角色名 → GET /characters?name={name} → portrait_asset_id → signed URL
+   #场景名 → GET /locations?name={name} → background_asset_id → signed URL
+   返回 url + description
+
+3. 自定义 Resolver（用户可扩展）
+   任何系统只要实现 resolveCharacter/resolveAsset 接口
+   即可接入——Notion数据库、本地图片文件夹、其他AI平台资产库等
+```
+
+### Resolver + Adapter 的组合
+
+```
+/visualize 的完整管线:
+
+  分镜参数
+    ↓
+  SDL 生成（模型无关）
+    ↓
+  Resolver 解析 @/# 引用（平台无关）
+    ↓
+  Adapter 转换为模型格式（模型特定）
+    ↓
+  API 调用 / 本地文件输出
+
+三个步骤互相独立:
+  换模型 → 只换 Adapter
+  换平台 → 只换 Resolver
+  换分镜逻辑 → 只改 SDL 生成
+```
+
+### 示例：Story Platform 管线
+
+```
+这只是一个具体实现的例子，不是唯一的方式:
+
+  /decompose → /board --format json → /visualize --resolver story-platform --format fal
+  → SDL 生成
+  → StoryPlatformResolver 解析 @/# → signed URLs
+  → fal Adapter 组装 API payload
+  → generation.create_image { prompt, reference_images }
+  → 生成图像关联到 story_node.background_asset_id
 ```
 
 ---
 
-## 十、示例：Mirror Visitor ch1 关键帧提示词
+## 十、示例：Mirror Visitor ch1 — SDL + 适配器输出
 
-每个镜头提供两种格式：NB2（推荐）和 SD（兼容）。
-
-### Shot 1 — 建立：公寓外景
-
-**NB2 (Nano Banana 2)** — 带 @/# 引用:
-```
-A cinematic establishing shot of #叶知秋公寓.夜 at night. The building
-is dark and ordinary, except for one window on an upper floor that glows
-with warm amber light — the only sign of life. The streets below are wet
-from recent rain, creating faint reflections of distant neon signs. The
-mood is one of profound urban loneliness — this is a person who lives
-alone and the city doesn't notice. Cool blue moonlight dominates, with
-that single warm window as the only counterpoint. Widescreen 2.39:1,
-shot as if from a film by David Fincher — precise, cold, quietly ominous.
-
-引用: #叶知秋公寓.夜 → background reference
-```
-
-**SD (Stable Diffusion)**:
-```
-Prompt: extreme wide shot, urban apartment building at night,
-single warm lit window, wet rain-slicked streets, neon reflections,
-cold blue moonlight, lonely atmosphere, desaturated teal and amber,
-cinematic photography, anamorphic lens, film grain, 2.39:1
-Negative: daylight, crowds, busy street, text, watermark, bright colors
-```
-
-### Shot 4 — 揭示：帽衫
-
-**NB2**:
-```
-A detail shot of something that doesn't belong. A grey casual hoodie
-hangs on a coat hook in a hallway, right next to a woman's dark formal
-coat. The contrast between the two garments tells a story — the coat
-belongs here, the hoodie does not. Who left it? The warm hallway light
-casts gentle shadows, and the hoodie is in sharp focus while the
-background blurs softly. The image feels like a clue in a mystery — an
-everyday object that has become evidence. The overall tone is quietly
-unsettling, like discovering a stranger's belongings in your own home.
-Cinematic still life, 16:9.
-```
-
-**SD**:
-```
-Prompt: detail shot, grey hoodie on coat hook, next to dark formal coat,
-warm hallway light, shallow depth of field, hoodie in sharp focus,
-slightly desaturated, cinematic still life, subtle unease, 16:9
-Negative: bright, cheerful, colorful, text, person visible, watermark
-```
+每个镜头展示: **SDL**（模型无关） → **适配器输出**（模型特定）。
 
 ### Shot 6 — 核心揭示：林小曼的话
 
-**NB2**:
-```
-A close-up portrait of @林小曼, sitting in #咨询室. She has put on makeup today — unusual
-for her — but the foundation can't hide the dark circles under her eyes.
-She is looking directly at us (her therapist) with an expression that
-mixes deep fear with desperate hope — the look of someone who needs to
-be believed. The afternoon light from the office window falls from the
-side, leaving one half of her face in warm light and the other beginning
-to shift toward cooler shadow. Behind her, the office blurs into soft
-shapes — bookshelves, a diploma. This is the moment she says the words
-that will change everything. The camera is close enough to see her lip
-tremble. Cinematic, emotional, shot like a psychological thriller — the
-kind of frame where you lean forward in your seat. 16:9.
+**SDL（模型无关的中间表征）**:
+```json
+{
+  "shot_id": 6,
+  "framing": { "size": "CU", "angle": "EYE" },
+  "subject": {
+    "characters": [{
+      "ref": "@林小曼", "variant": "恐惧",
+      "description": "young Chinese woman, mid-twenties, light makeup, dark circles",
+      "expression": "deep fear mixed with desperate hope",
+      "body": "sitting on sofa, hands twisting coat sleeve",
+      "facing": "toward camera"
+    }]
+  },
+  "environment": {
+    "location_ref": "#咨询室",
+    "description": "therapy office, bookshelves, diplomas",
+    "time": "afternoon",
+    "midground": "subject on sofa",
+    "background": "blurred bookshelves and window"
+  },
+  "depth": { "focus": "shallow", "aperture_equiv": "f/1.4" },
+  "lighting": {
+    "color_temp_k": 4800, "key_ratio": "3:1",
+    "direction": "side (window, left)",
+    "special": "warm-to-cool transition across face"
+  },
+  "mood": {
+    "primary": "fearful vulnerability with desperate hope",
+    "genre_atmosphere": "psychological thriller"
+  },
+  "aspect_ratio": "16:9"
+}
 ```
 
-**SD**:
+**→ NB2 Adapter 输出**:
 ```
-Prompt: close-up portrait, young Chinese woman, light makeup, dark circles,
-fearful hopeful expression, side lighting, warm-to-cool face transition,
-blurred therapy office, shallow depth of field f/1.4, cinematic, 16:9
-Negative: happy, smiling, bright even lighting, studio portrait, text
+A close-up portrait of @林小曼 sitting in #咨询室. She has put on
+makeup today — unusual for her — but the foundation can't hide the
+dark circles under her eyes. She looks directly at us with an
+expression that mixes deep fear with desperate hope — the look of
+someone who needs to be believed. Afternoon light from the office
+window falls from the side, leaving half her face in warm light and
+the other shifting toward cool shadow. Behind her, soft blurred
+shapes of bookshelves and a diploma. This is the moment she says
+the words that will change everything. Cinematic, psychological
+thriller. 16:9.
 ```
+
+**→ SD Adapter 输出**:
+```
+Prompt: close-up portrait, young Chinese woman, mid-twenties,
+light makeup, dark circles, fearful hopeful expression, looking
+at camera, side lighting from window, warm-to-cool face transition,
+therapy office background, blurred bookshelves, shallow depth of
+field f/1.4, cinematic, psychological thriller atmosphere, 16:9
+Negative: happy, smiling, bright even lighting, studio portrait,
+text, watermark, cheerful, vibrant
+```
+
+**→ MJ Adapter 输出**:
+```
+close-up portrait of a young Chinese woman with fearful hopeful
+expression, dark circles under light makeup, side window lighting
+creating warm-cool face split, blurred therapy office background,
+cinematic psychological thriller --ar 16:9 --s 250 --q 2 --v 6.1
+```
+
+注意：**三个输出描述的是同一个画面**，只是表达方式不同。
+SDL 是源头，适配器是翻译层。换模型只需换适配器。
+
+### Shot 1 — 建立：公寓外景
+
+**SDL**:
+```json
+{
+  "shot_id": 1,
+  "framing": { "size": "ELS", "angle": "EYE" },
+  "subject": { "characters": [] },
+  "environment": {
+    "location_ref": "#叶知秋公寓.夜",
+    "description": "urban apartment building, single lit window, wet streets",
+    "time": "night", "weather": "after rain"
+  },
+  "lighting": { "color_temp_k": 7500, "direction": "moonlight from above" },
+  "mood": { "primary": "profound urban loneliness", "genre_atmosphere": "psychological thriller" },
+  "aspect_ratio": "2.39:1"
+}
+```
+
+**→ NB2**: "A cinematic establishing shot of #叶知秋公寓.夜. The building is dark except for one warm window. Wet streets reflect distant neon. The mood is profound urban loneliness. 2.39:1."
+
+**→ SD**: `extreme wide shot, apartment building night, single warm window, wet streets, neon reflections, cold blue moonlight, lonely, desaturated teal amber, anamorphic, 2.39:1` / Neg: `daylight, crowds, bright colors, text`
 
 ### Shot 7 — 反应：叶知秋的震动
 
-**NB2**:
-```
-An extreme close-up of @叶知秋.震惊. We are so close we can only see her eyes,
-nose bridge, and the tension in her jaw. Something has just been said
-that has shaken her to her core — but she is a professional, a therapist,
-and she cannot show it. What we see is the micro-second before composure
-reasserts itself: her eyes have widened just slightly, her pupils are
-dilating, and the muscles along her jaw are tightening. The light comes
-from the side, emphasizing every contour of this internal earthquake.
-The background has dissolved into pure darkness. This is the face of
-someone who has just realized that her worst professional nightmare may
-be real. The mood is one of controlled devastation — psychological
-thriller at its most intimate. Cool desaturated tones. 16:9.
+**SDL**:
+```json
+{
+  "shot_id": 7,
+  "framing": { "size": "ECU", "angle": "EYE" },
+  "subject": {
+    "characters": [{
+      "ref": "@叶知秋", "variant": "震惊",
+      "expression": "controlled shock, composure cracking, pupils dilating, jaw tightening"
+    }]
+  },
+  "depth": { "focus": "very shallow", "aperture_equiv": "f/1.2" },
+  "lighting": { "color_temp_k": 6500, "direction": "side", "key_ratio": "5:1" },
+  "mood": { "primary": "controlled devastation", "genre_atmosphere": "psychological thriller, intimate" },
+  "aspect_ratio": "16:9"
+}
 ```
 
-**SD**:
-```
-Prompt: extreme close-up, Chinese woman, thirties, professional short hair,
-controlled shock expression, widened eyes, jaw tightening, side lighting,
-very shallow depth of field, dark blurred background, cool desaturated,
-cinematic psychological thriller, film grain, 16:9
-Negative: smiling, relaxed, bright lighting, full body, wide shot, text
-```
+**→ NB2**: "An extreme close-up of @叶知秋.震惊. Only her eyes, nose bridge, and jaw visible. Something has shaken her to her core but she's a professional — what we see is the microsecond before composure reasserts. Side light emphasizes every contour. Background dissolved to pure darkness. Controlled devastation. 16:9."
+
+**→ SD**: `extreme close-up, Chinese woman thirties, professional short hair, controlled shock, widened eyes, jaw tightening, side lighting, very shallow dof, dark blurred background, cool desaturated, cinematic psychological thriller, 16:9` / Neg: `smiling, relaxed, bright lighting, full body, text`

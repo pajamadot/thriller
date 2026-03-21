@@ -600,12 +600,15 @@ CSV 格式：可导入 Shot Designer / StudioBinder
 /visualize [镜头范围]
 
 输出模式:
-  --format nb2    Nano Banana 2 格式（自然语言创意简报，默认推荐）
-  --format gemini Gemini API / Vertex AI（同nb2提示词，API参数）
-  --format sd     Stable Diffusion 格式（prompt + negative + 参数）
-  --format dalle  DALL-E 3 格式（自然语言描述）
-  --format mj     Midjourney 格式（--ar --s --q --v）
-  --format fal    fal.ai 格式（可直接用于 Story Platform generation worker）
+  --format sdl    SDL中间表征（模型无关JSON，默认）
+  --format nb2    Nano Banana 2 适配器（自然语言创意简报）
+  --format sd     Stable Diffusion 适配器（关键词 + negative）
+  --format dalle  DALL-E 适配器（简洁自然语言）
+  --format mj     Midjourney 适配器（关键词 + --参数）
+  --format fal    fal.ai 适配器（Story Platform generation worker）
+
+  架构: 分镜参数 → SDL(模型无关) → Adapter(薄层转换) → 模型格式
+  换模型只需换适配器，SDL和分镜逻辑完全不变
 
 范围控制:
   --scene <全场景>    每个镜头生成一条提示词
