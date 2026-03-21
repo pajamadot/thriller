@@ -351,7 +351,7 @@
       ]
     },
     "validation": [
-      "storyboard/references/shot-logic.md exists and contains REQUIRES/PROVIDES/RAISES model"
+      "node -e \"if(!require('fs').readFileSync('storyboard/references/shot-logic.md','utf8').includes('REQUIRES'))throw 1\""
     ]
   },
   {
@@ -384,7 +384,7 @@
       ]
     },
     "validation": [
-      "storyboard/references/llm-guidance.md exists and contains self-audit protocol"
+      "node -e \"if(!require('fs').readFileSync('storyboard/references/llm-guidance.md','utf8').includes('audit'))throw 1\""
     ]
   },
   {
@@ -416,7 +416,7 @@
       ]
     },
     "validation": [
-      "storyboard/references/evaluation.md exists"
+      "node -e \"if(!require('fs').existsSync('storyboard/references/evaluation.md'))throw 1\""
     ]
   },
   {
@@ -447,7 +447,7 @@
       ]
     },
     "validation": [
-      "storyboard/SKILL.md contains cross-module integration section"
+      "node -e \"if(!require('fs').readFileSync('storyboard/SKILL.md','utf8').includes('integration'))throw 1\""
     ]
   },
   {
@@ -477,7 +477,7 @@
       ]
     },
     "validation": [
-      "node thriller/scripts/lib/storyboard-plan.js loads without error"
+      "node -e \"require('./scripts/lib/storyboard-plan').loadStoryboardPlan()\""
     ]
   }
 ]
