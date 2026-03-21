@@ -176,6 +176,7 @@
 ### 1. 硬切（Cut）
 
 ```
+SDL标记: transition: "cut"
 特征: 即时跳转，零过渡
 效果: 直接、高效、紧迫
 何时用:
@@ -184,15 +185,24 @@
   - 对话场景的正反打
   - 需要保持能量的连续动作
 
+认知机制 (cognitive-perception.md):
+  硬切的感知取决于注意力同步度:
+    高同步时硬切 → "编辑盲" (SYNC-1, Smith 2008) → 观众不注意到切
+    低同步时硬切 → 观众明确感知到切 → 用于制造冲击
+  Scale-in 硬切 (宽→窄): N300低 → 流畅 (Liao 2023)
+  Scale-out 硬切 (窄→宽): N300高 → 感知为事件边界
+
 悬疑变体——突然硬切:
   从安静/平静的场景突然硬切到惊吓画面
   配合SFX → 经典Jump Scare
   但更高级的用法: 硬切到沉默 → 比惊吓更不安
+  认知: 深度启动(5s+安全感) → 硬切(最高突然性) = 最大冲击 (PRIME-1)
 ```
 
 ### 2. 跳切（Jump Cut）
 
 ```
+SDL标记: transition: "jump"
 特征: 同一场景/同一角度的时间跳跃
 效果: 时间碎片化、焦虑、不安
 何时用:
@@ -210,6 +220,7 @@
 ### 3. 匹配切（Match Cut）
 
 ```
+SDL标记: transition: "match"
 特征: 利用视觉/动作/声音的相似性连接两个不同场景
 效果: 流畅的时空跳转、因果暗示
 类型:
@@ -230,6 +241,7 @@
 ### 4. 图形匹配（Graphic Match）
 
 ```
+SDL标记: transition: "graphic_match"
 特征: 纯粹基于形状/线条/图案的相似性
 效果: 视觉诗意、象征关联
 经典例子:
@@ -244,6 +256,7 @@
 ### 5. 淡出/淡入（Fade Out/Fade In）
 
 ```
+SDL标记: transition: "fade" 或 transition: "ftb" (fade to black)
 特征: 画面渐暗至黑 / 从黑渐亮
 效果: 时间流逝、章节分隔、意识变化
 何时用:
@@ -261,6 +274,7 @@
 ### 6. 叠化（Dissolve / Cross-Dissolve）
 
 ```
+SDL标记: transition: "dissolve"
 特征: 前一画面渐隐的同时后一画面渐显
 效果: 柔和过渡、时间流逝、记忆、梦
 何时用:
@@ -278,6 +292,15 @@
 ### 7. L-Cut 和 J-Cut（声音先行/延续）
 
 ```
+SDL标记: transition: "lcut" (L-Cut) 或 transition: "jcut" (J-Cut)
+
+认知机制 (cognitive-perception.md §五 SYNC-3):
+  声音线索引导注意力方向 → 声音先行(J-Cut)在新画面前
+  已经引导观众"期待"某个方向 → 切到该方向 → 无缝转场
+
+  知觉桥接 (§九 Bridge-3): 声音跨切延续是第三强的桥接方式
+  → L-Cut和J-Cut天然维持跨场景的连贯性感知
+
 L-Cut（声音延续）:
   画面已经切到新场景，但前一场景的声音还在继续
   效果: 前一场景的情感延伸到新场景
@@ -303,6 +326,7 @@ J-Cut（声音先行）:
 ### 8. 不可见切（Invisible Cut）
 
 ```
+SDL标记: transition: "invisible"
 特征: 将切隐藏在动作/运动/遮挡中
 效果: 伪装成长镜头、无缝连续
 技法:
@@ -418,17 +442,268 @@ Murch 的排序也解释了为什么 CRAFT 的权重在大多数类型中较低(
 
 ---
 
+## 5.5、悬疑/惊悚蒙太奇模式
+
+> 将 Eisenstein 五级蒙太奇体系专门化为悬疑/惊悚场景的应用模式。
+> 每种 Eisenstein 级别对应一类悬疑特化的蒙太奇设计。
+
+### 度量蒙太奇 → 倒计时蒙太奇 (Countdown Montage)
+
+```
+Eisenstein 原理: 镜头时长的绝对控制
+悬疑特化: 用精确的时长递减模拟时间压迫
+
+  模式: d₁ > d₂ > d₃ > ... > dₙ → 突然停止或事件发生
+  时长序列: 6s → 5s → 4s → 3s → 2s → 1.5s → 1s → 0.5s → [事件]
+
+  内容自由: 切的内容不重要(走廊/时钟/手指/脸)——纯时长控制产生紧迫感
+  音效配合: 每个镜头的开头加一个同步音效(心跳/滴答/脚步)
+  变体: 在递减序列中间插入一个异常长镜头 (Fermata) = 假放松 → 重新加速
+
+  evaluation.md 指标: RHYTHM 评分中的 Accelerando 模式识别
+  visual-rhythm.md 对应: A(d0, r, n) + F(d, d_held, pos)
+
+  经典参考:
+    《黑暗骑士》炸弹倒计时: 度量蒙太奇的教科书级应用
+    《七宗罪》调查蒙太奇: 递减中插入长镜头的变体
+```
+
+### 节奏蒙太奇 → 对峙蒙太奇 (Confrontation Montage)
+
+```
+Eisenstein 原理: 画面内运动决定剪辑
+悬疑特化: 两个角色的运动(或静止)的对比产生权力张力
+
+  模式: 动 ↔ 静 交替
+  审讯者: 快速手势、前倾、拍桌 → 短镜头 (运动驱动短切)
+  嫌疑人: 静止、微动、眨眼 → 长镜头 (静止→延长)
+
+  运动规则:
+    追问方镜头 = 运动高点切出 (动作最激烈时切走)
+    回答方镜头 = 静止中点切出 (在沉默的中间切走 → 不给观众读完表情)
+  → 两者的运动反差产生"节奏蒙太奇"张力
+
+  evaluation.md 指标: RHYTHM 中的 Breathe 模式 + r(1) 反相关(长短交替)
+  visual-rhythm.md 对应: INTERLEAVE(A_fast, P_slow)
+
+  经典参考:
+    《沉默的羔羊》审讯: Clarice的紧张动作 vs Lecter的完美静止
+    《十二怒汉》: 12个男人的运动(或不运动)控制全片节奏
+```
+
+### 调性蒙太奇 → 氛围侵蚀蒙太奇 (Atmosphere Erosion Montage)
+
+```
+Eisenstein 原理: 色调/光线/质感的渐变统一或对比
+悬疑特化: 场景色调从"安全"逐步过渡到"危险"
+
+  模式: 暖→冷 or 高饱和→低饱和 or 明→暗
+  执行: 连续 5-8 个镜头中，每个镜头色温降低 200-400K
+        观众意识不到单步变化，但累积变化产生"世界在变质"的感觉
+
+  声音配合:
+    同步进行声音的调性变化:
+    环境音量逐渐降低 → 沉默渐近
+    或 环境音中引入一个渐强的低频持续音 → 不安感
+
+  认知机制 (来源 cognitive-perception.md):
+    Level 1 快通路启动: 色调变化中阈下的"不安"信号
+    观众的杏仁核在意识到"有什么变了"之前就已经进入警觉状态
+
+  evaluation.md 指标: VIS + SOUND 维度的联合评估
+  genre-libraries.md 参考: psych_thriller 的 color_contamination 技法
+
+  经典参考:
+    《消失的爱人》: 从金色暖调逐渐进入钢蓝冷调
+    《机械师》: 全片的色彩饱和度递减到近灰阶
+```
+
+### 泛音蒙太奇 → 高潮前蒙太奇 (Pre-Climax Overtonal Montage)
+
+```
+Eisenstein 原理: 度量+节奏+调性同时叠加操控
+悬疑特化: 高潮前30-60秒, 三个维度同步推向极端
+
+  三轴同步加速:
+    度量轴(时长): 4s → 3s → 2s → 1.5s → 1s (Accelerando)
+    节奏轴(运动): 静止 → 慢走 → 快走 → 跑 → 停 (内部运动加速)
+    调性轴(色调): 中性 → 冷色 → 极冷 → 近黑白 → [突然正常色] (揭示)
+
+  终止模式:
+    三轴同步到达极端 → 突然全部重置 = "真相时刻"
+    这个突然重置的视觉冲击 ∝ 三轴累积的强度
+
+  evaluation.md 指标:
+    RHYTHM: Accelerando检查 + climax_alignment
+    VIS: 色调渐变的一致性
+    SOUND: 声音与三轴同步
+  visual-rhythm.md 对应:
+    CONCAT(A(d0,r,n), ...) 但同时操控 Tempo Map 和色温曲线
+
+  经典参考:
+    《七宗罪》最后20分钟: 度量/节奏/调性全部收紧到爆炸
+    《记忆碎片》: 两条时间线各自的泛音蒙太奇在结尾汇聚
+```
+
+### 理性蒙太奇 → 线索回溯蒙太奇 (Clue Retrospective Montage)
+
+```
+Eisenstein 原理: 符号并置产生抽象概念
+悬疑特化: 揭示时刻的线索快闪——碎片组合成真相
+
+  模式:
+    ECU: 线索1 (0.5s) → ECU: 线索2 (0.5s) → ECU: 线索3 (0.5s)
+    → INSERT: 联结物 (0.5s) → CU: 面部 (3s, 终于理解)
+
+  语义:
+    每个单独的线索不构成证据 → 并置产生推理
+    观众在看面部反应时与角色同步完成推理
+    = Eisenstein 的"论题+反题=合题"在悬疑中的应用
+
+  认知机制 (来源 cognitive-perception.md):
+    快切(0.5s)触发 Level 1 快通路 → 信息植入但不完全处理
+    面部长镜头(3s)给 Level 2 慢通路时间完成整合
+    → 观众在看面部时"顿悟" = 观众和角色同时理解
+
+  evaluation.md 指标: LOGIC (信息DAG完整) + NARR (线索回收)
+  visual-rhythm.md 对应: Bu(0, 0.5, 3, 0, 4+) — Burst模式
+
+  经典参考:
+    《非常嫌疑犯》: Verbal Kint 的线索回溯蒙太奇
+    《灵异第六感》: "我看到死人"后的线索重组
+```
+
+---
+
+## 5.6、转场选择算法 — 从 SDL mood 字段到转场类型
+
+> 给定 SDL (Scene Description Language) 的 mood 字段，
+> 自动推导最佳转场类型。在 `/decompose` 的转场设计步骤中使用。
+
+### SDL mood 字段结构
+
+```json
+// 来源: image-prompt-gen.md §三 SDL Schema
+"mood": {
+  "primary": "<主情绪: 如 'fearful vulnerability'>",
+  "secondary": "<次情绪: 如 'clinical safety being violated'>",
+  "genre_atmosphere": "<类型氛围: 如 'psychological thriller, unsettling calm'>"
+}
+```
+
+### 转场决策函数
+
+```
+transition_type = T(mood_A, mood_B, narrative_relationship)
+
+输入:
+  mood_A = 当前场景结束时的 SDL mood
+  mood_B = 下一场景开始时的 SDL mood
+  narrative_relationship = 两场景之间的叙事关系
+
+Step 1: 情感变化幅度
+  delta_valence = |valence(mood_A.primary) - valence(mood_B.primary)|
+
+  情感效价映射:
+    positive: 安全、温暖、希望、快乐    → valence = +1
+    neutral: 中性、观察、专注          → valence = 0
+    negative: 恐惧、紧张、悲伤、愤怒    → valence = -1
+    extreme_neg: 恐怖、绝望、崩溃      → valence = -2
+
+Step 2: 叙事关系
+  因果 (causal): A直接导致B
+  时间连续 (temporal): A和B紧接
+  时间跳跃 (time_jump): A和B之间有时间间隔
+  空间跳跃 (space_jump): A和B在不同地点
+  心理跳跃 (psyche_jump): 从外部现实到内心/记忆/幻想
+  主题关联 (thematic): A和B通过主题/符号相关
+
+Step 3: 转场推导
+
+  ┌──────────────────┬───────────────┬──────────────┬─────────────────────┐
+  │ 情感变化幅度       │ 叙事关系       │ 推荐转场      │ SDL标记               │
+  ├──────────────────┼───────────────┼──────────────┼─────────────────────┤
+  │ delta=0 (同情绪)  │ 因果/时间连续  │ CUT          │ transition: "cut"    │
+  │ delta=0           │ 空间跳跃      │ CUT + 建立    │ transition: "cut_est"│
+  │ delta=1 (渐变)    │ 因果          │ J-CUT / CUT  │ transition: "jcut"   │
+  │ delta=1           │ 时间跳跃      │ DISSOLVE      │ transition: "dissolve"│
+  │ delta=1           │ 心理跳跃      │ MATCH CUT     │ transition: "match"  │
+  │ delta=2 (突变)    │ 因果          │ HARD CUT      │ transition: "cut"    │
+  │ delta=2           │ 时间跳跃      │ FADE→FADE     │ transition: "fade"   │
+  │ delta=2           │ 空间+时间跳跃 │ FADE TO BLACK │ transition: "ftb"    │
+  │ delta=2           │ 心理跳跃      │ JUMP CUT      │ transition: "jump"   │
+  │ 任意              │ 主题关联      │ MATCH CUT     │ transition: "match"  │
+  │ 任意(恐惧方向)    │ 因果          │ J-CUT(声音先行)│ transition: "jcut"   │
+  │ 任意(安全方向)    │ 因果          │ L-CUT(声音延续)│ transition: "lcut"   │
+  └──────────────────┴───────────────┴──────────────┴─────────────────────┘
+
+特殊规则 (悬疑):
+  IF mood_A.primary ∈ [calm, safe] AND mood_B.primary ∈ [fear, threat]
+  THEN 推荐 J-CUT → 威胁声先于画面到来 = 悬念最大化
+
+  IF mood_A.primary ∈ [fear, horror] AND mood_B.primary ∈ [calm, safe]
+  THEN 推荐 L-CUT → 恐惧声音渗透到安全空间 = 无处可逃
+
+  IF narrative_relationship = psyche_jump AND genre = psych_thriller
+  THEN 推荐 MATCH CUT (形状/色彩匹配) → 现实与心理的视觉桥接
+```
+
+### 转场示例 (SDL 应用)
+
+```
+场景 A 结束:
+  mood_A = { primary: "fearful vulnerability", secondary: "clinical safety",
+             genre_atmosphere: "psychological thriller" }
+
+场景 B 开始:
+  mood_B = { primary: "cold professional detachment", secondary: "hidden concern",
+             genre_atmosphere: "procedural investigation" }
+
+计算:
+  valence(A) = -1 (fearful)
+  valence(B) = 0 (detached)
+  delta_valence = |-1 - 0| = 1 (渐变)
+  narrative_relationship = temporal + space_jump (从咨询室到警局)
+
+查表: delta=1, space_jump → CUT + 建立
+推荐: transition: "cut_est"
+  具体: 硬切到警局 ELS 建立镜头 (3-5s)，A场景的咨询室环境音
+  L-Cut 延续 1-2s 进入新场景 (声音桥接)
+```
+
+---
+
 ## 六、转场与情绪映射表
 
-| 从场景A的情绪 | 到场景B的情绪 | 推荐转场 | 原因 |
-|-------------|-------------|---------|------|
-| 紧张 → 紧张 | CUT / JCUT | 保持能量 |
-| 紧张 → 平静 | DISSOLVE / L-Cut | 渐进释放 |
-| 平静 → 紧张 | J-Cut / CUT | 突然入侵或声音预示 |
-| 平静 → 平静 | DISSOLVE / FADE | 时间流逝 |
-| 恐惧 → 安全 | L-Cut（恐惧声延续）| 恐惧渗透 |
-| 安全 → 恐惧 | J-Cut（威胁声先行）| 悬念建立 |
-| 现实 → 回忆 | DISSOLVE / MATCH | 柔和进入 |
-| 回忆 → 现实 | CUT（突然）| 被拉回现实 |
-| 真相前 → 揭示 | MATCH / CUT | 因果清晰 |
-| 日常 → 异常 | 微妙的DUTCH角切入 | 不安暗示 |
+> **交叉引用**: cognitive-perception.md §四 — 情感启动规则
+> 每种转场的有效性取决于前序启动时长 (PRIME-1 到 PRIME-4)
+
+| 从场景A的情绪 | 到场景B的情绪 | 推荐转场 | SDL标记 | 原因 | 认知依据 |
+|-------------|-------------|---------|--------|------|---------|
+| 紧张 → 紧张 | CUT / JCUT | cut / jcut | 保持能量 | 无对比切需要 |
+| 紧张 → 平静 | DISSOLVE / L-Cut | dissolve / lcut | 渐进释放 | PRIME-4: 威胁信号需2-5s消退 |
+| 平静 → 紧张 | J-Cut / CUT | jcut / cut | 突然入侵或声音预示 | PRIME-1: 启动≥3s+高对比+硬切=最大冲击 |
+| 平静 → 平静 | DISSOLVE / FADE | dissolve / fade | 时间流逝 | 低突然性→无冲击(设计意图) |
+| 恐惧 → 安全 | L-Cut（恐惧声延续）| lcut | 恐惧渗透 | EMOTION-DECAY: 恐惧消退10-20s |
+| 安全 → 恐惧 | J-Cut（威胁声先行）| jcut | 悬念建立 | SYNC-3: 声音引导注意力方向 |
+| 现实 → 回忆 | DISSOLVE / MATCH | dissolve / match | 柔和进入 | 心理跳跃需桥接(Bridge-6主题) |
+| 回忆 → 现实 | CUT（突然）| cut | 被拉回现实 | Scale-out效果→事件边界(Liao 2023) |
+| 真相前 → 揭示 | MATCH / CUT | match / cut | 因果清晰 | Bridge-5因果连贯 |
+| 日常 → 异常 | 微妙的DUTCH角切入 | cut | 不安暗示 | Level 1快通路→阈下不安 |
+
+### 转场选择速查矩阵 (SDL mood.primary → transition)
+
+```
+                安全     中性     不安     恐惧     绝望
+安全 →        dissolve   cut    jcut     jcut     jcut
+中性 →         cut      cut     cut      cut      cut
+不安 →        lcut      cut     cut      cut      cut
+恐惧 →        lcut     lcut     cut      cut      cut
+绝望 →        fade     lcut    lcut      cut      cut
+
+对角线(同情绪→同情绪) = CUT (保持能量，无需转场)
+右上三角(安全→危险方向) = J-CUT 优先 (威胁先行)
+左下三角(危险→安全方向) = L-CUT 优先 (恐惧渗透)
+极端跳跃(安全→绝望) = J-CUT + 硬切组合 (声音预示+画面冲击)
+极端跳跃(绝望→安全) = FADE TO BLACK (完全重置)
+```
