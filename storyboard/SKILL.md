@@ -535,6 +535,10 @@ CSV 格式：可导入 Shot Designer / StudioBinder
       },
       "transition_in": "CUT|JCUT|MATCH|GMATCH|FADE|DISSOLVE|WIPE|L|J|IRIS|INVIS",
       "montage_type": "metric|rhythmic|tonal|overtonal|intellectual|null",
+      "asset_references": {
+        "characters": [{"ref": "@角色名", "variant": "string|null", "resolved_url": "string|null"}],
+        "assets": [{"ref": "#场景或物件名", "variant": "string|null", "resolved_url": "string|null"}]
+      },
       "blocking_notes": "string",
       "director_notes": "string",
       "reference_films": ["string"]
@@ -610,7 +614,16 @@ CSV 格式：可导入 Shot Designer / StudioBinder
 
 一致性:
   --consistent        保持角色描述和环境描述跨镜头一致
-  --character-ref <角色ID>  使用角色参考图保持面部一致
+  --resolve-refs      解析 @/# 引用为URL或文字描述
+
+资产引用（双符号系统）:
+  @ = 人物: @叶知秋  @林小曼.恐惧  @叶知秋.全身
+  # = 非人物: #咨询室  #帽衫  #叶知秋公寓.夜
+
+  解析链:
+    有资产URL → 附加 reference_image（最佳一致性）
+    无URL有描述 → 展开为文字（次佳）
+    都没有 → 警告 + 建议先生成
 
 提示词结构（6段式）:
   [镜头类型] [主体描述] [动作/姿态] [环境/背景] [光线/色彩/氛围] [风格/技术]

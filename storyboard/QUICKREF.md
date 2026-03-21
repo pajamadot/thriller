@@ -319,3 +319,24 @@ ANNOTATE:1000-2000     (序列+参考)
 惯性     → 每5镜头问"要打破模式吗?"
 忽略负空间 → 每场至少1个SIL
 ```
+
+---
+
+## 图像提示词 /visualize
+
+**资产引用（双符号）**:
+```
+@ = 人物:   @叶知秋  @林小曼.恐惧  @叶知秋.全身
+# = 非人物: #咨询室  #帽衫  #叶知秋公寓.夜
+```
+
+**格式**: nb2(推荐) | gemini | sd | dalle | mj | fal
+
+**NB2提示词 = 创意简报（不是关键词堆砌）**:
+```
+"A close-up of @叶知秋 in #咨询室. She's just heard
+ something that shakes her composure. Side light leaves
+ half her face in shadow — she carries a secret..."
+```
+
+**解析链**: 有URL→附参考图 | 有描述→展开文字 | 都无→警告+建议生成

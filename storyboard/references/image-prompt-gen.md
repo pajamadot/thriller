@@ -25,102 +25,179 @@
 
 ---
 
-## 二、@引用系统（Asset Reference）
+## 二、资产引用系统（@ 人物 / # 非人物）
 
-提示词中使用 `@` 前缀引用项目中的角色和场景资产。
-当提示词被送入上下文系统时，`@引用` 会被自动解析为实际的资产URL。
+提示词中使用两种符号引用项目资产。解析器自动将引用替换为资产URL或文字描述。
+
+### 双符号设计
+
+```
+@ = 人物（角色）     只用于有生命的角色
+# = 非人物（一切其他） 场景、地点、物件、道具、服装、文件……
+
+为什么分两个符号？
+  1. 图像生成中"人物"和"非人物"的处理方式完全不同
+     - 人物 → 需要面部一致性（reference portrait / IP-Adapter / NB2角色锁定）
+     - 非人物 → 需要环境一致性（background reference / ControlNet）
+  2. 解析器可以无歧义地将引用路由到正确的资产类型
+  3. 与 Story Platform 的 @mention 系统兼容（节点文本中 @角色 已有约定）
+```
 
 ### 语法
 
 ```
-@角色名          → 解析为角色的参考图URL（立绘/头像）
-@角色名.表情      → 解析为角色特定表情的参考图
-@场景名          → 解析为场景背景参考图URL
-@物件名          → 解析为物件参考图URL
+@角色名           → 角色的默认参考图（立绘/头像）
+@角色名.表情       → 角色特定表情的参考图
+@角色名.全身       → 角色全身参考图
+
+#场景名           → 场景/地点的背景参考图
+#物件名           → 物件/道具的参考图
+#场景名.夜        → 场景特定变体（时间/天气/状态）
 ```
 
 ### 示例
 
 ```
 提示词中的写法:
-  "A close-up of @叶知秋 sitting in @咨询室, looking at @林小曼
-   with an expression of controlled shock..."
+  "A close-up of @叶知秋 sitting in #咨询室, looking at @林小曼
+   who is nervously twisting #外套袖子..."
 
-自动解析后:
-  "A close-up of [角色参考: https://assets.../ye-zhiqiu-portrait.png]
-   sitting in [场景参考: https://assets.../consulting-room-bg.png],
-   looking at [角色参考: https://assets.../lin-xiaoman-portrait.png]
-   with an expression of controlled shock..."
+解析后（URL模式）:
+  prompt: "A close-up of [character] sitting in [location]..."
+  character_refs: [
+    { ref: "@叶知秋", url: "https://assets.../ye-zhiqiu-portrait.png", type: "character" },
+    { ref: "@林小曼", url: "https://assets.../lin-xiaoman-portrait.png", type: "character" }
+  ]
+  asset_refs: [
+    { ref: "#咨询室", url: "https://assets.../consulting-room-bg.png", type: "location" },
+    { ref: "#外套袖子", description: "dark formal coat sleeve", type: "prop" }
+  ]
+
+解析后（文字展开模式，无参考图时）:
+  "A close-up of a Chinese woman in her early thirties with short
+   professional hair [叶知秋] sitting in a modern therapy office with
+   bookshelves and diplomas [咨询室], looking at a young Chinese woman
+   in her mid-twenties with light makeup [林小曼]..."
 ```
 
 ### 与图像生成API的集成
 
 ```
-NB2/Gemini (支持参考图):
-  prompt: "A close-up of @叶知秋 in @咨询室..."
-  → API调用时, @叶知秋 解析为 reference_image_url
-  → 保持角色一致性（NB2支持最多5角色同时引用）
+NB2 / Gemini（推荐）:
+  @ → reference_image（角色一致性，NB2支持最多5人同时）
+  # → 自然语言描述（NB2的世界知识足够理解场景描述）
+  #物件 → 如果有参考图则附加，否则用文字描述
+
+  示例API调用:
+    prompt: "A close-up of @叶知秋 in #咨询室..."
+    reference_images: [
+      { url: "https://...", label: "@叶知秋", role: "subject" }
+    ]
+    // #咨询室 已在prompt文字中展开为场景描述
 
 fal.ai / Story Platform:
-  prompt 中的 @引用 → generation.create_image {
+  @ → generation.create_image.reference_images[role="subject"]
+  # → generation.create_image.reference_images[role="background"]
+      或展开为 prompt 文字描述
+
+  generation.create_image({
     prompt: "...",
     reference_images: [
-      { url: "https://assets.../ye-zhiqiu.png", role: "subject" },
-      { url: "https://assets.../consulting-room.png", role: "background" }
+      { url: "@叶知秋 → signed_url", role: "subject" },
+      { url: "#咨询室 → signed_url", role: "background" }
     ]
-  }
+  })
 
-Stable Diffusion / ComfyUI (IP-Adapter):
-  @角色名 → IP-Adapter 参考图输入
-  @场景名 → ControlNet 参考图输入
+Stable Diffusion / ComfyUI:
+  @ → IP-Adapter 参考图输入（人物一致性）
+  # → ControlNet 参考图输入（场景结构）
+      或 img2img 参考（物件细节）
 
 DALL-E (不支持参考图):
-  @引用 → 展开为该角色/场景的文字描述（从角色档案提取）
+  @/# → 全部展开为文字描述（从角色/场景档案提取）
 ```
 
-### @引用的数据源
+### 引用解析的数据源
 
 ```
-从项目文件自动提取:
-  @角色名 → projects/{project}/characters.md 中的角色描述
-           + 角色的 portrait_asset_id（如果已生成立绘）
-  @场景名 → projects/{project}/structure.md 中的场景描述
-           + story_node 的 background_asset_id（如果已生成背景）
+本地模式（从项目文件提取）:
+  @角色名 → projects/{project}/characters.md
+            查找角色描述段落 → 提取外貌/年龄/特征
+            如有 portrait_asset_id → 解析为本地文件路径
 
-从 Story Platform API 提取（在线模式）:
-  @角色名 → GET /characters/{id} → portrait_asset_id → signed URL
-  @场景名 → GET /locations/{id} → background_asset_id → signed URL
+  #场景名 → projects/{project}/structure.md
+            查找场景描述 → 提取环境/时间/氛围
+            如有 background_asset_id → 解析为本地文件路径
 
-本地模式（无API）:
-  @引用 → 展开为文字描述（从 characters.md 提取外貌描述段落）
+  #物件名 → 从分镜的构图描述中提取物件特征
+            如果项目有 items 定义 → 使用 icon_asset_id
+
+Story Platform API 模式（在线）:
+  @角色名 → GET /characters?name={name}
+            → portrait_asset_id → /files/{id}/url → signed URL
+
+  #场景名 → GET /locations?name={name}
+            → background_asset_id → /files/{id}/url → signed URL
+
+  #物件名 → GET /items?name={name}
+            → icon_asset_id → /files/{id}/url → signed URL
+
+Fallback 链:
+  有资产URL？ → 使用URL（最佳：角色/场景一致性）
+  无URL但有描述？ → 展开为文字描述（次佳：靠模型理解）
+  无URL无描述？ → 输出警告 ⚠ "建议先为 @叶知秋 生成参考立绘"
 ```
 
-### 在分镜表中使用@引用
+### 在分镜表中使用引用
 
 ```markdown
-| # | 节拍 | 景别 | 构图要点 | 提示词@引用 |
-|---|------|------|---------|-----------|
-| 1 | 建立 | ELS | 公寓外景 | @叶知秋公寓 |
-| 3 | 行动 | MCU | 进门挂衣 | @叶知秋 进门 |
-| 4 | 揭示 | INSERT | 帽衫特写 | @帽衫 挂在衣钩上 |
-| 6 | 揭示 | CU | 关键台词 | @林小曼 恐惧+希望 |
-| 7 | 反应 | ECU | 震动 | @叶知秋.震惊 侧光 |
+| # | 节拍 | 景别 | 构图要点 | 资产引用 |
+|---|------|------|---------|---------|
+| 1 | 建立 | ELS | 公寓外景 | #叶知秋公寓.夜 |
+| 3 | 行动 | MCU | 进门挂衣 | @叶知秋 #公寓走廊 |
+| 4 | 揭示 | INSERT | 帽衫特写 | #帽衫 #衣帽钩 |
+| 6 | 揭示 | CU | 关键台词 | @林小曼 #咨询室 |
+| 7 | 反应 | ECU | 震动 | @叶知秋.震惊 |
 ```
 
-### /visualize 输出中的@引用
+### /visualize 输出中的引用处理
 
 ```
 /visualize --format nb2 --resolve-refs
 
-输出两个版本:
-  1. 带@引用的模板版（可编辑、可移植）
-  2. 已解析的完整版（@引用替换为描述或URL）
+输出结构:
+  1. template_prompt: 带 @/# 引用的模板版（可编辑、可移植）
+  2. resolved_prompt: 已解析版（引用替换为描述或URL）
+  3. character_refs: [{ ref, url|description, type:"character" }]
+  4. asset_refs: [{ ref, url|description, type:"location|prop" }]
+  5. missing_refs: [{ ref, type, suggestion }] ← 需要先生成的资产
 
-如果角色有参考图:
-  → 提示词附带 reference_images 数组
-如果角色没有参考图:
-  → @引用展开为文字描述
-  → 同时输出建议: "建议先为 @叶知秋 生成参考立绘"
+当存在 missing_refs 时:
+  → 自动生成资产创建建议:
+    "⚠ @林小曼 没有参考立绘。建议运行:
+     /generate portrait --character 林小曼 --expression neutral"
+    "⚠ #咨询室 没有背景图。建议运行:
+     /generate background --location 咨询室 --time afternoon"
+```
+
+### JSON Schema 中的引用字段
+
+```json
+{
+  "shots": [{
+    "id": 1,
+    "asset_references": {
+      "characters": [
+        { "ref": "@叶知秋", "variant": null, "resolved_url": "string|null" },
+        { "ref": "@林小曼", "variant": "恐惧", "resolved_url": "string|null" }
+      ],
+      "assets": [
+        { "ref": "#咨询室", "variant": "afternoon", "resolved_url": "string|null" },
+        { "ref": "#帽衫", "variant": null, "resolved_url": "string|null" }
+      ]
+    }
+  }]
+}
 ```
 
 ---
@@ -490,11 +567,15 @@ NB2风格（自然语言简报，推荐）:
    "A therapy office in a modern Chinese city, the kind with IKEA furniture
     and diplomas from both Chinese and Western universities on the wall"
 4. 角色一致性：NB2可同时维持最多5个角色的一致外观
-   在系列提示词中保持角色描述一致即可
+   用 @角色名 引用 → 解析为 reference_image → 保持面部一致
 5. 文字渲染：NB2可以在画面中生成清晰文字
    "A notebook page with the handwritten name '周明哲' circled in red"
 6. 用自然语言编辑已生成的图像
    "Make the shadows deeper and the color palette colder"
+7. 双符号引用: @ 人物 / # 非人物
+   "@叶知秋 in #咨询室 noticing #帽衫"
+   → @ 解析为角色参考图（面部一致性）
+   → # 解析为场景/物件参考图或文字描述
 ```
 
 **Gemini API 格式**:
@@ -639,16 +720,18 @@ art_house:
 
 ### Shot 1 — 建立：公寓外景
 
-**NB2 (Nano Banana 2)** — 带@引用:
+**NB2 (Nano Banana 2)** — 带 @/# 引用:
 ```
-A cinematic establishing shot of @叶知秋公寓 at night. The building is
-dark and ordinary, except for one window on an upper floor that glows
+A cinematic establishing shot of #叶知秋公寓.夜 at night. The building
+is dark and ordinary, except for one window on an upper floor that glows
 with warm amber light — the only sign of life. The streets below are wet
 from recent rain, creating faint reflections of distant neon signs. The
 mood is one of profound urban loneliness — this is a person who lives
 alone and the city doesn't notice. Cool blue moonlight dominates, with
 that single warm window as the only counterpoint. Widescreen 2.39:1,
 shot as if from a film by David Fincher — precise, cold, quietly ominous.
+
+引用: #叶知秋公寓.夜 → background reference
 ```
 
 **SD (Stable Diffusion)**:
@@ -687,7 +770,7 @@ Negative: bright, cheerful, colorful, text, person visible, watermark
 
 **NB2**:
 ```
-A close-up portrait of @林小曼, sitting in @咨询室. She has put on makeup today — unusual
+A close-up portrait of @林小曼, sitting in #咨询室. She has put on makeup today — unusual
 for her — but the foundation can't hide the dark circles under her eyes.
 She is looking directly at us (her therapist) with an expression that
 mixes deep fear with desperate hope — the look of someone who needs to
@@ -712,7 +795,7 @@ Negative: happy, smiling, bright even lighting, studio portrait, text
 
 **NB2**:
 ```
-An extreme close-up of @叶知秋. We are so close we can only see her eyes,
+An extreme close-up of @叶知秋.震惊. We are so close we can only see her eyes,
 nose bridge, and the tension in her jaw. Something has just been said
 that has shaken her to her core — but she is a professional, a therapist,
 and she cannot show it. What we see is the micro-second before composure
