@@ -488,7 +488,7 @@ L型（L-shape / L型）：
 /board --format <markdown|json|csv>
 
 Markdown 格式：带构图描述的分镜表
-JSON 格式：可导入 Story Platform 的结构化数据
+JSON 格式：可导入叙事编辑器或资产管理系统的结构化数据
 CSV 格式：可导入 Shot Designer / StudioBinder
 ```
 
@@ -605,7 +605,7 @@ CSV 格式：可导入 Shot Designer / StudioBinder
   --format sd     Stable Diffusion 适配器（关键词 + negative）
   --format dalle  DALL-E 适配器（简洁自然语言）
   --format mj     Midjourney 适配器（关键词 + --参数）
-  --format fal    fal.ai 适配器（Story Platform generation worker）
+  --format fal    fal.ai 适配器
 
   架构: 分镜参数 → SDL(模型无关) → Adapter(薄层转换) → 模型格式
   换模型只需换适配器，SDL和分镜逻辑完全不变
@@ -718,14 +718,17 @@ storyboard 的分镜序列 → interactive-fiction 的 VN 节点资产
   转场类型 → VN的场景切换效果
 ```
 
-### storyboard → Story Platform MCP
+### storyboard → 叙事编辑器 / 资产管理系统
 
 ```
-/board --format json 的输出可直接导入 Story Platform：
-  shot → story_node（每个镜头 = 一个节点或节点内的指令）
-  composition.background → background_asset_id（背景资产）
-  sound.music → music_asset_id（音乐资产）
-  blocking → character_ids + 位置指令
+/board --format json 的输出可导入任何支持结构化叙事数据的系统：
+  shot → 叙事节点（每个镜头 = 一个节点或节点内的指令）
+  composition.background → 背景资产引用（#场景名）
+  sound.music → 音频资产引用
+  blocking → 角色引用（@角色名）+ 位置指令
+  asset_references → Resolver 解析为具体的资产URL
+
+具体的字段映射取决于目标系统——详见 integration-maps.md
 ```
 
 ---

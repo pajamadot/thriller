@@ -1,7 +1,7 @@
 # 分镜图像提示词生成系统
 
 > 模型无关的场景描述语言(SDL) + 薄层适配器 → 任意图像生成模型
-> 分镜参数 → SDL中间表征 → 适配器 → NB2 / SD / DALL-E / MJ / fal.ai / 未来模型
+> 分镜参数 → SDL中间表征 → 适配器 → 任意图像生成模型
 
 ---
 
@@ -24,9 +24,9 @@ SDL ───┼─→ SD Adapter   → Stable Diffusion / ComfyUI
        │
        ├─→ MJ Adapter   → Midjourney
        │
-       ├─→ fal Adapter   → fal.ai (Story Platform)
+       ├─→ fal Adapter   → fal.ai
        │
-       └─→ Future Adapter → 未来任何模型
+       └─→ Custom Adapter → 任何未来模型（只需实现 adapt(sdl) → payload）
 ```
 
 ### SDL 与模型格式的关系
@@ -78,7 +78,7 @@ SDL 只关心:
      - 人物 → 需要面部一致性（reference portrait / IP-Adapter / NB2角色锁定）
      - 非人物 → 需要环境一致性（background reference / ControlNet）
   2. 解析器可以无歧义地将引用路由到正确的资产类型
-  3. 与 Story Platform 的 @mention 系统兼容（节点文本中 @角色 已有约定）
+  3. 与常见的 @mention 约定兼容（许多叙事编辑器用 @角色 引用人物）
 ```
 
 ### 语法
@@ -133,16 +133,16 @@ NB2 / Gemini（推荐）:
     ]
     // #咨询室 已在prompt文字中展开为场景描述
 
-fal.ai / Story Platform:
-  @ → generation.create_image.reference_images[role="subject"]
-  # → generation.create_image.reference_images[role="background"]
+支持 reference_images 的 API（fal.ai、ComfyUI API 等）:
+  @ → reference_images[role="subject"]
+  # → reference_images[role="background"]
       或展开为 prompt 文字描述
 
-  generation.create_image({
+  api.create_image({
     prompt: "...",
     reference_images: [
-      { url: "@叶知秋 → signed_url", role: "subject" },
-      { url: "#咨询室 → signed_url", role: "background" }
+      { url: "@叶知秋 → resolved_url", role: "subject" },
+      { url: "#咨询室 → resolved_url", role: "background" }
     ]
   })
 
@@ -170,15 +170,11 @@ DALL-E (不支持参考图):
   #物件名 → 从分镜的构图描述中提取物件特征
             如果项目有 items 定义 → 使用 icon_asset_id
 
-Story Platform API 模式（在线）:
-  @角色名 → GET /characters?name={name}
-            → portrait_asset_id → /files/{id}/url → signed URL
-
-  #场景名 → GET /locations?name={name}
-            → background_asset_id → /files/{id}/url → signed URL
-
-  #物件名 → GET /items?name={name}
-            → icon_asset_id → /files/{id}/url → signed URL
+REST API 模式（在线，任意资产管理后端）:
+  @角色名 → GET /characters?name={name} → portrait_url
+  #场景名 → GET /locations?name={name} → background_url
+  #物件名 → GET /items?name={name} → icon_url
+  （具体端点和字段名取决于使用的后端服务）
 
 Fallback 链:
   有资产URL？ → 使用URL（最佳：角色/场景一致性）
@@ -777,7 +773,7 @@ API payload:
 格式: [提示词] --ar 16:9 --s 250 --q 2 --v 6.1
 ```
 
-### Adapter: fal.ai (Story Platform)
+### Adapter: fal.ai
 
 ```
 策略: SDL → fal.ai API格式
@@ -788,7 +784,7 @@ API payload:
 
 引用处理:
   @/# → reference_images[]: { url, role: "subject"|"background" }
-  URL通过 Story Platform asset-os 签名URL解析。
+  URL由 Resolver 层提供（与具体后端无关）。
 
 API payload:
   {
@@ -881,14 +877,15 @@ interface AssetResolver {
    #场景名 → 读取 projects/{project}/structure.md → 提取场景描述
    返回 description（文字展开），url 为 null
 
-2. StoryPlatformResolver（Story Platform 在线模式，示例）
-   @角色名 → GET /characters?name={name} → portrait_asset_id → signed URL
-   #场景名 → GET /locations?name={name} → background_asset_id → signed URL
+2. RestApiResolver（在线模式，对接任意资产管理后端）
+   @角色名 → GET {api_base}/characters?name={name} → portrait_url
+   #场景名 → GET {api_base}/locations?name={name} → background_url
    返回 url + description
+   配置: api_base, auth_header, field_mapping
 
 3. 自定义 Resolver（用户可扩展）
    任何系统只要实现 resolveCharacter/resolveAsset 接口
-   即可接入——Notion数据库、本地图片文件夹、其他AI平台资产库等
+   即可接入——Notion数据库、本地图片文件夹、CMS、DAM系统等
 ```
 
 ### Resolver + Adapter 的组合
@@ -912,17 +909,21 @@ interface AssetResolver {
   换分镜逻辑 → 只改 SDL 生成
 ```
 
-### 示例：Story Platform 管线
+### 示例管线
 
 ```
-这只是一个具体实现的例子，不是唯一的方式:
+/decompose → /board --format json → /visualize --resolver rest-api --format nb2
+→ SDL 生成
+→ RestApiResolver 解析 @/# → asset URLs
+→ NB2 Adapter 组装提示词 + reference_images
+→ 调用图像生成API
+→ 返回的图像可关联到叙事节点的资产字段
 
-  /decompose → /board --format json → /visualize --resolver story-platform --format fal
-  → SDL 生成
-  → StoryPlatformResolver 解析 @/# → signed URLs
-  → fal Adapter 组装 API payload
-  → generation.create_image { prompt, reference_images }
-  → 生成图像关联到 story_node.background_asset_id
+也可以纯本地:
+/visualize --resolver local --format sd
+→ LocalFileResolver 展开 @/# 为文字描述
+→ SD Adapter 生成关键词提示词
+→ 复制到本地 SD WebUI 使用
 ```
 
 ---

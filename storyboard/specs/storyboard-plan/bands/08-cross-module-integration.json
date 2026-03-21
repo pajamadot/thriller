@@ -3,12 +3,12 @@
   "title": "Cross-Module Integration",
   "roundStart": 71,
   "roundEnd": 80,
-  "objective": "Build tested bidirectional bridges between storyboard and thriller-writing, interactive-fiction, and Story Platform MCP. Define formal mapping rules, data format converters, and quality contracts at each boundary.",
+  "objective": "Build tested bidirectional bridges between storyboard and thriller-writing, interactive-fiction, and external narrative editors. Define formal mapping rules, data format converters, and quality contracts at each boundary.",
   "focusPlanes": ["Integration", "LLM Effectiveness"],
   "storyQuestions": [
     "How should thriller-writing clue-design annotations map to PROVIDES/RAISES?",
     "What VN node properties can be auto-generated from storyboard JSON?",
-    "Can the MCP story_node model represent shot-level directives?",
+    "Can external narrative editors represent shot-level directives via generic node models?",
     "How should branching narrative affect storyboard design?"
   ],
   "defaultTargetFiles": [
@@ -19,7 +19,7 @@
   "baseAcceptanceChecks": [
     "thriller-writing scene-to-storyboard mapping with 10+ field correspondences",
     "VN node generation spec: storyboard JSON -> VN node properties",
-    "MCP tool mapping: storyboard -> story_node creation calls",
+    "Generic narrative editor mapping: storyboard -> node creation via Resolver",
     "At least one end-to-end test: script -> storyboard -> VN nodes"
   ]
 }

@@ -66,7 +66,7 @@ Use when integration between storyboard and other modules needs strengthening.
 
 Expected moves:
 - Map storyboard outputs to VN node directives
-- Map storyboard outputs to MCP tool calls
+- Map storyboard outputs to external system API calls
 - Strengthen clue-design ↔ fair-play shot mapping
 
 ## Evolution Dimensions

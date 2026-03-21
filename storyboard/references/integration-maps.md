@@ -1,9 +1,13 @@
 # Cross-Module Integration Maps v1.0
 
 > Band 8 (R071-R080): Formal field-by-field bridge specifications between storyboard,
-> thriller-writing, interactive-fiction, and Story Platform MCP.
+> thriller-writing, interactive-fiction, and external narrative editors.
 >
-> Supersedes the conceptual 3-mapping lists in SKILL.md section "与其他模块的集成".
+> Supersedes the conceptual mapping lists in SKILL.md section "与其他模块的集成".
+>
+> **设计原则**: Bridge 1 和 Bridge 2 是通用的（适用于任何使用 thriller-writing / IF 模块的项目）。
+> Bridge 3 是一个**具体实现示例**——展示如何将分镜输出对接到一个具有节点图编辑器和资产管理的
+> 叙事平台。实际对接时，应根据目标系统的 API 定制 Resolver 和字段映射。
 
 ---
 
@@ -96,7 +100,7 @@ vn_node:
     typewriter_speed: "slow"|"normal"|"fast"
 ```
 
-### Story Platform MCP: story_node schema
+### 叙事编辑器节点 schema（参考实现示例）
 
 From the MCP server's node tools and the database schema:
 
@@ -427,12 +431,16 @@ B2-QC-10: Total VN node count is 30-60% of total shot count
 
 ---
 
-## Bridge 3: storyboard --> Story Platform MCP
+## Bridge 3: storyboard --> 叙事编辑器（参考实现）
+
+> **注意**: 以下是一个具体的参考实现，展示如何将分镜输出对接到具有节点图编辑器
+> 和资产管理 API 的叙事平台。具体的端点、字段名、和工具调用方式取决于
+> 你使用的目标系统。核心模式是通用的：**分镜节点 → 叙事节点 + 资产生成请求**。
 
 ### Purpose
 
-Translate a storyboard JSON into a sequence of MCP tool calls that create
-a playable story graph in the Story Platform, including asset generation
+Translate a storyboard JSON into a sequence of API calls that create
+a playable story graph in a narrative editor, including asset generation
 requests for backgrounds, character portraits, and music.
 
 ### Input Format
