@@ -3,7 +3,7 @@
 > Professional mystery/thriller writing system with 25+ screenwriting methodologies, 30+ academic papers, cinematic storyboard decomposition, and self-evolving methodology via GEP protocol.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-v2.1.0-blue.svg)](meta/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v5.1.0-blue.svg)](meta/CHANGELOG.md)
 
 ---
 
@@ -11,7 +11,7 @@
 
 A set of Claude Code skills for writing professional-quality mystery/thriller novels and converting them into branching interactive fiction. The system is built on established screenwriting theory (McKee, Hitchcock, Christie, Truby, etc.) augmented by computational narrative research, and it **improves itself** through a built-in evolution framework.
 
-**46 files · 8300+ lines · 24 reference documents · 25+ methodology sources**
+**4 modules · 60+ reference documents · 25+ methodology sources · self-evolving GEP workflow**
 
 ---
 
@@ -26,11 +26,13 @@ Systematic mystery/thriller creation from concept to manuscript.
 | `/start` | Project init (type, length, POV, trick, tone, theme) | `.thriller-state.json` |
 | `/theme` | Thematic premise design (Egri method) | `theme.md` |
 | `/trick` | Core mystery architecture, clue layout, fairness check | `trick-design.md` |
+| `/premise` | Closed-system premise, gathering logic, social arena constraints | `premise.md` |
 | `/characters` | Character system (detective, culprit, suspect matrix, victim) | `characters.md` |
 | `/structure` | Three-act adaptation, chapter outline, suspense management | `structure.md` |
+| `/design-review` | Design-stage readiness and cross-document constraint audit | Readiness report |
 | `/scene {N}` | Chapter writing (prose + clue tracking + suspicion shifts) | `chapters/ch{N}.md` |
 | `/audit` | Clue consistency audit, sub-type-filtered Knox check | Audit report |
-| `/check {N}` | Six-dimension weighted scoring (weights vary by sub-type) | Score report |
+| `/check {N}` | Seven-dimension weighted scoring (weights vary by sub-type) | Score report |
 | `/revise` | Four revision modes (structure / character / clues / prose) | Revision plan |
 | `/reveal` | Truth revelation scene design | Revelation plan |
 | `/export` | Complete work export | `export/` |
@@ -46,6 +48,7 @@ Systematic mystery/thriller creation from concept to manuscript.
 - **Knowledge state tracking** (Dynamic Epistemic Logic) — who knows what at every moment
 - **Adversarial suspense design** (Xie & Riedl, EACL 2024) — systematically destroy protagonist's escape plans
 - **Dual-reader fairness verification** (Wagner et al., 2025) — naive reader (surprise) + detective reader (fair play)
+- **Ensemble relationship engine** — characters operate as agents with mask persona, true intent, leverage, dependency, and exposure thresholds
 - **Character Compass** (David Corbett) — Lack / Yearning / Resistance / Desire
 - **Villain-as-plot-engine** (James Frey) — villain's plan IS the plot skeleton
 - **Yes-but / No-and investigation scenes** (Brandon Sanderson) — every investigation has a cost
@@ -178,9 +181,11 @@ Ecological (what's changing in the outside world?)
 
 ---
 
-## Reference Documents (29)
+## Core Reference Documents (selected)
 
-### Thriller Writing (`thriller-writing/references/`) — 11 files
+The repository now contains many more reference files than the core subset below. This list highlights the documents most frequently loaded by the skills.
+
+### Thriller Writing (`thriller-writing/references/`) — representative files
 
 | File | Contents |
 |------|----------|
@@ -188,6 +193,7 @@ Ecological (what's changing in the outside world?)
 | `clue-design.md` | Clue taxonomy, planting techniques, Knox Decalogue, fair-play spectrum |
 | `suspense-technique.md` | Hitchcock model, 9 suspense techniques, adversarial plan-failure, MICE nesting |
 | `character-archetype.md` | 7 detective archetypes, villain 4D design, Character Compass, fake-ally opponent |
+| `ensemble-dynamics.md` | Closed social systems, relationship engine, layered reveal ladder, dialogue duels |
 | `red-herring.md` | Red herring types, lifecycle management, common mistakes |
 | `twist-design.md` | Twist taxonomy, reverse engineering, revelation scene structure |
 | `pacing-tension.md` | Four-stage pacing model, page-turn drivers, rhythm diagnostics |
@@ -196,7 +202,7 @@ Ecological (what's changing in the outside world?)
 | `setting-atmosphere.md` | Closed spaces, atmosphere writing, everyday uncanny |
 | `knowledge-state.md` | Knowledge state tracking, competing narratives, dual-reader verification, villain engine |
 
-### Interactive Fiction (`interactive-fiction/references/`) — 8 files
+### Interactive Fiction (`interactive-fiction/references/`) — representative files
 
 | File | Contents |
 |------|----------|
@@ -209,7 +215,7 @@ Ecological (what's changing in the outside world?)
 | `interactive-prose.md` | Interactive prose writing, person choice, node length, convergence node techniques |
 | `advanced-if.md` | Accept/Reject/Deflect, QBN, vertical drilling, Storylet design |
 
-### Storyboard Decomposition (`storyboard/references/`) — 7 files
+### Storyboard Decomposition (`storyboard/references/`) — representative files
 
 | File | Contents |
 |------|----------|
@@ -221,13 +227,15 @@ Ecological (what's changing in the outside world?)
 | `llm-guidance.md` | LLM execution guide: 5 known traps, forced chain-of-thought protocol, 5-step self-audit, decompose-then-generate strategy, 6 quality metrics |
 | `decomposition-algorithm.md` | 8-step algorithm with VERIFY gate: PARSE→BEAT→BLOCK→SHOOT→VERIFY→CONNECT→RHYTHM→ANNOTATE+AUDIT |
 
-### Evolution System (`meta/references/`) — 5 files
+### Evolution System (`meta/references/`) — representative files
 
 | File | Contents |
 |------|----------|
 | `retrospective-method.md` | Three-layer analysis, 5-Why attribution, anti-patterns |
 | `evolution-patterns.md` | Four evolution modes (fill/correct/restructure/metamorphosis) |
 | `blind-spot-detection.md` | 5 cognitive bias types, reverse thinking exercises |
+| `constraint-contracts.md` | Constraint saturation checks and anti-drift control |
+| `evaluation-framework.md` | Design-stage, chapter-stage, and project-stage evaluation criteria |
 | `reverse-engineering.md` | Work autopsy method, cross-work comparison |
 | `benchmarking-protocol.md` | External methodology critical integration protocol |
 
@@ -307,23 +315,23 @@ Files in `projects/mirror-visitor/`.
 ```
 thriller/
 ├── thriller-writing/           # Skill 1: Thriller screenplay writing
-│   ├── SKILL.md                # 11 commands, 3 workflow routes
+│   ├── SKILL.md                # 13 commands, 3 workflow routes
 │   ├── QUICKREF.md             # Quick reference card
-│   ├── references/             # 17 reference documents
+│   ├── references/             # 21 reference documents
 │   └── templates/              # 6 sub-type project templates
 ├── interactive-fiction/         # Skill 2: Interactive branching fiction
 │   ├── SKILL.md                # 9 commands, 5 topology models
 │   ├── QUICKREF.md             # Quick reference card
-│   └── references/             # 10 reference documents
+│   └── references/             # 21 reference documents
 ├── storyboard/                 # Skill 3: Storyboard decomposition
 │   ├── SKILL.md                # 8 commands, 5-layer model, 7-step algorithm
 │   ├── QUICKREF.md             # Quick reference card
-│   └── references/             # 5 reference documents
+│   └── references/             # 15 reference documents
 ├── meta/                       # Skill 4: Self-evolution system
 │   ├── SKILL.md                # 6 evolution commands
-│   ├── references/             # 5 evolution reference documents
+│   ├── references/             # 7 evolution reference documents
 │   ├── CHANGELOG.md            # Version history
-│   ├── VERSION.md              # Current: v2.1.0
+│   ├── VERSION.md              # Current: v3.1.0
 │   ├── graveyard.md            # Retired rules archive
 │   └── retro-*.md / benchmark-*.md  # Evolution records
 ├── assets/gep/                 # GEP evolution assets (local)

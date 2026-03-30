@@ -1,5 +1,25 @@
 # 变更日志
 
+## v5.1.0 — 群像关系引擎升级 (2026-03-29)
+
+### 新增
+- `thriller-writing/references/ensemble-dynamics.md` — 封闭圈层群像悬疑的关系引擎、信息阶梯、对话决斗与钩子设计
+
+### 改进
+- `thriller-writing/SKILL.md` 新增 YAML frontmatter，提升 skill 触发描述和调用精度
+- `/start` 增加 `社会场域` 与 `关系引擎` 约束，初始化时就定义系统边界
+- `/characters` 升级为 Agent 卡 + 关系边设计，不再只停留在人物档案
+- `/structure` 新增信息阶梯、钩子地图、视角与知识对齐计划
+- `/scene` 新增场景博弈表，明确潜台词战场、试探路径、权力变化和信息操作
+- `/check` 与 `meta/references/evaluation-framework.md` 对齐，补入关系引擎与钩子兑现检查
+- `thriller-writing/QUICKREF.md`、社会派/心理悬疑模板、README 统一更新为群像系统写法
+
+### 方法论方向
+- 从“谜团+人物设定”升级为“案件外壳 + 关系图引擎 + 信息分层释放”
+- 强化适配《华灯初上》式的高关系密度、连续剧式悬疑表达
+
+---
+
 ## v5.0.0 — 分镜100轮进化完成 (2026-03-20)
 
 ### 100轮进化结果: 4,800行 → 17,576行
